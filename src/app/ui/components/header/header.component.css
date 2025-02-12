@@ -1,0 +1,162 @@
+/* Основной контейнер хедера */
+.navbar {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  grid-template-areas: "logo nav profile";
+  column-gap: 40px;
+  align-items: center;
+  height: 77px;
+  background-color: var(--surface-color);
+  padding: 0;
+  z-index: 1000;
+  overflow: hidden;
+}
+
+/* Логотип */
+.logo {
+  grid-area: logo;
+  justify-self: start;
+  padding-left: 44px;
+}
+
+.site-title {
+  font-size: var(--text-size-large);
+  font-weight: 400;
+}
+
+/* Иконка меню */
+.menu-icon {
+  display: none;
+  width: 15px;
+  height: 30px;
+  position: relative;
+  cursor: pointer;
+  z-index: 1200;
+  margin-left: 20px;
+}
+
+/* Анимация гамбургер-меню */
+.menu-icon .bar {
+  width: 100%;
+  height: 3px;
+  background-color: white;
+  position: absolute;
+  left: 0;
+  border-radius: 5%;
+  transition: transform 0.3s ease-in-out, opacity 0.2s ease-in-out;
+}
+
+/* Верхняя и нижняя линии */
+.menu-icon .bar:nth-child(1) { top: 0; }
+.menu-icon .bar:nth-child(2) { top: 50%; transform: translateY(-50%); }
+.menu-icon .bar:nth-child(3) { bottom: 0; }
+
+/* Анимация крестика */
+.menu-icon.open .bar:nth-child(1) {
+  transform: translateY(15px) rotate(45deg);
+}
+.menu-icon.open .bar:nth-child(2) {
+  opacity: 0;
+}
+.menu-icon.open .bar:nth-child(3) {
+  transform: translateY(-10px) rotate(-45deg);
+}
+
+/* Навигация */
+.nav-links {
+  grid-area: nav;
+  justify-self: center;
+  display: flex;
+  gap: 40px;
+  flex-grow: 1;
+  margin: 0 auto;
+}
+
+.nav-links a {
+  font-size: 16px;
+  font-weight: 200;
+}
+
+
+
+/* Иконка профиля */
+.profile-icon {
+  grid-area: profile;
+  justify-self: end;
+  padding-right: 44px;
+}
+
+.profile-icon svg path {
+  transition: fill 0.3s ease;
+}
+
+
+
+/* Адаптивные стили */
+@media (max-width: 768px) {
+
+  .navbar {
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-areas: "menu logo profile";
+    z-index: 1400;
+  }
+
+  .logo {
+    justify-self: center;
+    padding: 0;
+  }
+  .site-title {
+    font-size: var(--text-size-medium);
+  }
+
+  .menu-icon {
+    grid-area: menu;
+    display: block;
+    padding-left: 20px;
+    z-index: 1;
+    scale: 70%;
+  }
+
+  .profile-icon{
+    padding-right: 20px;
+    scale: 70%;
+  }
+
+  .nav-links {
+    position: absolute;
+    top: 77px;
+    right: 0;
+    width: 100%;
+    z-index: 1000;
+    background-color: var(--surface-color);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-bottom: 20px;
+    max-height: 0;
+    opacity: 0;
+   transition: max-height 0.3s ease-in-out;
+  }
+
+  .nav-links.open {
+    max-height: 500px;
+    opacity: 1;
+    display: flex;
+  }
+}
+
+/* Логотип скрывается на очень узких экранах */
+@media (max-width: 400px) {
+  .logo {
+    display: none;
+  }
+}
+
+@media (hover: hover) {
+  .profile-icon:hover svg path {
+    fill: var(--primary-color);
+  }
+  .nav-links a:hover {
+    text-decoration: underline;
+  }
+}
