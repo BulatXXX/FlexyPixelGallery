@@ -1,3 +1,7 @@
+<script src="../menu/menu.component.ts"></script>
+<app-menu
+  [width]="canvasWidth"
+></app-menu>
 <svg
   [attr.width]="canvasWidth"
   [attr.height]="canvasHeight"
@@ -5,7 +9,6 @@
   (wheel)="onWheel($event)"
   style="border: 1px solid #000;">
 
-  <!-- Сетка -->
   <g [attr.transform]="'translate(' + panOffsetX + ',' + panOffsetY + ') scale(' + scale + ')'">
 
     <g class="grid">
@@ -29,29 +32,28 @@
       </ng-container>
     </g>
 
-  <!-- Панели -->
+    <g class="panels">
+      <ng-container *ngFor="let panel of panels; let panelIndex = index">
+        <g [attr.transform]="'translate(' + (panel.x * cellSize) + ',' + (panel.y * cellSize) + ')'"
+           (mouseenter)="showTooltip($event, panelIndex)"
+           (mousemove)="updateTooltipPosition($event)"
+           (mouseleave)="hideTooltip()">
 
-  <g class="panels">
-    <ng-container *ngFor="let panel of panels; let panelIndex = index">
-      <g [attr.transform]="'translate(' + (panel.x * cellSize) + ',' + (panel.y * cellSize) + ')'"
-         (mouseenter)="showTooltip($event, panelIndex)"
-         (mousemove)="updateTooltipPosition($event)"
-         (mouseleave)="hideTooltip()">
-
-        <ng-container *ngFor="let row of panel.pixels; let i = index">
-          <ng-container *ngFor="let color of row; let j = index">
-            <rect
-              [attr.x]="j * cellSize"
-              [attr.y]="i * cellSize"
-              [attr.width]="cellSize"
-              [attr.height]="cellSize"
-              [attr.fill]="color"
-              stroke="#000"
-              stroke-width="0.5"/>
+          <ng-container *ngFor="let row of panel.pixels; let i = index">
+            <ng-container *ngFor="let color of row; let j = index">
+              <rect
+                [attr.x]="j * cellSize"
+                [attr.y]="i * cellSize"
+                [attr.width]="cellSize"
+                [attr.height]="cellSize"
+                [attr.fill]="color"
+                stroke="#000"
+                stroke-width="0.5"/>
+            </ng-container>
           </ng-container>
-        </ng-container>
 
-        <rect *ngIf="mode === Mode.EditorMode"
+          <ng-container *ngIf="mode === Mode.EditorMode">
+            <rect
               [attr.x]="cellSize*0.1"
               [attr.y]="cellSize*0.1"
               [attr.width]="8 * cellSize-cellSize*0.2"
@@ -59,9 +61,67 @@
               fill="none"
               stroke="red"
               stroke-width="3"/>
+            <rect *ngIf="panel.direction === 'R'"
+                  [attr.x]="cellSize*8-cellSize*0.2" [attr.y]="cellSize*0.1"
+                  [attr.width]="3" [attr.height]="8 * cellSize -cellSize*0.2"
+                  fill="none" stroke="green" stroke-width="3"></rect>
+            <rect *ngIf="panel.direction === 'B'"
+                  [attr.x]="cellSize*0.1" [attr.y]="cellSize*8-cellSize*0.2"
+                  [attr.width]="8 * cellSize -cellSize*0.2" [attr.height]="3"
+                  fill="none" stroke="green" stroke-width="3"></rect>
+            <rect *ngIf="panel.direction === 'L'"
+                  [attr.x]="cellSize*0.1" [attr.y]="cellSize*0.1"
+                  [attr.width]="3" [attr.height]="8 * cellSize -cellSize*0.2"
+                  fill="none" stroke="green" stroke-width="3"></rect>
+            <rect *ngIf="panel.direction === 'T'"
+                  [attr.x]="cellSize*0.1" [attr.y]="cellSize*0.1"
+                  [attr.width]="8 * cellSize -cellSize*0.2" [attr.height]="3"
+                  fill="none" stroke="green" stroke-width="3"></rect>
+          </ng-container>
+          <!-- Plus Hint для добавления новой панели, отображается только в режиме редактирования -->
+
+
+        </g>
+      </ng-container>
+
+
+
+    </g>
+    <!-- Если есть хотя бы одна панель, отрисовываем подсказки для всех 4 направлений -->
+    <g *ngIf="(panels.length > 0) && (mode === Mode.EditorMode)">
+      <g *ngFor="let direction of availableDirections">
+        <ng-container *ngIf="getHintArea(direction) as hint">
+          <!-- Область для подсказки -->
+          <g [attr.transform]="'translate(' + (hint.gridX * cellSize) + ',' + (hint.gridY * cellSize) + ')'">
+            <!-- Прозрачный прямоугольник для ловли событий -->
+            <rect x="0" y="0"
+                  [attr.width]="8 * cellSize"
+                  [attr.height]="8 * cellSize"
+                  fill="transparent"
+                  (mouseenter)="showHintFor(direction)"
+                  (mouseleave)="hideHintFor(direction)"
+                  (click)="onAddPanelHintClick($event, direction)">
+            </rect>
+            <!-- Видимая подсказка (plus icon) появляется, если для этого направления включено -->
+            <ng-container *ngIf="hintVisibleMap[direction]">
+              <rect x="0" y="0"
+                    [attr.width]="8 * cellSize"
+                    [attr.height]="8 * cellSize"
+                    fill="rgba(0,0,0,0.1)"
+                    stroke="blue" stroke-dasharray="4"
+                    pointer-events="none">
+              </rect>
+              <text [attr.x]="(8 * cellSize) / 2" [attr.y]="(8 * cellSize) / 2"
+                    text-anchor="middle" dominant-baseline="middle"
+                    fill="blue" font-size="24" pointer-events="none">
+                +
+              </text>
+            </ng-container>
+          </g>
+        </ng-container>
       </g>
-    </ng-container>
-  </g>
+    </g>
+
   </g>
 
   <!-- Tooltip, выводится поверх элементов -->

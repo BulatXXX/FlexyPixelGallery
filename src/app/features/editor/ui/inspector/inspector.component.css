@@ -1,0 +1,9 @@
+.inspector-container{
+  background-color: var(--surface-color);
+  height: 60vh;
+  border-radius: 5%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}

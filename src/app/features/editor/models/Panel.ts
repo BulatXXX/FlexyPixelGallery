@@ -1,9 +1,7 @@
 export interface Panel {
   id: string;
-  x: number; // координаты левого верхнего угла на "сетки"
-  y: number; // (в координатах ячеек, а не пикселей экрана)
-  width: number;  // 8
-  height: number; // 8
-
-  pixels: string[][];
+  x: number; // координата по горизонтали (ячейка сетки)
+  y: number; // координата по вертикали (ячейка сетки)
+  direction: 'L' | 'R' | 'T' | 'B'; // новое поле направления
+  pixels: string[][]; // 8×8, например, hex-коды цветов
 }

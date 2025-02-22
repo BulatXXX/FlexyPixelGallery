@@ -8,7 +8,6 @@ import {InspectorComponent} from '../ui/inspector/inspector.component';
   selector: 'app-editor-screen',
   imports: [
     CanvasComponent,
-    MenuComponent,
     InspectorComponent,
   ],
   templateUrl: './editor-screen.component.html',
@@ -16,10 +15,4 @@ import {InspectorComponent} from '../ui/inspector/inspector.component';
   styleUrl: './editor-screen.component.css',
 })
 export class EditorScreenComponent {
-
-
-
-  handleCenterGrid() {
-
-  }
 }
