@@ -1,0 +1,76 @@
+<svg
+  [attr.width]="canvasWidth"
+  [attr.height]="canvasHeight"
+  (click)="onCanvasClick($event)"
+  (wheel)="onWheel($event)"
+  style="border: 1px solid #000;">
+
+  <!-- Сетка -->
+  <g [attr.transform]="'translate(' + panOffsetX + ',' + panOffsetY + ') scale(' + scale + ')'">
+
+    <g class="grid">
+      <ng-container *ngFor="let i of [].constructor(virtualGridWidth + 1); let x = index">
+        <line
+          [attr.x1]="x * cellSize"
+          y1="0"
+          [attr.x2]="x * cellSize"
+          [attr.y2]="virtualGridHeight * cellSize"
+          stroke="#ccc"
+          stroke-width="1"/>
+      </ng-container>
+      <ng-container *ngFor="let i of [].constructor(virtualGridHeight + 1); let y = index">
+        <line
+          x1="0"
+          [attr.y1]="y * cellSize"
+          [attr.x2]="virtualGridWidth * cellSize"
+          [attr.y2]="y * cellSize"
+          stroke="#ccc"
+          stroke-width="1"/>
+      </ng-container>
+    </g>
+
+  <!-- Панели -->
+
+  <g class="panels">
+    <ng-container *ngFor="let panel of panels; let panelIndex = index">
+      <g [attr.transform]="'translate(' + (panel.x * cellSize) + ',' + (panel.y * cellSize) + ')'"
+         (mouseenter)="showTooltip($event, panelIndex)"
+         (mousemove)="updateTooltipPosition($event)"
+         (mouseleave)="hideTooltip()">
+
+        <ng-container *ngFor="let row of panel.pixels; let i = index">
+          <ng-container *ngFor="let color of row; let j = index">
+            <rect
+              [attr.x]="j * cellSize"
+              [attr.y]="i * cellSize"
+              [attr.width]="cellSize"
+              [attr.height]="cellSize"
+              [attr.fill]="color"
+              stroke="#000"
+              stroke-width="0.5"/>
+          </ng-container>
+        </ng-container>
+
+        <rect *ngIf="mode === Mode.EditorMode"
+              [attr.x]="cellSize*0.1"
+              [attr.y]="cellSize*0.1"
+              [attr.width]="8 * cellSize-cellSize*0.2"
+              [attr.height]="8 * cellSize-cellSize*0.2"
+              fill="none"
+              stroke="red"
+              stroke-width="3"/>
+      </g>
+    </ng-container>
+  </g>
+  </g>
+
+  <!-- Tooltip, выводится поверх элементов -->
+  <text *ngIf="tooltipVisible"
+        [attr.x]="tooltipX"
+        [attr.y]="tooltipY"
+        fill="black"
+        font-size="14"
+        style="pointer-events: none;">
+    {{ tooltipText }}
+  </text>
+</svg>

@@ -1,0 +1,16 @@
+.menu-button{
+  color: white;
+}
+.menu-button:hover{
+  color: var(--accent-2);
+}
+
+.menu-container{
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+  padding: 20px 20px;
+  box-sizing: border-box;
+  background: var(--surface-color);
+  width: 94%;
+}
