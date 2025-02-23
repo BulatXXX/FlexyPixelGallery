@@ -5,11 +5,12 @@ import {Subscription} from 'rxjs';
 import {Panel} from '../../models/Panel';
 import {MenuComponent} from '../menu/menu.component';
 import {CommandManager} from '../../service/CommandManager';
-import {AddPanelAtCoordinatesCommand} from '../../models/Commands/AddPanelCommand';
+import {AddPanelAtCoordinatesCommand} from '../../models/Commands/AddPanelAtCoordinatesCommand';
 import {AddPanelInDirectionCommand} from '../../models/Commands/AddPanelInDirectionCommand';
 import {EditorStateSetting} from '../../models/EditorStateSettings';
 import {EditorActions} from '../../models/EditorActions';
 import {Mode} from '../../models/Mode';
+import {RemovePanelCommand} from '../../models/Commands/RemovePanelCommand';
 
 const PANEL_SIZE = 8;
 
@@ -48,6 +49,10 @@ export class CanvasComponent implements OnInit {
   tooltipX: number = 0;
   tooltipY: number = 0;
   tooltipVisible: boolean = false;
+
+  // Свойства deleteHint
+  deleteHintVisible: boolean = false;
+
 
   private actionSubscription!: Subscription;
   private panelsSubscription!: Subscription;
@@ -262,4 +267,20 @@ export class CanvasComponent implements OnInit {
   }
 
   protected readonly Mode = Mode;
+  protected readonly PANEL_SIZE = PANEL_SIZE;
+
+  toggleDeleteHint() {
+    this.deleteHintVisible = !this.deleteHintVisible;
+  }
+
+  onRemovePanelClick(event: MouseEvent) {
+    event.stopPropagation()
+    this.toggleDeleteHint()
+    this.hideTooltip()
+    const lastPanel = this.panels[this.panels.length - 1];
+    this.commandManager.execute(new RemovePanelCommand(
+      this.editorService,
+      lastPanel
+    ));
+  }
 }

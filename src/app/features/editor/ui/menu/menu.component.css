@@ -1,9 +1,16 @@
-.menu-button{
+.menu-button {
   color: white;
 }
-.menu-button:hover{
+
+.menu-button:hover {
   color: var(--accent-2);
 }
+
+/* Активный элемент */
+.active-icon {
+  color: var(--accent-2) !important; /* Например, яркий акцентный цвет */
+}
+
 
 .menu-container{
   display: flex;

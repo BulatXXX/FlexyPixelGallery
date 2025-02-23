@@ -1,16 +1,20 @@
 import {Component, Input} from '@angular/core';
 import {MatIcon} from '@angular/material/icon';
 import {EditorStateService} from '../../service/editor-state.service';
-import {NgStyle} from '@angular/common';
+import {AsyncPipe, NgClass, NgStyle} from '@angular/common';
 import {CommandManager} from '../../service/CommandManager';
 import {Mode} from '../../models/Mode';
 import {EditorActions} from '../../models/EditorActions';
+import {MatTooltip} from '@angular/material/tooltip';
 
 @Component({
   selector: 'app-menu',
   imports: [
     MatIcon,
-    NgStyle
+    NgStyle,
+    MatTooltip,
+    AsyncPipe,
+    NgClass
   ],
   templateUrl: './menu.component.html',
   standalone: true,
@@ -19,7 +23,7 @@ import {EditorActions} from '../../models/EditorActions';
 export class MenuComponent {
   @Input() width: number = 0;
 
-  constructor(private editorStateService: EditorStateService,private commandManager: CommandManager) {
+  constructor(protected editorStateService: EditorStateService, private commandManager: CommandManager) {
   }
 
   undo(){
@@ -40,4 +44,18 @@ export class MenuComponent {
   turnEditorMode() {
     this.editorStateService.setMode(Mode.EditorMode)
   }
+
+  turnDeleteMode() {
+    this.editorStateService.setMode(Mode.DeleteMode)
+  }
+
+  toggleBorders() {
+    this.editorStateService.toggleBorders();
+  }
+
+  toggleDirections() {
+    this.editorStateService.toggleDirections();
+  }
+
+  protected readonly Mode = Mode;
 }

@@ -1,5 +1,5 @@
-import { Injectable } from '@angular/core';
-import { BehaviorSubject, Subject } from 'rxjs';
+import {Injectable} from '@angular/core';
+import {BehaviorSubject, Subject} from 'rxjs';
 import {Panel} from '../models/Panel';
 import {Mode} from '../models/Mode';
 import {EditorStateSetting} from '../models/EditorStateSettings';
@@ -20,7 +20,7 @@ export class EditorStateService {
 
   // Храним текущий режим
   private settingSubject = new BehaviorSubject<EditorStateSetting>({
-    mode: Mode.EditorMode,
+    mode: Mode.SpectatorMode,
     showPanelBorders: true,
     borderColor: 'red',
     showPanelDirections: true,
@@ -35,6 +35,14 @@ export class EditorStateService {
 
   setMode(mode: Mode): void {
     this.setting.mode = mode;
+  }
+
+  toggleBorders() {
+    this.setting.showPanelBorders = !this.setting.showPanelBorders;
+  }
+
+  toggleDirections() {
+    this.setting.showPanelDirections = !this.setting.showPanelDirections;
   }
 
   // Если требуется передавать какие-либо действия
@@ -87,6 +95,11 @@ export class EditorStateService {
     return Array.from({ length: rows }, () => Array(cols).fill('#ffffff'));
   }
 
+  insertPanelAt(panel: Panel, index: number): void {
+    const panels = this.panels;
+    panels.splice(index, 0, panel);
+    this.panelsSubject.next([...panels]);
+  }
 
   createPanel(
     gridX: number,
@@ -154,10 +167,14 @@ export class EditorStateService {
     virtualGridHeight: number,
     panelSize: number,
   ): boolean {
+    if(this.setting.mode !== Mode.EditorMode){
+      return false;
+    }
     const validation = this.validatePanelPlacement(gridX, gridY, panelSize, virtualGridWidth, virtualGridHeight);
     if (!validation.valid) {
       return false;
     }
+
     const newPanel = this.createPanel(validation.gridX, validation.gridY, panelSize);
     this.addPanel(newPanel);
     return true;

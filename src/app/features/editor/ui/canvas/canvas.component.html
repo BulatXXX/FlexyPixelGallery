@@ -39,7 +39,6 @@
            (mouseenter)="showTooltip($event, panelIndex)"
            (mousemove)="updateTooltipPosition($event)"
            (mouseleave)="hideTooltip()">
-
           <ng-container *ngFor="let row of panel.pixels; let i = index">
             <ng-container *ngFor="let color of row; let j = index">
               <rect
@@ -53,7 +52,7 @@
             </ng-container>
           </ng-container>
 
-          <ng-container *ngIf="settings?.mode === Mode.EditorMode">
+          <ng-container *ngIf="settings?.showPanelBorders">
             <rect
               [attr.x]="cellSize*0.1"
               [attr.y]="cellSize*0.1"
@@ -62,6 +61,8 @@
               fill="none"
               stroke="red"
               stroke-width="3"/>
+          </ng-container>
+          <ng-container *ngIf="settings?.showPanelDirections">
             <rect *ngIf="panel.direction === 'R'"
                   [attr.x]="cellSize*8-cellSize*0.2" [attr.y]="cellSize*0.1"
                   [attr.width]="3" [attr.height]="8 * cellSize -cellSize*0.2"
@@ -79,9 +80,33 @@
                   [attr.width]="8 * cellSize -cellSize*0.2" [attr.height]="3"
                   fill="none" stroke="green" stroke-width="3"></rect>
           </ng-container>
+          <ng-container *ngIf="settings?.mode=== Mode.DeleteMode">
+          <ng-container *ngIf="panelIndex === panels.length-1">
+            <rect
+              [attr.width]="PANEL_SIZE*cellSize"
+              [attr.height]="PANEL_SIZE*cellSize"
+              (mouseenter)="toggleDeleteHint()"
+              (mouseleave)="toggleDeleteHint()"
+              (click)="onRemovePanelClick($event)"
+              fill="transparent"
+            />
+            <ng-container *ngIf="deleteHintVisible">
+              <rect x="0" y="0"
+                    [attr.width]="8 * cellSize"
+                    [attr.height]="8 * cellSize"
+                    fill="rgba(255,0,0,0.1)"
+                    stroke="red" stroke-dasharray="4"
+                    pointer-events="none">
+              </rect>
+              <text [attr.x]="(8 * cellSize) / 2" [attr.y]="(8 * cellSize) / 2"
+                    text-anchor="middle" dominant-baseline="middle"
+                    fill="red" font-size="24" pointer-events="none">
+                —
+              </text>
+            </ng-container>
+          </ng-container>
+          </ng-container>
           <!-- Plus Hint для добавления новой панели, отображается только в режиме редактирования -->
-
-
         </g>
       </ng-container>
 
@@ -122,6 +147,7 @@
         </ng-container>
       </g>
     </g>
+
 
   </g>
 

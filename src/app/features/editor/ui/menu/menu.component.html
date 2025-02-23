@@ -1,9 +1,48 @@
-<div class="menu-container" [ngStyle]="{'width.px': width+2}" >
-  <mat-icon class="menu-button" (click)="undo()">undo</mat-icon>
-  <mat-icon class="menu-button" (click)="redo()">redo</mat-icon>
-  <mat-icon class="menu-button" (click)="centerGrid()">location_on</mat-icon>
-  <mat-icon class="menu-button">add</mat-icon>
-  <mat-icon class="menu-button">remove</mat-icon>
-  <mat-icon class="menu-button" (click)="turnSpectatorMode()">remove_red_eye</mat-icon>
-  <mat-icon class="menu-button" (click)="turnEditorMode()">edit</mat-icon>
+<div class="menu-container" [ngStyle]="{'width.px': width+2}">
+  <mat-icon matTooltip="Undo" class="menu-button" (click)="undo()">undo</mat-icon>
+  <mat-icon matTooltip="Redo" class="menu-button" (click)="redo()">redo</mat-icon>
+  <mat-icon matTooltip="Center grid" class="menu-button" (click)="centerGrid()">location_on</mat-icon>
+  <mat-icon matTooltip="Zoom in" class="menu-button">add</mat-icon>
+  <mat-icon matTooltip="Zoom out" class="menu-button">remove</mat-icon>
+
+  <!-- Режимы: с подсветкой активного режима -->
+  <mat-icon
+    matTooltip="Spectator mode"
+    class="menu-button"
+    (click)="turnSpectatorMode()"
+    [ngClass]="{'active-icon': (editorStateService.setting$ | async)?.mode === Mode.SpectatorMode}">
+    remove_red_eye
+  </mat-icon>
+  <mat-icon
+    matTooltip="Editor mode"
+    class="menu-button"
+    (click)="turnEditorMode()"
+    [ngClass]="{'active-icon': (editorStateService.setting$ | async)?.mode === Mode.EditorMode}">
+    edit
+  </mat-icon>
+  <mat-icon
+    matTooltip="Delete mode"
+    class="menu-button"
+    (click)="turnDeleteMode()"
+    [ngClass]="{'active-icon': (editorStateService.setting$ | async)?.mode === Mode.DeleteMode}">
+    delete
+  </mat-icon>
+
+  <!-- Тогглы для отображения границ и направлений -->
+  <mat-icon
+    matTooltip="Panel borders"
+    class="menu-button"
+    (click)="toggleBorders()"
+    [ngClass]="{'active-icon': (editorStateService.setting$ | async)?.showPanelBorders}">
+    crop_free
+  </mat-icon>
+  <mat-icon
+    matTooltip="Panel directions"
+    class="menu-button"
+    (click)="toggleDirections()"
+    [ngClass]="{'active-icon': (editorStateService.setting$ | async)?.showPanelDirections}">
+    keyboard_double_arrow_up
+  </mat-icon>
 </div>
+
+
