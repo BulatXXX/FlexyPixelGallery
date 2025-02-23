@@ -1,6 +1,6 @@
 <div class="menu-container" [ngStyle]="{'width.px': width+2}" >
-  <mat-icon class="menu-button">undo</mat-icon>
-  <mat-icon class="menu-button">redo</mat-icon>
+  <mat-icon class="menu-button" (click)="undo()">undo</mat-icon>
+  <mat-icon class="menu-button" (click)="redo()">redo</mat-icon>
   <mat-icon class="menu-button" (click)="centerGrid()">location_on</mat-icon>
   <mat-icon class="menu-button">add</mat-icon>
   <mat-icon class="menu-button">remove</mat-icon>

@@ -1,11 +1,16 @@
-class CommandManager {
+import {Injectable} from '@angular/core';
+
+@Injectable({
+  providedIn: 'root'
+})
+export class CommandManager {
   private doneCommands: Command[] = [];
   private undoneCommands: Command[] = [];
 
   execute(command: Command) {
     command.do();
     this.doneCommands.push(command);
-    // после нового действия всё, что было в undone, обнуляем
+
     this.undoneCommands = [];
   }
 

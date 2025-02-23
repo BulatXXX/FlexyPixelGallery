@@ -7,7 +7,8 @@
   [attr.height]="canvasHeight"
   (click)="onCanvasClick($event)"
   (wheel)="onWheel($event)"
-  style="border: 1px solid #000;">
+  style="border: 1px solid #000;"
+>
 
   <g [attr.transform]="'translate(' + panOffsetX + ',' + panOffsetY + ') scale(' + scale + ')'">
 
@@ -52,7 +53,7 @@
             </ng-container>
           </ng-container>
 
-          <ng-container *ngIf="mode === Mode.EditorMode">
+          <ng-container *ngIf="settings?.mode === Mode.EditorMode">
             <rect
               [attr.x]="cellSize*0.1"
               [attr.y]="cellSize*0.1"
@@ -88,7 +89,7 @@
 
     </g>
     <!-- Если есть хотя бы одна панель, отрисовываем подсказки для всех 4 направлений -->
-    <g *ngIf="(panels.length > 0) && (mode === Mode.EditorMode)">
+    <g *ngIf="(panels.length > 0) && (settings?.mode === Mode.EditorMode)">
       <g *ngFor="let direction of availableDirections">
         <ng-container *ngIf="getHintArea(direction) as hint">
           <!-- Область для подсказки -->
@@ -98,8 +99,8 @@
                   [attr.width]="8 * cellSize"
                   [attr.height]="8 * cellSize"
                   fill="transparent"
-                  (mouseenter)="showHintFor(direction)"
-                  (mouseleave)="hideHintFor(direction)"
+                  (mouseenter)="toggleHintForDirection(direction)"
+                  (mouseleave)="toggleHintForDirection(direction)"
                   (click)="onAddPanelHintClick($event, direction)">
             </rect>
             <!-- Видимая подсказка (plus icon) появляется, если для этого направления включено -->

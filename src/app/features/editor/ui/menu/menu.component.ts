@@ -1,7 +1,10 @@
-import {Component, EventEmitter, Input, Output} from '@angular/core';
+import {Component, Input} from '@angular/core';
 import {MatIcon} from '@angular/material/icon';
-import {EditorActions, EditorStateService, Mode} from '../../service/editor-state.service';
+import {EditorStateService} from '../../service/editor-state.service';
 import {NgStyle} from '@angular/common';
+import {CommandManager} from '../../service/CommandManager';
+import {Mode} from '../../models/Mode';
+import {EditorActions} from '../../models/EditorActions';
 
 @Component({
   selector: 'app-menu',
@@ -16,7 +19,14 @@ import {NgStyle} from '@angular/common';
 export class MenuComponent {
   @Input() width: number = 0;
 
-  constructor(private editorStateService: EditorStateService) {
+  constructor(private editorStateService: EditorStateService,private commandManager: CommandManager) {
+  }
+
+  undo(){
+    this.commandManager.undo()
+  }
+  redo(){
+    this.commandManager.redo()
   }
 
   centerGrid() {
@@ -24,10 +34,10 @@ export class MenuComponent {
   }
 
   turnSpectatorMode() {
-    this.editorStateService.setMode(Mode.SpectatorMode);
+    this.editorStateService.setMode(Mode.SpectatorMode)
   }
 
   turnEditorMode() {
-    this.editorStateService.setMode(Mode.EditorMode);
+    this.editorStateService.setMode(Mode.EditorMode)
   }
 }

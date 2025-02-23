@@ -1,17 +1,8 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Subject } from 'rxjs';
 import {Panel} from '../models/Panel';
-
-export enum EditorActions {
-  CenterGrid = 'centerGrid',
-  TurnSpectatorMode = 'turnSpectatorMode',
-  TurnEditorMode = 'turnEditorMode',
-}
-
-export enum Mode {
-  SpectatorMode,
-  EditorMode,
-}
+import {Mode} from '../models/Mode';
+import {EditorStateSetting} from '../models/EditorStateSettings';
 
 @Injectable({
   providedIn: 'root'
@@ -23,13 +14,39 @@ export class EditorStateService {
   // Храним список панелей через BehaviorSubject
   private panelsSubject = new BehaviorSubject<Panel[]>([]);
   panels$ = this.panelsSubject.asObservable();
-  // Для удобного доступа к текущему списку панелей
   get panels(): Panel[] {
     return this.panelsSubject.getValue();
   }
+
+  // Храним текущий режим
+  private settingSubject = new BehaviorSubject<EditorStateSetting>({
+    mode: Mode.EditorMode,
+    showPanelBorders: true,
+    borderColor: 'red',
+    showPanelDirections: true,
+  });
+  setting$ = this.settingSubject.asObservable();
+  get setting(): EditorStateSetting {
+    return this.settingSubject.getValue();
+  }
+  set setting(setting: EditorStateSetting){
+    this.settingSubject.next(setting);
+  }
+
+  setMode(mode: Mode): void {
+    this.setting.mode = mode;
+  }
+
+  // Если требуется передавать какие-либо действия
+  private actionSubject = new Subject<string>();
+  action$ = this.actionSubject.asObservable();
+
   // Метод для добавления панели
   addPanel(panel: Panel) {
     this.panelsSubject.next([...this.panels, panel]);
+  }
+  removePanel(panel_id: string) {
+    this.panelsSubject.next(this.panels.filter(p => p.id !== panel_id));
   }
 
   validatePanelPlacement(
@@ -66,12 +83,11 @@ export class EditorStateService {
   }
 
 
-  // Метод для создания пустой панели (8x8) – можно вынести и создание пустой матрицы
   createEmptyPanel(rows: number, cols: number): string[][] {
     return Array.from({ length: rows }, () => Array(cols).fill('#ffffff'));
   }
 
-  // Метод для создания новой панели
+
   createPanel(
     gridX: number,
     gridY: number,
@@ -131,14 +147,12 @@ export class EditorStateService {
     return true;
   }
 
-  // Метод, который объединяет валидацию, создание и добавление панели
   addPanelAtCoordinates(
     gridX: number,
     gridY: number,
     virtualGridWidth: number,
     virtualGridHeight: number,
     panelSize: number,
-    cellSize: number
   ): boolean {
     const validation = this.validatePanelPlacement(gridX, gridY, panelSize, virtualGridWidth, virtualGridHeight);
     if (!validation.valid) {
@@ -149,21 +163,8 @@ export class EditorStateService {
     return true;
   }
 
-
-  // Храним текущий режим
-  private modeSubject = new BehaviorSubject<Mode>(Mode.EditorMode);
-  mode$ = this.modeSubject.asObservable();
-
-  // Если требуется передавать какие-либо действия
-  private actionSubject = new Subject<string>();
-  action$ = this.actionSubject.asObservable();
-
   triggerAction(action: string) {
     this.actionSubject.next(action);
   }
 
-  // Метод для переключения режима
-  setMode(mode: Mode) {
-    this.modeSubject.next(mode);
-  }
 }
