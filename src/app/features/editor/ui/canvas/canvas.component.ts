@@ -152,7 +152,6 @@ export class CanvasComponent implements OnInit {
     this.canvasHeight = this.gridHeight * this.cellSize;
   }
 
-
   private centerGrid(): void {
     // Размер виртуальной сетки в пикселях с учётом текущего масштаба
     const virtualWidthPx = this.virtualGridWidth * this.cellSize * this.scale;
@@ -188,7 +187,6 @@ export class CanvasComponent implements OnInit {
       }
     }
   }
-
 
   hintVisibleMap: { [key in Direction]?: boolean } = {};
   availableDirections: Array<Direction> = [Direction.Left, Direction.Right, Direction.Top, Direction.Bottom];
