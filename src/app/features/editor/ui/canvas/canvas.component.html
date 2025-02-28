@@ -5,7 +5,7 @@
 <svg
   [attr.width]="canvasWidth"
   [attr.height]="canvasHeight"
-  (click)="onCanvasClick($event)"
+  (click)="onAddPanelOnCanvas($event)"
   (wheel)="onWheel($event)"
   style="border: 1px solid #000;"
 >
@@ -48,11 +48,15 @@
                 [attr.height]="cellSize"
                 [attr.fill]="color"
                 stroke="#000"
-                stroke-width="0.5"/>
+                stroke-width="0.5"
+                (mousedown)="drawingService.handleStartDrawing(panel, j, i)"
+                (mousemove)="drawingService.handleMouseMoveDrawing(panel, j, i)"
+              />
             </ng-container>
           </ng-container>
 
-          <ng-container *ngIf="settings?.showPanelBorders">
+          <!--Отрисовка границ панели-->
+          <ng-container *ngIf="editorService.setting?.showPanelBorders">
             <rect
               [attr.x]="cellSize*0.1"
               [attr.y]="cellSize*0.1"
@@ -62,59 +66,62 @@
               stroke="red"
               stroke-width="3"/>
           </ng-container>
-          <ng-container *ngIf="settings?.showPanelDirections">
-            <rect *ngIf="panel.direction === 'R'"
+
+          <!--Отрисовка направления панели-->
+          <ng-container *ngIf="editorService.setting?.showPanelDirections">
+            <rect *ngIf="panel.direction === Direction.Right"
                   [attr.x]="cellSize*8-cellSize*0.2" [attr.y]="cellSize*0.1"
                   [attr.width]="3" [attr.height]="8 * cellSize -cellSize*0.2"
                   fill="none" stroke="green" stroke-width="3"></rect>
-            <rect *ngIf="panel.direction === 'B'"
+            <rect *ngIf="panel.direction === Direction.Bottom"
                   [attr.x]="cellSize*0.1" [attr.y]="cellSize*8-cellSize*0.2"
                   [attr.width]="8 * cellSize -cellSize*0.2" [attr.height]="3"
                   fill="none" stroke="green" stroke-width="3"></rect>
-            <rect *ngIf="panel.direction === 'L'"
+            <rect *ngIf="panel.direction === Direction.Left"
                   [attr.x]="cellSize*0.1" [attr.y]="cellSize*0.1"
                   [attr.width]="3" [attr.height]="8 * cellSize -cellSize*0.2"
                   fill="none" stroke="green" stroke-width="3"></rect>
-            <rect *ngIf="panel.direction === 'T'"
+            <rect *ngIf="panel.direction === Direction.Top"
                   [attr.x]="cellSize*0.1" [attr.y]="cellSize*0.1"
                   [attr.width]="8 * cellSize -cellSize*0.2" [attr.height]="3"
                   fill="none" stroke="green" stroke-width="3"></rect>
           </ng-container>
-          <ng-container *ngIf="settings?.mode=== Mode.DeleteMode">
-          <ng-container *ngIf="panelIndex === panels.length-1">
-            <rect
-              [attr.width]="PANEL_SIZE*cellSize"
-              [attr.height]="PANEL_SIZE*cellSize"
-              (mouseenter)="toggleDeleteHint()"
-              (mouseleave)="toggleDeleteHint()"
-              (click)="onRemovePanelClick($event)"
-              fill="transparent"
-            />
-            <ng-container *ngIf="deleteHintVisible">
-              <rect x="0" y="0"
-                    [attr.width]="8 * cellSize"
-                    [attr.height]="8 * cellSize"
-                    fill="rgba(255,0,0,0.1)"
-                    stroke="red" stroke-dasharray="4"
-                    pointer-events="none">
-              </rect>
-              <text [attr.x]="(8 * cellSize) / 2" [attr.y]="(8 * cellSize) / 2"
-                    text-anchor="middle" dominant-baseline="middle"
-                    fill="red" font-size="24" pointer-events="none">
-                —
-              </text>
+
+          <!--Отрисовка подсказки в режиме удаления-->
+          <ng-container *ngIf="editorService.setting?.mode=== Mode.DeleteMode">
+            <ng-container *ngIf="panelIndex === panels.length-1">
+              <rect
+                [attr.width]="PANEL_SIZE*cellSize"
+                [attr.height]="PANEL_SIZE*cellSize"
+                (mouseenter)="toggleDeleteHint()"
+                (mouseleave)="toggleDeleteHint()"
+                (click)="onRemovePanelClick($event)"
+                fill="transparent"
+              />
+              <ng-container *ngIf="deleteHintVisible">
+                <rect x="0" y="0"
+                      [attr.width]="8 * cellSize"
+                      [attr.height]="8 * cellSize"
+                      fill="rgba(255,0,0,0.1)"
+                      stroke="red" stroke-dasharray="4"
+                      pointer-events="none">
+                </rect>
+                <text [attr.x]="(8 * cellSize) / 2" [attr.y]="(8 * cellSize) / 2"
+                      text-anchor="middle" dominant-baseline="middle"
+                      fill="red" font-size="24" pointer-events="none">
+                  —
+                </text>
+              </ng-container>
             </ng-container>
           </ng-container>
-          </ng-container>
-          <!-- Plus Hint для добавления новой панели, отображается только в режиме редактирования -->
+
         </g>
       </ng-container>
 
 
-
     </g>
     <!-- Если есть хотя бы одна панель, отрисовываем подсказки для всех 4 направлений -->
-    <g *ngIf="(panels.length > 0) && (settings?.mode === Mode.EditorMode)">
+    <g *ngIf="(panels.length > 0) && (editorService.setting?.mode === Mode.EditorMode)">
       <g *ngFor="let direction of availableDirections">
         <ng-container *ngIf="getHintArea(direction) as hint">
           <!-- Область для подсказки -->

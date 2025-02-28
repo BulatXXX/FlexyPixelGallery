@@ -9,21 +9,28 @@
   <mat-icon
     matTooltip="Spectator mode"
     class="menu-button"
-    (click)="turnSpectatorMode()"
+    (click)="switchMode(Mode.SpectatorMode)"
     [ngClass]="{'active-icon': (editorStateService.setting$ | async)?.mode === Mode.SpectatorMode}">
     remove_red_eye
   </mat-icon>
   <mat-icon
     matTooltip="Editor mode"
     class="menu-button"
-    (click)="turnEditorMode()"
+    (click)="switchMode(Mode.EditorMode)"
     [ngClass]="{'active-icon': (editorStateService.setting$ | async)?.mode === Mode.EditorMode}">
-    edit
+    add_circle
+  </mat-icon>
+  <mat-icon
+    matTooltip="Drawing mode"
+    class="menu-button"
+    (click)="switchMode(Mode.DrawingMode)"
+    [ngClass]="{'active-icon': (editorStateService.setting$ | async)?.mode === Mode.DrawingMode}">
+    brush
   </mat-icon>
   <mat-icon
     matTooltip="Delete mode"
     class="menu-button"
-    (click)="turnDeleteMode()"
+    (click)="switchMode(Mode.DeleteMode)"
     [ngClass]="{'active-icon': (editorStateService.setting$ | async)?.mode === Mode.DeleteMode}">
     delete
   </mat-icon>

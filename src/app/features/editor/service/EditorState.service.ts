@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
 import {BehaviorSubject, Subject} from 'rxjs';
-import {Panel} from '../models/Panel';
+import {Direction, Panel} from '../models/Panel';
 import {Mode} from '../models/Mode';
 import {EditorStateSetting} from '../models/EditorStateSettings';
 
@@ -24,8 +24,10 @@ export class EditorStateService {
     showPanelBorders: true,
     borderColor: 'red',
     showPanelDirections: true,
+    drawingColor: 'yellow'
   });
   setting$ = this.settingSubject.asObservable();
+
   get setting(): EditorStateSetting {
     return this.settingSubject.getValue();
   }
@@ -107,8 +109,9 @@ export class EditorStateService {
     panelSize: number
   ): Panel {
     const newId = `${this.configId}_${this.panels.length + 1}`;
-    // По умолчанию новый панель наследует направление предыдущей
-    const newDirection = this.panels.length > 0 ? this.panels[this.panels.length - 1].direction : 'B';
+
+    // По умолчанию новая панель наследует направление предыдущей
+    const newDirection = this.panels.length > 0 ? this.panels[this.panels.length - 1].direction : Direction.Bottom;
     return {
       id: newId,
       x: gridX,
@@ -119,7 +122,7 @@ export class EditorStateService {
   }
 
   addPanelInDirection(
-    direction: 'L' | 'R' | 'T' | 'B',
+    direction: Direction,
     virtualGridWidth: number,
     virtualGridHeight: number,
     panelSize: number
@@ -132,10 +135,10 @@ export class EditorStateService {
     let newX = lastPanel.x;
     let newY = lastPanel.y;
     switch (direction) {
-      case 'R': newX = lastPanel.x + panelSize; break;
-      case 'L': newX = lastPanel.x - panelSize; break;
-      case 'T': newY = lastPanel.y - panelSize; break;
-      case 'B': newY = lastPanel.y + panelSize; break;
+      case Direction.Right: newX = lastPanel.x + panelSize; break;
+      case Direction.Left: newX = lastPanel.x - panelSize; break;
+      case Direction.Top: newY = lastPanel.y - panelSize; break;
+      case Direction.Bottom: newY = lastPanel.y + panelSize; break;
     }
     // Ограничиваем, чтобы новая панель не выходила за виртуальную сетку
     if (newX < 0) newX = 0;
@@ -183,5 +186,15 @@ export class EditorStateService {
   triggerAction(action: string) {
     this.actionSubject.next(action);
   }
+
+  updatePanel(panel: Panel): void {
+    const panels = [...this.panels];
+    const index = panels.findIndex(p => p.id === panel.id);
+    if (index !== -1) {
+      panels[index] = panel;
+      this.panelsSubject.next(panels); // Обновление панели
+    }
+  }
+
 
 }

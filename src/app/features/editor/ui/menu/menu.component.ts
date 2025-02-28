@@ -1,6 +1,6 @@
 import {Component, Input} from '@angular/core';
 import {MatIcon} from '@angular/material/icon';
-import {EditorStateService} from '../../service/editor-state.service';
+import {EditorStateService} from '../../service/EditorState.service';
 import {AsyncPipe, NgClass, NgStyle} from '@angular/common';
 import {CommandManager} from '../../service/CommandManager';
 import {Mode} from '../../models/Mode';
@@ -37,16 +37,8 @@ export class MenuComponent {
     this.editorStateService.triggerAction(EditorActions.CenterGrid);
   }
 
-  turnSpectatorMode() {
-    this.editorStateService.setMode(Mode.SpectatorMode)
-  }
-
-  turnEditorMode() {
-    this.editorStateService.setMode(Mode.EditorMode)
-  }
-
-  turnDeleteMode() {
-    this.editorStateService.setMode(Mode.DeleteMode)
+  switchMode(mode:Mode){
+    this.editorStateService.setMode(mode)
   }
 
   toggleBorders() {
@@ -58,4 +50,6 @@ export class MenuComponent {
   }
 
   protected readonly Mode = Mode;
+
+
 }

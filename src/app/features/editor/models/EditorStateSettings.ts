@@ -5,4 +5,6 @@ export interface EditorStateSetting {
   showPanelBorders: boolean;
   borderColor: string;
   showPanelDirections: boolean;
+  //inspector settings
+  drawingColor: string;
 }

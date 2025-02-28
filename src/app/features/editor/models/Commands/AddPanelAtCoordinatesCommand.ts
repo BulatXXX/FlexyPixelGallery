@@ -1,6 +1,6 @@
 import {Command} from '../../service/CommandManager';
 import {Panel} from '../Panel';
-import {EditorStateService} from '../../service/editor-state.service';
+import {EditorStateService} from '../../service/EditorState.service';
 
 export class AddPanelAtCoordinatesCommand implements Command {
   private panel: Panel | null = null;

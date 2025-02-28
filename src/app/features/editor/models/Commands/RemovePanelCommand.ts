@@ -1,5 +1,5 @@
 import { Panel } from '../Panel';
-import { EditorStateService } from '../../service/editor-state.service';
+import { EditorStateService } from '../../service/EditorState.service';
 import { Command } from '../../service/CommandManager';
 
 export class RemovePanelCommand implements Command {

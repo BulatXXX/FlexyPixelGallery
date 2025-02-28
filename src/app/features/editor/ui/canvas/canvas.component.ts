@@ -1,16 +1,18 @@
 import {Component, HostListener, OnInit} from '@angular/core';
 import {NgForOf, NgIf} from '@angular/common';
-import {EditorStateService} from '../../service/editor-state.service';
+import {EditorStateService} from '../../service/EditorState.service';
 import {Subscription} from 'rxjs';
-import {Panel} from '../../models/Panel';
+import {Direction, Panel} from '../../models/Panel';
 import {MenuComponent} from '../menu/menu.component';
 import {CommandManager} from '../../service/CommandManager';
 import {AddPanelAtCoordinatesCommand} from '../../models/Commands/AddPanelAtCoordinatesCommand';
 import {AddPanelInDirectionCommand} from '../../models/Commands/AddPanelInDirectionCommand';
-import {EditorStateSetting} from '../../models/EditorStateSettings';
 import {EditorActions} from '../../models/EditorActions';
 import {Mode} from '../../models/Mode';
 import {RemovePanelCommand} from '../../models/Commands/RemovePanelCommand';
+import {DrawingService} from '../../service/DrawingService';
+
+
 
 const PANEL_SIZE = 8;
 
@@ -25,7 +27,6 @@ export class CanvasComponent implements OnInit {
 
   panels: Panel[] = [];
 
-  settings: EditorStateSetting | undefined;
   scale: number = 1;
 
   cellSize: number = 20;
@@ -56,14 +57,14 @@ export class CanvasComponent implements OnInit {
 
   private actionSubscription!: Subscription;
   private panelsSubscription!: Subscription;
-  private settingSubscription!: Subscription;
 
-  hintVisibleMap: { [key in 'L' | 'R' | 'T' | 'B']?: boolean } = {};
-  availableDirections: Array<'L' | 'R' | 'T' | 'B'> = ['L', 'R', 'T', 'B'];
+
 
   ngOnInit() {
     this.calculateGridDimensions();
     this.centerGrid();
+
+    this.drawingService.initDrawingListeners()
 
     this.subscribeEditorState();
   }
@@ -71,9 +72,6 @@ export class CanvasComponent implements OnInit {
   private subscribeEditorState() {
     this.panelsSubscription = this.editorService.panels$.subscribe(panels => {
       this.panels = panels;
-    });
-    this.settingSubscription= this.editorService.setting$.subscribe(setting => {
-      this.settings = setting;
     });
     this.actionSubscription = this.editorService.action$.subscribe(action => {
       switch (action) {
@@ -92,7 +90,7 @@ export class CanvasComponent implements OnInit {
     this.constrainVisibleCanvas()
   }
 
-  constructor(private editorService: EditorStateService, private commandManager: CommandManager) {
+  constructor(protected editorService: EditorStateService, private commandManager: CommandManager, protected drawingService: DrawingService,) {
   }
 
 // Обработчик события wheel для панорамирования
@@ -100,14 +98,12 @@ export class CanvasComponent implements OnInit {
     event.preventDefault();
     const svgElement = event.currentTarget as SVGSVGElement;
     const rect = svgElement.getBoundingClientRect();
-
     if (event.ctrlKey) {
       // Масштабирование
       this.applyZoom(event, rect);
     } else {
       //Перемещение
       this.applyOffset(event);
-
     }
   }
 
@@ -156,30 +152,6 @@ export class CanvasComponent implements OnInit {
     this.canvasHeight = this.gridHeight * this.cellSize;
   }
 
-  onCanvasClick(event: MouseEvent) {
-    const svgElement = event.currentTarget as SVGSVGElement;
-    const rect = svgElement.getBoundingClientRect();
-    const cursorX = event.clientX - rect.left;
-    const cursorY = event.clientY - rect.top;
-    const adjustedX = (cursorX - this.panOffsetX) / this.scale;
-    const adjustedY = (cursorY - this.panOffsetY) / this.scale;
-    const gridX = Math.floor(adjustedX / this.cellSize);
-    const gridY = Math.floor(adjustedY / this.cellSize);
-
-    if (this.panels.length < 1 && Mode.EditorMode) {
-      // Если панелей нет – добавляем по клику (как раньше)
-      this.commandManager.execute(
-        new AddPanelAtCoordinatesCommand(
-          this.editorService,
-          gridX,
-          gridY,
-          PANEL_SIZE,
-          this.virtualGridWidth,
-          this.virtualGridHeight,
-        )
-      );
-    }
-  }
 
   private centerGrid(): void {
     // Размер виртуальной сетки в пикселях с учётом текущего масштаба
@@ -203,7 +175,6 @@ export class CanvasComponent implements OnInit {
     this.tooltipVisible = false;
   }
 
-  // Обновляем позицию tooltip относительно SVG
   updateTooltipPosition(event: MouseEvent) {
     const target = event.currentTarget as Element;
     if (target && typeof target.closest === 'function') {
@@ -218,22 +189,51 @@ export class CanvasComponent implements OnInit {
     }
   }
 
-  toggleHintForDirection(direction: 'L' | 'R' | 'T' | 'B'): void {
+
+  hintVisibleMap: { [key in Direction]?: boolean } = {};
+  availableDirections: Array<Direction> = [Direction.Left, Direction.Right, Direction.Top, Direction.Bottom];
+
+  toggleHintForDirection(direction: Direction): void {
     this.hintVisibleMap[direction] = !this.hintVisibleMap[direction];
   }
 
-// Метод, который вычисляет область для подсказки для заданного направления.
+  onAddPanelOnCanvas(event: MouseEvent) {
+    const svgElement = event.currentTarget as SVGSVGElement;
+    const rect = svgElement.getBoundingClientRect();
+    const cursorX = event.clientX - rect.left;
+    const cursorY = event.clientY - rect.top;
+    const adjustedX = (cursorX - this.panOffsetX) / this.scale;
+    const adjustedY = (cursorY - this.panOffsetY) / this.scale;
+    const gridX = Math.floor(adjustedX / this.cellSize);
+    const gridY = Math.floor(adjustedY / this.cellSize);
+
+    if (this.panels.length === 0 && Mode.EditorMode) {
+      // Если панелей нет – добавляем по клику (как раньше)
+      this.commandManager.execute(
+        new AddPanelAtCoordinatesCommand(
+          this.editorService,
+          gridX,
+          gridY,
+          PANEL_SIZE,
+          this.virtualGridWidth,
+          this.virtualGridHeight,
+        )
+      );
+    }
+  }
+
+//   Метод, который вычисляет область для подсказки для заданного направления.
 // Если валидация проходит, возвращает объект с координатами, иначе – null.
-  getHintArea(direction: 'L' | 'R' | 'T' | 'B'): { gridX: number; gridY: number } | null {
+  getHintArea(direction: Direction): { gridX: number; gridY: number } | null {
     if (this.panels.length === 0) return null;
     const lastPanel = this.panels[this.panels.length - 1];
     let gridX = lastPanel.x;
     let gridY = lastPanel.y;
     switch (direction) {
-      case 'L': gridX = lastPanel.x - PANEL_SIZE; break;
-      case 'R': gridX = lastPanel.x + PANEL_SIZE; break;
-      case 'T': gridY = lastPanel.y - PANEL_SIZE; break;
-      case 'B': gridY = lastPanel.y + PANEL_SIZE; break;
+      case Direction.Left: gridX = lastPanel.x - PANEL_SIZE; break;
+      case Direction.Right: gridX = lastPanel.x + PANEL_SIZE; break;
+      case Direction.Top: gridY = lastPanel.y - PANEL_SIZE; break;
+      case Direction.Bottom: gridY = lastPanel.y + PANEL_SIZE; break;
     }
     // Ограничиваем координаты так, чтобы область не выходила за границы виртуальной сетки
     if (gridX < 0) gridX = 0;
@@ -252,7 +252,7 @@ export class CanvasComponent implements OnInit {
   }
 
 // Обработчик клика для подсказки – принимает направление
-  onAddPanelHintClick(event: MouseEvent, direction: 'L' | 'R' | 'T' | 'B'): void {
+  onAddPanelHintClick(event: MouseEvent, direction: Direction): void {
     event.stopPropagation();
     // Вызов метода сервиса, который добавляет панель в выбранном направлении
     this.commandManager.execute(
@@ -265,9 +265,6 @@ export class CanvasComponent implements OnInit {
       )
     )
   }
-
-  protected readonly Mode = Mode;
-  protected readonly PANEL_SIZE = PANEL_SIZE;
 
   toggleDeleteHint() {
     this.deleteHintVisible = !this.deleteHintVisible;
@@ -283,4 +280,9 @@ export class CanvasComponent implements OnInit {
       lastPanel
     ));
   }
+
+  protected readonly Mode = Mode;
+  protected readonly PANEL_SIZE = PANEL_SIZE;
+  protected readonly Direction = Direction;
+
 }
