@@ -4,6 +4,7 @@ import {PaintPixelsCommand} from '../models/Commands/PaintPixelsCommand';
 import {CommandManager} from './CommandManager';
 import {EditorStateService} from './EditorState.service';
 import {Mode} from '../models/Mode';
+import {AnimationService} from './AnimationService';
 
 @Injectable({
   providedIn: 'root'
@@ -12,7 +13,7 @@ export class DrawingService {
   isDrawing: boolean = false;  // Флаг, показывающий, рисуем ли мы
   pixelsToPaint: { x: number, y: number, panel: Panel , prevColor:string}[] = [];  // Массив пикселей, которые должны быть закрашены
 
-  constructor(private editorService: EditorStateService, private commandManager: CommandManager) {
+  constructor(private editorService: EditorStateService, private commandManager: CommandManager,private animationService: AnimationService) {
   }
 
   /**
@@ -47,6 +48,7 @@ export class DrawingService {
       //not sure if i must do this but it works
       document.removeEventListener('mouseup', this.handleStopDrawing.bind(this));
     }
+    this.animationService.updateFrame()
   }
 
   private paintPixel(panel: Panel, x: number, y: number): void {

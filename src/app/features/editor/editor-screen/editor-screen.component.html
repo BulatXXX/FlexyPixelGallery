@@ -1,7 +1,10 @@
 <div class="editor-container">
-  <div class="canvas-area">
-  <app-canvas class="canvas"></app-canvas>
-  </div>
-  <app-inspector class="inspector"></app-inspector>
 
+  <div class="canvas-area">
+    <app-menu [width]="dimensions.menuDimensions.width" [height]="dimensions.menuDimensions.height"></app-menu>
+    <app-canvas class="canvas" [canvasHeight]="dimensions.canvasDimensions.height"
+                [canvasWidth]="dimensions.canvasDimensions.width"></app-canvas>
+  </div>
+  <app-inspector [width]="dimensions.inspectorDimensions.width"
+                 [height]="dimensions.inspectorDimensions.height"></app-inspector>
 </div>

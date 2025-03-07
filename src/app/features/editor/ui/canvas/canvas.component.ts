@@ -1,9 +1,8 @@
-import {Component, HostListener, OnInit} from '@angular/core';
+import {Component, HostListener, Input, OnInit} from '@angular/core';
 import {NgForOf, NgIf} from '@angular/common';
 import {EditorStateService} from '../../service/EditorState.service';
 import {Subscription} from 'rxjs';
 import {Direction, Panel} from '../../models/Panel';
-import {MenuComponent} from '../menu/menu.component';
 import {CommandManager} from '../../service/CommandManager';
 import {AddPanelAtCoordinatesCommand} from '../../models/Commands/AddPanelAtCoordinatesCommand';
 import {AddPanelInDirectionCommand} from '../../models/Commands/AddPanelInDirectionCommand';
@@ -13,13 +12,12 @@ import {RemovePanelCommand} from '../../models/Commands/RemovePanelCommand';
 import {DrawingService} from '../../service/DrawingService';
 
 
-
 const PANEL_SIZE = 8;
 
 @Component({
   selector: 'app-canvas',
   standalone: true,
-  imports: [NgForOf, NgIf, MenuComponent],
+  imports: [NgForOf, NgIf],
   templateUrl: './canvas.component.html',
   styleUrls: ['./canvas.component.css']
 })
@@ -35,15 +33,12 @@ export class CanvasComponent implements OnInit {
   virtualGridWidth: number = 200;
   virtualGridHeight: number = 200;
   //Видимая сетка (значения формируются в методе calculateDimensions)
-  gridWidth: number = 0;
-  gridHeight: number = 0;
   //Смещение сетки
   panOffsetX: number = 0;
   panOffsetY: number = 0;
 
-  // Вычисляем реальные размеры канваса
-  canvasWidth: number = this.gridWidth * this.cellSize;
-  canvasHeight: number = this.gridHeight * this.cellSize;
+  @Input() canvasWidth: number = 0;
+  @Input() canvasHeight: number = 0;
 
   // Свойства tooltip
   tooltipText: string = '';
@@ -59,9 +54,8 @@ export class CanvasComponent implements OnInit {
   private panelsSubscription!: Subscription;
 
 
-
   ngOnInit() {
-    this.calculateGridDimensions();
+    // this.calculateGridDimensions();
     this.centerGrid();
 
     this.drawingService.initDrawingListeners()
@@ -86,23 +80,23 @@ export class CanvasComponent implements OnInit {
 // При изменении размера окна пересчитываем размеры сетки
   @HostListener('window:resize', ['$event'])
   onResize() {
-    this.calculateGridDimensions();
+    // this.calculateGridDimensions();
     this.constrainVisibleCanvas()
   }
 
-  constructor(protected editorService: EditorStateService, private commandManager: CommandManager, protected drawingService: DrawingService,) {
+  constructor(protected editorService: EditorStateService,
+              private commandManager: CommandManager,
+              protected drawingService: DrawingService
+  ) {
   }
 
-// Обработчик события wheel для панорамирования
   onWheel(event: WheelEvent) {
     event.preventDefault();
     const svgElement = event.currentTarget as SVGSVGElement;
     const rect = svgElement.getBoundingClientRect();
     if (event.ctrlKey) {
-      // Масштабирование
       this.applyZoom(event, rect);
     } else {
-      //Перемещение
       this.applyOffset(event);
     }
   }
@@ -132,24 +126,13 @@ export class CanvasComponent implements OnInit {
   }
 
 //Ограничивает смещение (panOffsetX/Y) так, чтобы видимая область не вышла за виртуальную сетку
-  private constrainVisibleCanvas(newPanOffsetX:number = this.panOffsetX,newPanOffsetY:number = this.panOffsetY) {
+  private constrainVisibleCanvas(newPanOffsetX: number = this.panOffsetX, newPanOffsetY: number = this.panOffsetY) {
     const virtualWidthPx = this.virtualGridWidth * this.cellSize * this.scale;
     const virtualHeightPx = this.virtualGridHeight * this.cellSize * this.scale;
     const minPanOffsetX = this.canvasWidth - virtualWidthPx;
     const minPanOffsetY = this.canvasHeight - virtualHeightPx;
     this.panOffsetX = Math.min(0, Math.max(newPanOffsetX, minPanOffsetX));
     this.panOffsetY = Math.min(0, Math.max(newPanOffsetY, minPanOffsetY));
-  }
-
-  private calculateGridDimensions() {
-    const availableWidth = window.innerWidth * 0.7;
-    const availableHeight = window.innerHeight * 0.8;
-
-    this.gridWidth = Math.floor(availableWidth / this.cellSize);
-    this.gridHeight = Math.floor(availableHeight / this.cellSize);
-
-    this.canvasWidth = this.gridWidth * this.cellSize;
-    this.canvasHeight = this.gridHeight * this.cellSize;
   }
 
   private centerGrid(): void {
@@ -189,10 +172,47 @@ export class CanvasComponent implements OnInit {
   }
 
   hintVisibleMap: { [key in Direction]?: boolean } = {};
-  availableDirections: Array<Direction> = [Direction.Left, Direction.Right, Direction.Top, Direction.Bottom];
+  availableDirections = [Direction.Top, Direction.Right, Direction.Bottom, Direction.Left];
 
   toggleHintForDirection(direction: Direction): void {
     this.hintVisibleMap[direction] = !this.hintVisibleMap[direction];
+  }
+
+//   Метод, который вычисляет область для подсказки для заданного направления.
+// Если валидация проходит, возвращает объект с координатами, иначе – null.
+  getHintArea(direction: Direction): { gridX: number; gridY: number } | null {
+    if (this.panels.length === 0) return null;
+    const lastPanel = this.panels[this.panels.length - 1];
+    let gridX = lastPanel.x;
+    let gridY = lastPanel.y;
+    switch (direction) {
+      case Direction.Left:
+        gridX = lastPanel.x - PANEL_SIZE;
+        break;
+      case Direction.Right:
+        gridX = lastPanel.x + PANEL_SIZE;
+        break;
+      case Direction.Top:
+        gridY = lastPanel.y - PANEL_SIZE;
+        break;
+      case Direction.Bottom:
+        gridY = lastPanel.y + PANEL_SIZE;
+        break;
+    }
+    // Ограничиваем координаты так, чтобы область не выходила за границы виртуальной сетки
+    if (gridX < 0) gridX = 0;
+    if (gridY < 0) gridY = 0;
+    if (gridX > this.virtualGridWidth - PANEL_SIZE) gridX = this.virtualGridWidth - PANEL_SIZE;
+    if (gridY > this.virtualGridHeight - PANEL_SIZE) gridY = this.virtualGridHeight - PANEL_SIZE;
+    // Проверка через сервис
+    const validation = this.editorService.validatePanelPlacement(
+      gridX,
+      gridY,
+      PANEL_SIZE,
+      this.virtualGridWidth,
+      this.virtualGridHeight
+    );
+    return validation.valid ? {gridX: validation.gridX, gridY: validation.gridY} : null;
   }
 
   onAddPanelOnCanvas(event: MouseEvent) {
@@ -218,35 +238,6 @@ export class CanvasComponent implements OnInit {
         )
       );
     }
-  }
-
-//   Метод, который вычисляет область для подсказки для заданного направления.
-// Если валидация проходит, возвращает объект с координатами, иначе – null.
-  getHintArea(direction: Direction): { gridX: number; gridY: number } | null {
-    if (this.panels.length === 0) return null;
-    const lastPanel = this.panels[this.panels.length - 1];
-    let gridX = lastPanel.x;
-    let gridY = lastPanel.y;
-    switch (direction) {
-      case Direction.Left: gridX = lastPanel.x - PANEL_SIZE; break;
-      case Direction.Right: gridX = lastPanel.x + PANEL_SIZE; break;
-      case Direction.Top: gridY = lastPanel.y - PANEL_SIZE; break;
-      case Direction.Bottom: gridY = lastPanel.y + PANEL_SIZE; break;
-    }
-    // Ограничиваем координаты так, чтобы область не выходила за границы виртуальной сетки
-    if (gridX < 0) gridX = 0;
-    if (gridY < 0) gridY = 0;
-    if (gridX > this.virtualGridWidth - PANEL_SIZE) gridX = this.virtualGridWidth - PANEL_SIZE;
-    if (gridY > this.virtualGridHeight - PANEL_SIZE) gridY = this.virtualGridHeight - PANEL_SIZE;
-    // Проверка через сервис
-    const validation = this.editorService.validatePanelPlacement(
-      gridX,
-      gridY,
-      PANEL_SIZE,
-      this.virtualGridWidth,
-      this.virtualGridHeight
-    );
-    return validation.valid ? { gridX: validation.gridX, gridY: validation.gridY } : null;
   }
 
 // Обработчик клика для подсказки – принимает направление
@@ -283,4 +274,5 @@ export class CanvasComponent implements OnInit {
   protected readonly PANEL_SIZE = PANEL_SIZE;
   protected readonly Direction = Direction;
 
+  protected readonly Object = Object;
 }

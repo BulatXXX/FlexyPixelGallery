@@ -22,6 +22,7 @@ import {MatTooltip} from '@angular/material/tooltip';
 })
 export class MenuComponent {
   @Input() width: number = 0;
+  @Input() height: number = 0;
 
   constructor(protected editorStateService: EditorStateService, private commandManager: CommandManager) {
   }

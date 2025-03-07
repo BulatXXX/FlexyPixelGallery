@@ -1,3 +1,13 @@
-<div class="inspector-container">
-  <p>Inspector works</p>
+<div class="inspector-container" [ngStyle]="{'height.px': height+2,'width.px':width}">
+  <input #inputElement [(colorPicker)]="editorStateService.setting.drawingColor"
+         [style.background]="editorStateService.setting.drawingColor"
+         cpDialogDisplay="inline" class="hidden-input"
+  />
+ <div class="framesCounter">
+   <mat-icon class="counterButton" (click)="prevFrame()">arrow_back_ios</mat-icon>
+   <p class="frame">{{counter}}</p>
+   <mat-icon class="counterButton" (click)="nextFrame()">arrow_forward_ios</mat-icon>
+ </div>
+  <mat-icon class="counterButton" (click)="playAnimation()">play_arrow</mat-icon>
+
 </div>

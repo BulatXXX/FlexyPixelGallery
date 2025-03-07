@@ -195,6 +195,10 @@ export class EditorStateService {
       this.panelsSubject.next(panels); // Обновление панели
     }
   }
+  updatePanels(panels: Panel[]): void {
+    this.panelsSubject.next(panels);
+  }
+
 
 
 }
