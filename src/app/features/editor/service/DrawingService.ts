@@ -2,7 +2,7 @@ import {Injectable} from '@angular/core';
 import {Panel} from '../models/Panel';
 import {PaintPixelsCommand} from '../models/Commands/PaintPixelsCommand';
 import {CommandManager} from './CommandManager';
-import {EditorStateService} from './EditorState.service';
+import {PanelStateService} from './PanelStateService';
 import {Mode} from '../models/Mode';
 import {AnimationService} from './AnimationService';
 
@@ -13,7 +13,7 @@ export class DrawingService {
   isDrawing: boolean = false;  // Флаг, показывающий, рисуем ли мы
   pixelsToPaint: { x: number, y: number, panel: Panel , prevColor:string}[] = [];  // Массив пикселей, которые должны быть закрашены
 
-  constructor(private editorService: EditorStateService, private commandManager: CommandManager,private animationService: AnimationService) {
+  constructor(private editorService: PanelStateService, private commandManager: CommandManager, private animationService: AnimationService) {
   }
 
   /**

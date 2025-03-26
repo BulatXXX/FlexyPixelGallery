@@ -1,5 +1,5 @@
 import { Panel } from '../Panel';
-import { EditorStateService } from '../../service/EditorState.service';
+import { PanelStateService } from '../../service/PanelStateService';
 import { Command } from '../../service/CommandManager';
 
 export class RemovePanelCommand implements Command {
@@ -7,7 +7,7 @@ export class RemovePanelCommand implements Command {
   private removedPanelIndex: number = -1;
 
   constructor(
-    private editorService: EditorStateService,
+    private editorService: PanelStateService,
     private panel: Panel
   ) {}
 

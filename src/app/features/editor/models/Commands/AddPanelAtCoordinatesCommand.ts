@@ -1,12 +1,12 @@
 import {Command} from '../../service/CommandManager';
 import {Panel} from '../Panel';
-import {EditorStateService} from '../../service/EditorState.service';
+import {PanelStateService} from '../../service/PanelStateService';
 
 export class AddPanelAtCoordinatesCommand implements Command {
   private panel: Panel | null = null;
 
   constructor(
-    private editorService: EditorStateService,
+    private editorService: PanelStateService,
     private gridX: number,
     private gridY: number,
     private panelSize: number,

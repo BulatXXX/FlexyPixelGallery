@@ -7,7 +7,7 @@ import {EditorStateSetting} from '../models/EditorStateSettings';
 @Injectable({
   providedIn: 'root'
 })
-export class EditorStateService {
+export class PanelStateService {
 
   configId: string = 'config_1';
 

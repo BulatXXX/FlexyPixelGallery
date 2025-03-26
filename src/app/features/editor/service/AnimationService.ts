@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import {Frame} from '../models/Frame';
-import {EditorStateService} from './EditorState.service';
+import {PanelStateService} from './PanelStateService';
 
 
 @Injectable({
@@ -12,7 +12,7 @@ export class AnimationService {
 
   private counter = 0;
 
-  constructor(private editorStateService: EditorStateService) {
+  constructor(private editorStateService: PanelStateService) {
 
   }
 

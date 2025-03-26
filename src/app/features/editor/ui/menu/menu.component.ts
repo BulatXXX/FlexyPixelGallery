@@ -1,6 +1,6 @@
 import {Component, Input} from '@angular/core';
 import {MatIcon} from '@angular/material/icon';
-import {EditorStateService} from '../../service/EditorState.service';
+import {PanelStateService} from '../../service/PanelStateService';
 import {AsyncPipe, NgClass, NgStyle} from '@angular/common';
 import {CommandManager} from '../../service/CommandManager';
 import {Mode} from '../../models/Mode';
@@ -24,7 +24,7 @@ export class MenuComponent {
   @Input() width: number = 0;
   @Input() height: number = 0;
 
-  constructor(protected editorStateService: EditorStateService, private commandManager: CommandManager) {
+  constructor(protected editorStateService: PanelStateService, private commandManager: CommandManager) {
   }
 
   undo(){

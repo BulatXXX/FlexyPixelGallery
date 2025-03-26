@@ -1,12 +1,12 @@
 import {Command} from '../../service/CommandManager';
 import {Direction, Panel} from '../Panel';
-import {EditorStateService} from '../../service/EditorState.service';
+import {PanelStateService} from '../../service/PanelStateService';
 
 export class AddPanelInDirectionCommand implements Command {
   private panel: Panel | null = null;
 
   constructor(
-    private editorService: EditorStateService,
+    private editorService: PanelStateService,
     private direction: Direction,
     private virtualGridWidth: number,
     private virtualGridHeight: number,

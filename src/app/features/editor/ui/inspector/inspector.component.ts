@@ -1,6 +1,6 @@
 import { Component, Input} from '@angular/core';
 import {ColorPickerModule} from 'ngx-color-picker';
-import {EditorStateService} from '../../service/EditorState.service';
+import {PanelStateService} from '../../service/PanelStateService';
 import {NgStyle} from '@angular/common';
 import {MatIcon} from '@angular/material/icon';
 import {AnimationService} from '../../service/AnimationService';
@@ -22,7 +22,7 @@ export class InspectorComponent {
   @Input() width: number = 0;
   counter = 0;
 
-  constructor(protected editorStateService: EditorStateService,protected animationService: AnimationService,) {
+  constructor(protected editorStateService: PanelStateService, protected animationService: AnimationService,) {
 
   }
 

@@ -1,12 +1,12 @@
 import { Panel } from '../Panel';
 import { Command } from '../../service/CommandManager';
-import { EditorStateService } from '../../service/EditorState.service';
+import { PanelStateService } from '../../service/PanelStateService';
 
 export class PaintPixelsCommand implements Command {
     private prevColors: { x: number, y: number, panel: Panel, prevColor: string }[] = [];
 
     constructor(
-        private editorService: EditorStateService,
+        private editorService: PanelStateService,
         private pixelsToPaint: { x: number, y: number, panel: Panel, prevColor: string }[],
         private newColor: string
     ) {}

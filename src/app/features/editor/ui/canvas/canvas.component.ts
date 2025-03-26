@@ -1,6 +1,6 @@
 import {Component, HostListener, Input, OnInit} from '@angular/core';
 import {NgForOf, NgIf} from '@angular/common';
-import {EditorStateService} from '../../service/EditorState.service';
+import {PanelStateService} from '../../service/PanelStateService';
 import {Subscription} from 'rxjs';
 import {Direction, Panel} from '../../models/Panel';
 import {CommandManager} from '../../service/CommandManager';
@@ -85,7 +85,7 @@ export class CanvasComponent implements OnInit {
     this.constrainVisibleCanvas()
   }
 
-  constructor(protected editorService: EditorStateService,
+  constructor(protected editorService: PanelStateService,
               private commandManager: CommandManager,
               protected drawingService: DrawingService
   ) {
