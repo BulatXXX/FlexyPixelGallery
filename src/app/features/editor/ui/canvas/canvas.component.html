@@ -127,9 +127,9 @@
                   [attr.width]="8 * cellSize"
                   [attr.height]="8 * cellSize"
                   fill="transparent"
-                  (mouseenter)="toggleHintForDirection(direction)"
-                  (mouseleave)="toggleHintForDirection(direction)"
-                  (click)="onAddPanelHintClick($event, direction)">
+                  (mouseenter)="toggleHintForDirection(direction,true)"
+                  (mouseleave)="toggleHintForDirection(direction,false)"
+                  (click)="onAddPanelByHintClick($event, direction)">
             </rect>
             <!-- Видимая подсказка (plus icon) появляется, если для этого направления включено -->
             <ng-container *ngIf="hintVisibleMap[direction]">

@@ -32,7 +32,7 @@ export class CanvasComponent implements OnInit {
   //Виртуальная сетка
   virtualGridWidth: number = 200;
   virtualGridHeight: number = 200;
-  //Видимая сетка (значения формируются в методе calculateDimensions)
+
   //Смещение сетки
   panOffsetX: number = 0;
   panOffsetY: number = 0;
@@ -49,13 +49,15 @@ export class CanvasComponent implements OnInit {
   // Свойства deleteHint
   deleteHintVisible: boolean = false;
 
-
   private actionSubscription!: Subscription;
   private panelsSubscription!: Subscription;
 
+  hintVisibleMap: { [key in Direction]?: boolean } = {};
+  availableDirections = [Direction.Top, Direction.Right, Direction.Bottom, Direction.Left];
+
 
   ngOnInit() {
-    // this.calculateGridDimensions();
+
     this.centerGrid();
 
     this.drawingService.initDrawingListeners()
@@ -77,10 +79,9 @@ export class CanvasComponent implements OnInit {
     });
   }
 
-// При изменении размера окна пересчитываем размеры сетки
+
   @HostListener('window:resize', ['$event'])
   onResize() {
-    // this.calculateGridDimensions();
     this.constrainVisibleCanvas()
   }
 
@@ -111,7 +112,7 @@ export class CanvasComponent implements OnInit {
     const zoomFactor = 1.05;
     let newScale = event.deltaY < 0 ? this.scale * zoomFactor : this.scale / zoomFactor;
 
-    newScale = Math.max(0.5, Math.min(newScale, 3));
+    newScale = Math.max(0.3, Math.min(newScale, 3));
 
     // Позиция указателя относительно SVG
     const pointerX = event.clientX - rect.left;
@@ -125,7 +126,6 @@ export class CanvasComponent implements OnInit {
     this.constrainVisibleCanvas();
   }
 
-//Ограничивает смещение (panOffsetX/Y) так, чтобы видимая область не вышла за виртуальную сетку
   private constrainVisibleCanvas(newPanOffsetX: number = this.panOffsetX, newPanOffsetY: number = this.panOffsetY) {
     const virtualWidthPx = this.virtualGridWidth * this.cellSize * this.scale;
     const virtualHeightPx = this.virtualGridHeight * this.cellSize * this.scale;
@@ -136,13 +136,13 @@ export class CanvasComponent implements OnInit {
   }
 
   private centerGrid(): void {
-    // Размер виртуальной сетки в пикселях с учётом текущего масштаба
+
     const virtualWidthPx = this.virtualGridWidth * this.cellSize * this.scale;
     const virtualHeightPx = this.virtualGridHeight * this.cellSize * this.scale;
-    // Центр виртуальной сетки
+
     const centerX = (virtualWidthPx - this.canvasWidth) / 2;
     const centerY = (virtualHeightPx - this.canvasHeight) / 2;
-    // panOffset отрицательный, чтобы перемещать содержимое влево/вверх
+
     this.panOffsetX = -centerX;
     this.panOffsetY = -centerY;
   }
@@ -171,11 +171,8 @@ export class CanvasComponent implements OnInit {
     }
   }
 
-  hintVisibleMap: { [key in Direction]?: boolean } = {};
-  availableDirections = [Direction.Top, Direction.Right, Direction.Bottom, Direction.Left];
-
-  toggleHintForDirection(direction: Direction): void {
-    this.hintVisibleMap[direction] = !this.hintVisibleMap[direction];
+  toggleHintForDirection(direction: Direction, hintVisible: boolean): void {
+    this.hintVisibleMap[direction] = hintVisible;
   }
 
 //   Метод, который вычисляет область для подсказки для заданного направления.
@@ -204,7 +201,6 @@ export class CanvasComponent implements OnInit {
     if (gridY < 0) gridY = 0;
     if (gridX > this.virtualGridWidth - PANEL_SIZE) gridX = this.virtualGridWidth - PANEL_SIZE;
     if (gridY > this.virtualGridHeight - PANEL_SIZE) gridY = this.virtualGridHeight - PANEL_SIZE;
-    // Проверка через сервис
     const validation = this.editorService.validatePanelPlacement(
       gridX,
       gridY,
@@ -240,10 +236,8 @@ export class CanvasComponent implements OnInit {
     }
   }
 
-// Обработчик клика для подсказки – принимает направление
-  onAddPanelHintClick(event: MouseEvent, direction: Direction): void {
+  onAddPanelByHintClick(event: MouseEvent, direction: Direction): void {
     event.stopPropagation();
-    // Вызов метода сервиса, который добавляет панель в выбранном направлении
     this.commandManager.execute(
       new AddPanelInDirectionCommand(
         this.editorService,
@@ -253,6 +247,7 @@ export class CanvasComponent implements OnInit {
         PANEL_SIZE
       )
     )
+    this.toggleHintForDirection(direction, false)
   }
 
   toggleDeleteHint() {
@@ -274,5 +269,4 @@ export class CanvasComponent implements OnInit {
   protected readonly PANEL_SIZE = PANEL_SIZE;
   protected readonly Direction = Direction;
 
-  protected readonly Object = Object;
 }
