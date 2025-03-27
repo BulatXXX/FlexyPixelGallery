@@ -10,6 +10,7 @@ import {EditorActions} from '../../models/EditorActions';
 import {Mode} from '../../models/Mode';
 import {RemovePanelCommand} from '../../models/Commands/RemovePanelCommand';
 import {DrawingService} from '../../service/DrawingService';
+import {SettingsService} from '../../service/SettingsService';
 
 
 const PANEL_SIZE = 8;
@@ -29,24 +30,20 @@ export class CanvasComponent implements OnInit {
 
   cellSize: number = 20;
 
-  //Виртуальная сетка
   virtualGridWidth: number = 200;
   virtualGridHeight: number = 200;
 
-  //Смещение сетки
   panOffsetX: number = 0;
   panOffsetY: number = 0;
 
   @Input() canvasWidth: number = 0;
   @Input() canvasHeight: number = 0;
 
-  // Свойства tooltip
   tooltipText: string = '';
   tooltipX: number = 0;
   tooltipY: number = 0;
   tooltipVisible: boolean = false;
 
-  // Свойства deleteHint
   deleteHintVisible: boolean = false;
 
   private actionSubscription!: Subscription;
@@ -75,6 +72,14 @@ export class CanvasComponent implements OnInit {
           this.centerGrid();
           break;
         }
+        // case EditorActions.ZoomIn:{
+        //   this.scale*=1.05;
+        //   break;
+        // }
+        // case EditorActions.ZoomOut:{
+        //   this.scale/=1.05;
+        //   break;
+        // }
       }
     });
   }
@@ -87,7 +92,8 @@ export class CanvasComponent implements OnInit {
 
   constructor(protected editorService: PanelStateService,
               private commandManager: CommandManager,
-              protected drawingService: DrawingService
+              protected drawingService: DrawingService,
+              protected settingsService: SettingsService,
   ) {
   }
 

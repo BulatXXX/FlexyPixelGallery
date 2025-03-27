@@ -32,11 +32,8 @@ html, body {
   height: 100%;
   margin: 0;
   padding: 0;
-  background: #85a374;
-
-  /*  text settings*/
-
-
+  background: -webkit-linear-gradient(90deg, #1e2d40, #daa520); /* Chrome 10-25, Safari 5.1-6 */
+  background: linear-gradient(90deg, #1e2d40, #daa520); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
 }
 
 a, h1, h2, h3, h4, h5, h6, p {

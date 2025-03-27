@@ -5,6 +5,7 @@ import {CommandManager} from './CommandManager';
 import {PanelStateService} from './PanelStateService';
 import {Mode} from '../models/Mode';
 import {AnimationService} from './AnimationService';
+import {SettingsService} from './SettingsService';
 
 @Injectable({
   providedIn: 'root'
@@ -13,7 +14,7 @@ export class DrawingService {
   isDrawing: boolean = false;  // Флаг, показывающий, рисуем ли мы
   pixelsToPaint: { x: number, y: number, panel: Panel , prevColor:string}[] = [];  // Массив пикселей, которые должны быть закрашены
 
-  constructor(private editorService: PanelStateService, private commandManager: CommandManager, private animationService: AnimationService) {
+  constructor(private editorService: PanelStateService, private commandManager: CommandManager, private animationService: AnimationService,private settingsService: SettingsService) {
   }
 
   /**
@@ -25,7 +26,7 @@ export class DrawingService {
   }
 
   handleStartDrawing(panel: Panel, x: number, y: number): void {
-    if (this.editorService.setting.mode === Mode.DrawingMode) {
+    if (this.settingsService.setting.mode === Mode.DrawingMode) {
       this.isDrawing = true;
       this.paintPixel(panel, x, y);
     }
@@ -54,7 +55,7 @@ export class DrawingService {
   private paintPixel(panel: Panel, x: number, y: number): void {
     const prevColor = panel.pixels[y][x];
     this.pixelsToPaint.push({ x, y, panel,prevColor });
-    panel.pixels[y][x] = this.editorService.setting.drawingColor; // Красим пиксель в новый цвет
+    panel.pixels[y][x] = this.settingsService.setting.drawingColor; // Красим пиксель в новый цвет
   }
 
   private isPixelAlreadyAdded(x: number, y: number, panel: Panel): boolean {
@@ -65,7 +66,7 @@ export class DrawingService {
     const paintCommand = new PaintPixelsCommand(
       this.editorService,
       this.pixelsToPaint,
-      this.editorService.setting.drawingColor
+      this.settingsService.setting.drawingColor
     );
     this.commandManager.execute(paintCommand);  // Выполнение команды
   }

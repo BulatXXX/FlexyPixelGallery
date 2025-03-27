@@ -1,10 +1,14 @@
+<link rel="stylesheet" href="editor-screen.component.css">
 <div class="editor-container">
-
-  <div class="canvas-area">
+  <div class="menu-inspector-canvas-container">
+  <app-tools class="tools-component" [width]="dimensions.toolsDimensions.width" [height]="dimensions.toolsDimensions.height"></app-tools>
+  <div class="canvas-area" >
     <app-menu [width]="dimensions.menuDimensions.width" [height]="dimensions.menuDimensions.height"></app-menu>
     <app-canvas class="canvas" [canvasHeight]="dimensions.canvasDimensions.height"
                 [canvasWidth]="dimensions.canvasDimensions.width"></app-canvas>
   </div>
   <app-inspector [width]="dimensions.inspectorDimensions.width"
                  [height]="dimensions.inspectorDimensions.height"></app-inspector>
+  </div>
+  <app-preview [width]="dimensions.previewDimensions.width" [height]="dimensions.previewDimensions.height"></app-preview>
 </div>

@@ -1,8 +1,7 @@
 import {Injectable} from '@angular/core';
 import {BehaviorSubject, Subject} from 'rxjs';
 import {Direction, Panel} from '../models/Panel';
-import {Mode} from '../models/Mode';
-import {EditorStateSetting} from '../models/EditorStateSettings';
+
 
 @Injectable({
   providedIn: 'root'
@@ -11,47 +10,15 @@ export class PanelStateService {
 
   configId: string = 'config_1';
 
-  // Храним список панелей через BehaviorSubject
   private panelsSubject = new BehaviorSubject<Panel[]>([]);
   panels$ = this.panelsSubject.asObservable();
   get panels(): Panel[] {
     return this.panelsSubject.getValue();
   }
 
-  // Храним текущий режим
-  private settingSubject = new BehaviorSubject<EditorStateSetting>({
-    mode: Mode.SpectatorMode,
-    showPanelBorders: true,
-    borderColor: 'red',
-    showPanelDirections: true,
-    drawingColor: 'yellow'
-  });
-  setting$ = this.settingSubject.asObservable();
-
-  get setting(): EditorStateSetting {
-    return this.settingSubject.getValue();
-  }
-  set setting(setting: EditorStateSetting){
-    this.settingSubject.next(setting);
-  }
-
-  setMode(mode: Mode): void {
-    this.setting.mode = mode;
-  }
-
-  toggleBorders() {
-    this.setting.showPanelBorders = !this.setting.showPanelBorders;
-  }
-
-  toggleDirections() {
-    this.setting.showPanelDirections = !this.setting.showPanelDirections;
-  }
-
-  // Если требуется передавать какие-либо действия
   private actionSubject = new Subject<string>();
   action$ = this.actionSubject.asObservable();
 
-  // Метод для добавления панели
   addPanel(panel: Panel) {
     this.panelsSubject.next([...this.panels, panel]);
   }
@@ -170,14 +137,10 @@ export class PanelStateService {
     virtualGridHeight: number,
     panelSize: number,
   ): boolean {
-    if(this.setting.mode !== Mode.EditorMode){
-      return false;
-    }
     const validation = this.validatePanelPlacement(gridX, gridY, panelSize, virtualGridWidth, virtualGridHeight);
     if (!validation.valid) {
       return false;
     }
-
     const newPanel = this.createPanel(validation.gridX, validation.gridY, panelSize);
     this.addPanel(newPanel);
     return true;

@@ -6,6 +6,9 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  box-sizing: border-box;
+  border-left: 1px solid white;
+  border-top: 1px solid white;
 }
 .framesCounter{
   display: flex;
@@ -23,6 +26,7 @@
   color: white;
   align-self: center;
 }
+
 
 ::ng-deep .color-picker {
   background-color: var(--surface-color) !important;

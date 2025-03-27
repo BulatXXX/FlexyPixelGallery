@@ -3,6 +3,8 @@ import {CanvasComponent} from '../ui/canvas/canvas.component';
 import {InspectorComponent} from '../ui/inspector/inspector.component';
 import {DimensionService, EditorComponentsDimensions} from '../service/DimensionService';
 import {MenuComponent} from '../ui/menu/menu.component';
+import {ToolsComponent} from '../ui/tools/tools.component';
+import {PreviewComponent} from '../ui/preview/preview.component';
 
 @Component({
   selector: 'app-editor-screen',
@@ -10,6 +12,8 @@ import {MenuComponent} from '../ui/menu/menu.component';
     CanvasComponent,
     MenuComponent,
     InspectorComponent,
+    ToolsComponent,
+    PreviewComponent,
   ],
   templateUrl: './editor-screen.component.html',
   standalone: true,
@@ -23,7 +27,9 @@ export class EditorScreenComponent {
   dimensions: EditorComponentsDimensions = {
     menuDimensions: { width: 300, height: 30 },
     inspectorDimensions: { width: 300, height: 200 },
-    canvasDimensions: { width: 300, height: 300 }
+    canvasDimensions: { width: 300, height: 300 },
+    toolsDimensions: { width: 60, height: 300 },
+    previewDimensions: { width: 300, height: 300 },
   };
 
 

@@ -11,6 +11,8 @@ export interface EditorComponentsDimensions {
   menuDimensions: Dimensions,
   inspectorDimensions: Dimensions,
   canvasDimensions: Dimensions,
+  toolsDimensions: Dimensions,
+  previewDimensions: Dimensions,
 }
 
 @Injectable({
@@ -28,17 +30,16 @@ export class DimensionService {
   }
   private calculateDimensions(): EditorComponentsDimensions {
 
-    //TODO:Paddings
 
-    const editorWidth = window.innerWidth*0.95;
-    const editorHeight = window.innerHeight * 0.9;
+    const editorWidth = window.innerWidth;
+    const editorHeight = window.innerHeight*0.9045;
     const menuHeight = 60;
-    const inspectorWidth = 300;
+    const inspectorWidth = 250;
+    const toolsWidth = menuHeight;
 
-    const canvasWidth = editorWidth - inspectorWidth;
-    const canvasHeight = editorHeight*0.8;
+    const canvasWidth = editorWidth - (inspectorWidth+toolsWidth);
+    const canvasHeight = editorHeight*0.75;
     const canvasDimensions: Dimensions = {width: canvasWidth, height: canvasHeight};
-
 
     const menuWidth = canvasWidth;
     const menuDimensions: Dimensions = {width: menuWidth, height: menuHeight};
@@ -46,10 +47,20 @@ export class DimensionService {
     const inspectorHeight = canvasHeight + menuHeight;
     const inspectorDimensions: Dimensions = {width: inspectorWidth, height: inspectorHeight};
 
+
+    const toolsHeight = inspectorHeight;
+    const toolsDimensions: Dimensions = {width: toolsWidth, height: toolsHeight};
+
+    const previewWidth = editorWidth;
+    const previewHeight = editorHeight-canvasHeight-menuHeight;
+    const previewDimensions:Dimensions = {width: previewWidth, height: previewHeight};
+
     return {
       menuDimensions: menuDimensions,
       inspectorDimensions: inspectorDimensions,
-      canvasDimensions: canvasDimensions
+      canvasDimensions: canvasDimensions,
+      toolsDimensions: toolsDimensions,
+      previewDimensions: previewDimensions,
     };
   }
 }

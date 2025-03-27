@@ -1,6 +1,6 @@
-<div class="inspector-container" [ngStyle]="{'height.px': height+2,'width.px':width}">
-  <input #inputElement [(colorPicker)]="editorStateService.setting.drawingColor"
-         [style.background]="editorStateService.setting.drawingColor"
+<div class="inspector-container" [ngStyle]="{'height.px': height,'width.px':width}">
+  <input #inputElement [(colorPicker)]="settingsService.setting.drawingColor"
+         [style.background]="settingsService.setting.drawingColor"
          cpDialogDisplay="inline" class="hidden-input"
   />
  <div class="framesCounter">

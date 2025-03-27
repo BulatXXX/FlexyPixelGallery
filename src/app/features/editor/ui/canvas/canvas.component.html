@@ -1,9 +1,9 @@
 <svg
+  class="svg-container"
   [attr.width]="canvasWidth"
   [attr.height]="canvasHeight"
   (click)="onAddPanelOnCanvas($event)"
   (wheel)="onWheel($event)"
-  style="border: 1px solid #000;"
 >
 
   <g [attr.transform]="'translate(' + panOffsetX + ',' + panOffsetY + ') scale(' + scale + ')'">
@@ -52,7 +52,7 @@
           </ng-container>
 
           <!--Отрисовка границ панели-->
-          <ng-container *ngIf="editorService.setting?.showPanelBorders">
+          <ng-container *ngIf="settingsService.setting?.showPanelBorders">
             <rect
               [attr.x]="cellSize*0.1"
               [attr.y]="cellSize*0.1"
@@ -64,7 +64,7 @@
           </ng-container>
 
           <!--Отрисовка направления панели-->
-          <ng-container *ngIf="editorService.setting?.showPanelDirections">
+          <ng-container *ngIf="settingsService.setting?.showPanelDirections">
             <rect *ngIf="panel.direction === Direction.Right"
                   [attr.x]="cellSize*8-cellSize*0.2" [attr.y]="cellSize*0.1"
                   [attr.width]="3" [attr.height]="8 * cellSize -cellSize*0.2"
@@ -84,7 +84,7 @@
           </ng-container>
 
           <!--Отрисовка подсказки в режиме удаления-->
-          <ng-container *ngIf="editorService.setting?.mode=== Mode.DeleteMode">
+          <ng-container *ngIf="settingsService.setting?.mode=== Mode.DeleteMode">
             <ng-container *ngIf="panelIndex === panels.length-1">
               <rect
                 [attr.width]="PANEL_SIZE*cellSize"
@@ -117,7 +117,7 @@
 
     </g>
     <!-- Если есть хотя бы одна панель, отрисовываем подсказки для всех 4 направлений -->
-    <g *ngIf="(panels.length > 0) && (editorService.setting?.mode === Mode.EditorMode)">
+    <g *ngIf="(panels.length > 0) && (settingsService.setting?.mode === Mode.EditorMode)">
       <g *ngFor="let direction of availableDirections">
         <ng-container *ngIf="getHintArea(direction) as hint">
           <!-- Область для подсказки -->

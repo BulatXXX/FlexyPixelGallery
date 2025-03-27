@@ -6,6 +6,7 @@ import {CommandManager} from '../../service/CommandManager';
 import {Mode} from '../../models/Mode';
 import {EditorActions} from '../../models/EditorActions';
 import {MatTooltip} from '@angular/material/tooltip';
+import {SettingsService} from '../../service/SettingsService';
 
 @Component({
   selector: 'app-menu',
@@ -24,7 +25,7 @@ export class MenuComponent {
   @Input() width: number = 0;
   @Input() height: number = 0;
 
-  constructor(protected editorStateService: PanelStateService, private commandManager: CommandManager) {
+  constructor(protected editorStateService: PanelStateService, private commandManager: CommandManager,protected settingsService: SettingsService) {
   }
 
   undo(){
@@ -38,19 +39,23 @@ export class MenuComponent {
     this.editorStateService.triggerAction(EditorActions.CenterGrid);
   }
 
-  switchMode(mode:Mode){
-    this.editorStateService.setMode(mode)
-  }
+
 
   toggleBorders() {
-    this.editorStateService.toggleBorders();
+    this.settingsService.toggleBorders();
   }
 
   toggleDirections() {
-    this.editorStateService.toggleDirections();
+    this.settingsService.toggleDirections();
   }
 
   protected readonly Mode = Mode;
 
 
+  zoomIn() {
+    this.editorStateService.triggerAction(EditorActions.ZoomIn)
+  }
+  zoomOut() {
+    this.editorStateService.triggerAction(EditorActions.ZoomOut);
+  }
 }
