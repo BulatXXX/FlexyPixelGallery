@@ -1,4 +1,13 @@
-import {Component, Input} from '@angular/core';
+import {
+  AfterViewChecked,
+  Component,
+  ElementRef,
+  Input,
+  OnChanges,
+  OnInit,
+  SimpleChanges,
+  ViewChild
+} from '@angular/core';
 import {NgClass, NgForOf, NgIf, NgStyle} from '@angular/common';
 import {AnimationService} from '../../service/AnimationService';
 import {Frame} from '../../models/Frame';
@@ -19,27 +28,39 @@ import {Panel} from '../../models/Panel';
   ],
   styleUrl: './preview.component.css'
 })
-export class PreviewComponent {
+export class PreviewComponent implements OnChanges , OnInit,AfterViewChecked {
   @Input() width: number = 100;
   @Input() height: number = 100;
   frames: Frame[] = [];
   currentFrameIndex: number = 0;
   panels: Panel[] = [];
 
-  previewListItemWidth = 100;
-  previewListItemHeight = 100;
+  previewListItemSize = 10;
 
   panelPreviewSize: number = 5;
 
   offsetX: number = 0;
   offsetY: number = 0;
 
+  usedWidth: number = 0;
+  usedHeight: number = 0;
+
+
   constructor(protected animationService: AnimationService, protected panelStateService: PanelStateService) {
 
   }
 
+  ngAfterViewChecked(): void {
+        throw new Error('Method not implemented.');
+    }
+
+  ngOnChanges(changes: SimpleChanges): void {
+     this.updateSizes()
+  }
+
 
   ngOnInit() {
+    this.updateSizes()
     this.animationService.frames$.subscribe(frames => {
       this.frames = frames;
     })
@@ -48,13 +69,16 @@ export class PreviewComponent {
     })
 
     this.panelStateService.panels$.subscribe(panels => {
-      for(let i = 0; i < panels.length; i++) {
-        console.log(panels[i].x,panels[i].y);
-      }
       this.panels = panels;
       this.computePanelPreviewDimensions();
     });
   }
+
+  private updateSizes() {
+    this.previewListItemSize = this.height * 0.65
+    this.computePanelPreviewDimensions()
+  }
+
   computePanelPreviewDimensions(): void {
     if (!this.panels.length) {
       this.panelPreviewSize = 0;
@@ -79,12 +103,16 @@ export class PreviewComponent {
     const maxPanelsFromOneSide = Math.max(totalColumns, totalRows);
 
     // Вычисляем размер одной миниатюрной панели
-    this.panelPreviewSize = this.previewListItemHeight / maxPanelsFromOneSide;
 
+    this.panelPreviewSize = this.previewListItemSize / maxPanelsFromOneSide;
 
-    // Вычисляем смещения (offset) для центрирования: если панели начинаются не с 0,0, смещаем всю конфигурацию
+    this.usedWidth = totalColumns * this.panelPreviewSize;
+    this.usedHeight = totalRows * this.panelPreviewSize;
+
     this.offsetX = (minX / PANEL_SIZE) * this.panelPreviewSize;
     this.offsetY = (minY / PANEL_SIZE) * this.panelPreviewSize;
+    console.log(this.offsetX,this.offsetY)
+
   }
 
 
@@ -93,12 +121,9 @@ export class PreviewComponent {
   }
 
   addFrame(): void {
-    this.animationService.selectFrame(this.currentFrameIndex+1);
+    this.animationService.selectFrame(this.animationService.frames.length);
   }
 
-  getPanelIds(frame: Frame): string[] {
-    return Object.keys(frame.panelPixelColors);
-  }
   getPanelMatrix(frame: Frame, panelId: string): string[][] {
     return frame.panelPixelColors[panelId] || [];
   }
@@ -107,9 +132,16 @@ export class PreviewComponent {
 
 
   getPanelTransform(panel: Panel): string {
-    const x = (panel.x/8 * this.panelPreviewSize) - this.offsetX;
-    const y = (panel.y/8 * this.panelPreviewSize) - this.offsetY;
+    let x = (panel.x/8 * this.panelPreviewSize) - this.offsetX;
+    let y = (panel.y/8 * this.panelPreviewSize) - this.offsetY;
+    if(this.usedWidth>this.usedHeight){
+      y += (this.previewListItemSize - this.usedHeight) / 2;
+    }
+    else if(this.usedHeight>this.usedWidth) {
+      x += (this.previewListItemSize - this.usedWidth) / 2;
+    }
     return `translate(${x}, ${y})`;
+
   }
 
 }

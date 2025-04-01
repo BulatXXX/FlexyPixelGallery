@@ -2,6 +2,7 @@ import {Injectable} from '@angular/core';
 import {Frame} from '../models/Frame';
 import {PanelStateService} from './PanelStateService';
 import {BehaviorSubject} from 'rxjs';
+import {Panel} from '../models/Panel';
 
 
 @Injectable({
@@ -20,8 +21,6 @@ export class AnimationService {
   }
 
 
-
-  // Текущий индекс кадра как BehaviorSubject
   private currentFrameIndexSubject = new BehaviorSubject<number>(0);
 
   public currentFrameIndex$ = this.currentFrameIndexSubject.asObservable();
@@ -35,7 +34,9 @@ export class AnimationService {
   private counter = 0;
 
   constructor(private editorStateService: PanelStateService) {
-
+    this.editorStateService.panels$.subscribe(panels => {
+      this.ensureAllFramesContainPanels(panels);
+    });
   }
 
   applyFrame(frame: Frame): void {
@@ -137,6 +138,25 @@ export class AnimationService {
     }, 1000 / fps);
   }
 
+  private ensureAllFramesContainPanels(panels: Panel[]): void {
+    let frames = this.frames;
+    let updated = false;
+
+    const newFrames = frames.map(frame => {
+      const newPanelPixelColors = { ...frame.panelPixelColors };
+      panels.forEach(panel => {
+        if (!(panel.id in newPanelPixelColors)) {
+          newPanelPixelColors[panel.id] = panels[panels.length-1].pixels;
+          updated = true;
+        }
+      });
+      return { panelPixelColors: newPanelPixelColors };
+    });
+
+    if (updated) {
+      this.frames = newFrames;
+    }
+  }
 
 
 

@@ -5,11 +5,15 @@
   align-items: center;
   color: var(--text-color);
   box-sizing: border-box;
+  overflow-x: auto;
   border-top: 1px solid white;
 }
 
 .preview-container {
+  max-width: 500px;
   overflow-x: auto;
+  display: flex;
+  align-items: center;
   white-space: nowrap;
   padding: 10px;
   box-sizing: border-box;
@@ -19,6 +23,7 @@
   display: flex;
   flex-direction: row;
   align-items: center;
+  overflow-x: scroll;
   gap: 10px;
 }
 
@@ -26,9 +31,9 @@
   flex: 0 0 auto;
   border: 1px solid #ccc;
   cursor: pointer;
-  width: 100px;
-  height: 100px;
   position: relative;
+  align-items: center;
+  transition: transform 0.5s;
 }
 
 .preview-item.active {
@@ -37,6 +42,7 @@
   margin-left: 10px;
   margin-right: 10px;
   transform-origin: center center;
+  transition: transform 0.5s;
 }
 
 .frame-index {

@@ -13,10 +13,10 @@ export class SettingsService {
   }
   private settingSubject = new BehaviorSubject<EditorStateSetting>({
     mode: Mode.SpectatorMode,
-    showPanelBorders: true,
+    showPanelBorders: false,
     borderColor: 'red',
-    showPanelDirections: true,
-    drawingColor: 'yellow'
+    showPanelDirections: false,
+    drawingColor: 'red'
   });
   setting$ = this.settingSubject.asObservable();
 

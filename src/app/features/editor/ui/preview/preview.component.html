@@ -1,12 +1,12 @@
 <div class = "preview" [ngStyle]="{'width.px': width, 'height.px': height}">
-  <div class="preview-container">
-    <div class="preview-list">
+  <div class="preview-container" #previewContainer [ngStyle]="{'height.px': height}">
+    <div class="preview-list" [ngStyle]="{'height.px': height}">
       <!-- Перебираем массив кадров -->
       <div *ngFor="let frame of frames; let i = index"
            class="preview-item"
            [ngClass]="{'active': i === currentFrameIndex}"
            (click)="selectFrame(i)">
-        <svg [attr.width]="previewListItemWidth" [attr.height]="previewListItemHeight">
+        <svg  [attr.width]="previewListItemSize" [attr.height]="previewListItemSize">
           <!-- Для каждой панели в конфигурации: -->
           <ng-container *ngFor="let panel of panels">
             <g [attr.transform]="getPanelTransform(panel)">
@@ -28,7 +28,7 @@
       </div>
 
       <!-- Кнопка добавления нового кадра -->
-      <div class="preview-item add-item" (click)="addFrame()">
+      <div class="preview-item add-item" id="item-add" [ngStyle]="{'width.px': previewListItemSize, 'height.px': previewListItemSize}"  (click)="addFrame() ">
         <mat-icon>add</mat-icon>
       </div>
     </div>
