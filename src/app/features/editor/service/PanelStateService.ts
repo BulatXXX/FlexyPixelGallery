@@ -16,6 +16,11 @@ export class PanelStateService {
     return this.panelsSubject.getValue();
   }
 
+  getPanelById(panelId: string): Panel | undefined {
+    return this.panels.find(panel => panel.id === panelId);
+  }
+
+
   private actionSubject = new Subject<string>();
   action$ = this.actionSubject.asObservable();
 

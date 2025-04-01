@@ -1,0 +1,36 @@
+<div class = "tools" [ngStyle]="{'width.px': width, 'height.px': height}">
+  <!-- Режимы: с подсветкой активного режима -->
+  <mat-icon
+    matTooltip="Spectator mode"
+    matTooltipPosition="right"
+    class="mode-button"
+    (click)="switchMode(Mode.SpectatorMode)"
+    [ngClass]="{'active-icon': (settingsService.setting$ | async)?.mode === Mode.SpectatorMode}">
+    remove_red_eye
+  </mat-icon>
+  <mat-icon
+    matTooltip="Editor mode"
+    matTooltipPosition="right"
+    class="mode-button"
+    (click)="switchMode(Mode.EditorMode)"
+    [ngClass]="{'active-icon': (settingsService.setting$ | async)?.mode === Mode.EditorMode}">
+    add_circle
+  </mat-icon>
+  <mat-icon
+    matTooltip="Drawing mode"
+    matTooltipPosition="right"
+    class="mode-button"
+    (click)="switchMode(Mode.DrawingMode)"
+    [ngClass]="{'active-icon': (settingsService.setting$ | async)?.mode === Mode.DrawingMode}">
+    brush
+  </mat-icon>
+  <mat-icon
+    matTooltip="Delete mode"
+    matTooltipPosition="right"
+    class="mode-button"
+    (click)="switchMode(Mode.DeleteMode)"
+    [ngClass]="{'active-icon': (settingsService.setting$ | async)?.mode === Mode.DeleteMode}">
+    delete
+  </mat-icon>
+
+</div>

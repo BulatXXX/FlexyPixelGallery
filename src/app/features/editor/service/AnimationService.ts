@@ -1,15 +1,37 @@
-import { Injectable } from '@angular/core';
+import {Injectable} from '@angular/core';
 import {Frame} from '../models/Frame';
 import {PanelStateService} from './PanelStateService';
+import {BehaviorSubject} from 'rxjs';
 
 
 @Injectable({
   providedIn: 'root'
 })
 export class AnimationService {
-  private frames: Frame[] = [];
-  private currentFrameIndex: number = 0;
 
+  private framesSubject = new BehaviorSubject<Frame[]>([]);
+  public frames$ = this.framesSubject.asObservable();
+  get frames(): Frame[] {
+    return this.framesSubject.getValue();
+  }
+
+  set frames(newFrames: Frame[]) {
+    this.framesSubject.next(newFrames);
+  }
+
+
+
+  // Текущий индекс кадра как BehaviorSubject
+  private currentFrameIndexSubject = new BehaviorSubject<number>(0);
+
+  public currentFrameIndex$ = this.currentFrameIndexSubject.asObservable();
+  get currentFrameIndex(): number {
+    return this.currentFrameIndexSubject.getValue();
+  }
+
+  set currentFrameIndex(index: number) {
+    this.currentFrameIndexSubject.next(index);
+  }
   private counter = 0;
 
   constructor(private editorStateService: PanelStateService) {
@@ -32,12 +54,10 @@ export class AnimationService {
 
   selectFrame(index: number): void {
     if(this.frames.length==0){
-      this.frames.push(this.createDefaultFrame());
+      this.frames = [...this.frames, this.createDefaultFrame()];
     }
-    // Если нужный кадр отсутствует, заполняем массив кадрами по умолчанию до нужного индекса.
     while (this.frames.length <= index) {
       this.duplicateCurrentFrame()
-      //this.frames.push(this.createDefaultFrame());
     }
     this.currentFrameIndex = index;
     const frame = this.frames[index];
@@ -91,16 +111,17 @@ export class AnimationService {
   }
 
   duplicateCurrentFrame(): void {
-    // Если кадров ещё нет, создаем новый пустой кадр
-
-      // Получаем текущий кадр и делаем глубокую копию
-      const currentFrame = this.frames[this.currentFrameIndex];
-      const newFrame = JSON.parse(JSON.stringify(currentFrame));
-      // Вставляем новый кадр сразу после текущего
-      this.frames.splice(this.currentFrameIndex + 1, 0, newFrame);
-      // Обновляем текущий индекс кадра
-      this.currentFrameIndex++;
-
+    const currentIndex = this.currentFrameIndex;
+    const currentFrame = this.frames[currentIndex];
+    // Глубокое копирование текущего кадра
+    const newFrame = JSON.parse(JSON.stringify(currentFrame));
+    // Создаем новый массив кадров с вставленным дублированным кадром
+    this.frames = [
+      ...this.frames.slice(0, currentIndex + 1),
+      newFrame,
+      ...this.frames.slice(currentIndex + 1)
+    ];
+    this.currentFrameIndex = currentIndex + 1;
   }
 
   playAnimation(): void {

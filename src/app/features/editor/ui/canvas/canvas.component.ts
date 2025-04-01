@@ -218,28 +218,32 @@ export class CanvasComponent implements OnInit {
   }
 
   onAddPanelOnCanvas(event: MouseEvent) {
+    if (this.panels.length > 0 || this.settingsService.setting.mode !== Mode.EditorMode) {
+      return
+    }
     const svgElement = event.currentTarget as SVGSVGElement;
     const rect = svgElement.getBoundingClientRect();
+
     const cursorX = event.clientX - rect.left;
     const cursorY = event.clientY - rect.top;
+
     const adjustedX = (cursorX - this.panOffsetX) / this.scale;
     const adjustedY = (cursorY - this.panOffsetY) / this.scale;
+
     const gridX = Math.floor(adjustedX / this.cellSize);
     const gridY = Math.floor(adjustedY / this.cellSize);
 
-    if (this.panels.length === 0 && Mode.EditorMode) {
-      // Если панелей нет – добавляем по клику (как раньше)
-      this.commandManager.execute(
-        new AddPanelAtCoordinatesCommand(
-          this.editorService,
-          gridX,
-          gridY,
-          PANEL_SIZE,
-          this.virtualGridWidth,
-          this.virtualGridHeight,
-        )
-      );
-    }
+    this.commandManager.execute(
+      new AddPanelAtCoordinatesCommand(
+        this.editorService,
+        gridX,
+        gridY,
+        PANEL_SIZE,
+        this.virtualGridWidth,
+        this.virtualGridHeight,
+      )
+    );
+
   }
 
   onAddPanelByHintClick(event: MouseEvent, direction: Direction): void {

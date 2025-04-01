@@ -1,0 +1,37 @@
+<div class = "preview" [ngStyle]="{'width.px': width, 'height.px': height}">
+  <div class="preview-container">
+    <div class="preview-list">
+      <!-- Перебираем массив кадров -->
+      <div *ngFor="let frame of frames; let i = index"
+           class="preview-item"
+           [ngClass]="{'active': i === currentFrameIndex}"
+           (click)="selectFrame(i)">
+        <svg [attr.width]="previewListItemWidth" [attr.height]="previewListItemHeight">
+          <!-- Для каждой панели в конфигурации: -->
+          <ng-container *ngFor="let panel of panels">
+            <g [attr.transform]="getPanelTransform(panel)">
+              <ng-container *ngIf="getPanelMatrix(frame, panel.id).length > 0">
+                <ng-container *ngFor="let row of getPanelMatrix(frame, panel.id); let rowIndex = index">
+                  <ng-container *ngFor="let color of row; let colIndex = index">
+                    <rect [attr.x]="colIndex * (this.panelPreviewSize / 8)"
+                          [attr.y]="rowIndex * (this.panelPreviewSize / 8)"
+                          [attr.width]="this.panelPreviewSize / 8"
+                          [attr.height]="this.panelPreviewSize / 8"
+                          [attr.fill]="color">
+                    </rect>
+                  </ng-container>
+                </ng-container>
+              </ng-container>
+            </g>
+          </ng-container>
+        </svg>
+      </div>
+
+      <!-- Кнопка добавления нового кадра -->
+      <div class="preview-item add-item" (click)="addFrame()">
+        <mat-icon>add</mat-icon>
+      </div>
+    </div>
+  </div>
+
+</div>

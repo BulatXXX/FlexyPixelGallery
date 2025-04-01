@@ -32,7 +32,7 @@ export class DimensionService {
 
 
     const editorWidth = window.innerWidth;
-    const editorHeight = window.innerHeight*0.9045;
+    const editorHeight = window.innerHeight-77; //77 is header.component height
     const menuHeight = 60;
     const inspectorWidth = 250;
     const toolsWidth = menuHeight;
