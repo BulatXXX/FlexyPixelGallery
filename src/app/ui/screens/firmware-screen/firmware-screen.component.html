@@ -1,1 +1,13 @@
-<p>firmware-screen works!</p>
+<div #container class="container">
+  <!-- Список разноцветных прямоугольников -->
+  <div *ngFor="let color of colors"
+       class="rectangle"
+       [ngStyle]="{'background-color': color}">
+  </div>
+
+  <!-- Прямоугольник с плюсом -->
+  <div #add class="rectangle add-rectangle" (click)="addColor()">
+    +
+  </div>
+</div>
+

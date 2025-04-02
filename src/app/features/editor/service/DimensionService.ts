@@ -38,7 +38,7 @@ export class DimensionService {
     const toolsWidth = menuHeight;
 
     const canvasWidth = editorWidth - (inspectorWidth+toolsWidth);
-    const canvasHeight = editorHeight*0.75;
+    const canvasHeight = editorHeight*0.7;
     const canvasDimensions: Dimensions = {width: canvasWidth, height: canvasHeight};
 
     const menuWidth = canvasWidth;

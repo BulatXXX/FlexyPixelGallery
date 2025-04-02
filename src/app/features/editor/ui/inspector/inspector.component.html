@@ -1,13 +1,24 @@
-<div class="inspector-container" [ngStyle]="{'height.px': height,'width.px':width}">
-  <input #inputElement [(colorPicker)]="settingsService.setting.drawingColor"
-         [style.background]="settingsService.setting.drawingColor"
-         cpDialogDisplay="inline" class="hidden-input"
-  />
- <div class="framesCounter">
-   <mat-icon class="counterButton" (click)="prevFrame()">arrow_back_ios</mat-icon>
-   <p class="frame">{{counter}}</p>
-   <mat-icon class="counterButton" (click)="nextFrame()">arrow_forward_ios</mat-icon>
- </div>
-  <mat-icon class="counterButton" (click)="playAnimation()">play_arrow</mat-icon>
+<div class="inspector-container" [ngStyle]="{'height.px': height, 'width.px': width}">
+  <!-- Отображать только если включён режим рисования -->
+  <ng-container *ngIf="settingsService.setting.mode === Mode.DrawingMode">
+    <input #inputElement
+           [(colorPicker)]="settingsService.setting.drawingColor"
+           [style.background]="settingsService.setting.drawingColor"/>
 
+    <!-- Настраиваемая палитра цветов -->
+    <div class="color-palette">
+      <button *ngFor="let color of paletteColors"
+              [ngStyle]="{'height.px': 40, 'width.px': 40}"
+              [style.background]="color"
+              (click)="selectColor(color)">
+      </button>
+    </div>
+  </ng-container>
+
+  <div class="framesCounter">
+    <mat-icon class="counterButton" (click)="prevFrame()">arrow_back_ios</mat-icon>
+    <p class="frame">{{frameIndex}}</p>
+    <mat-icon class="counterButton" (click)="nextFrame()">arrow_forward_ios</mat-icon>
+  </div>
+  <mat-icon class="counterButton" (click)="playAnimation()">play_arrow</mat-icon>
 </div>

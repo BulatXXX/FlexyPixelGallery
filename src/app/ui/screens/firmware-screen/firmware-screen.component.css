@@ -1,0 +1,24 @@
+.container {
+  height: 300px;           /* Фиксированная высота контейнера */
+  overflow-y: auto;        /* Вертикальная прокрутка */
+  border: 1px solid #ccc;  /* Для наглядности */
+}
+
+.rectangle {
+  width: 200px;
+  height: 50px;
+  margin: 10px auto;       /* Центрирование по горизонтали */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 24px;
+  color: #fff;
+  border-radius: 4px;
+}
+
+/* Стили для прямоугольника с плюсом */
+.add-rectangle {
+  background-color: #ccc;
+  color: #000;
+  cursor: pointer;
+}
