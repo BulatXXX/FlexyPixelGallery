@@ -1,0 +1,17 @@
+<div class="container">
+  <div class="lion-container">
+    <div class="grid-container">
+      <div class="grid-row" *ngFor="let row of gridItems">
+        <div class="cell" *ngFor="let color of row" [ngStyle]="{'background-color': color}">
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="text-container">
+    <h1>Modify</h1>
+    <p>your space with FLEXYPIXEL</p>
+    <button class="get-started-btn">Get started</button>
+  </div>
+</div>
+

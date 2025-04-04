@@ -1,0 +1,59 @@
+<div class="profile">
+  <div class="profile-info">
+    <img class="profile-pic" src="assets/images/g.gif" alt="o"/>
+    <div class="profile-text-info">
+      <h1 class="username">Sattarov Bulat</h1>
+      <p class="registration-date">Since: 01.02.2025</p>
+      <div class="likes-container">
+        <mat-icon>favorite</mat-icon>
+        <p>2500</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="configurationsListContainer">
+    <mat-form-field class="searchFormField" appearance="outline">
+      <mat-label>Search</mat-label>
+      <input matInput class="searchField" placeholder="Search">
+    </mat-form-field>
+    <mat-tab-group class="tabGroup">
+      <mat-tab label="MyGallery">
+        <div class="configurationCardsContainer">
+          <app-configuration-card
+            *ngFor="let config of profileConfigurations"
+            [configName]="config.name"
+            [configId]="config.config_id"
+            [panelNumbers]="config.panel_numbers"
+            [animated]="config.animated"
+            [authorName]="config.author_id"
+            [inGallery]="config.in_gallery"
+            (edit)="editConfiguration($event)"
+            (add)="addConfiguration($event)"
+            (create_post)="createPost($event)"
+          >
+          </app-configuration-card>
+        </div>
+      </mat-tab>
+      <mat-tab label="Gallery">
+        <!--<gallery-item>-->
+        <div class="configurationCardsContainer">
+          <app-configuration-card
+            *ngFor="let config of myPostConfigurations"
+            [configName]="config.name"
+            [configId]="config.config_id"
+            [panelNumbers]="config.panel_numbers"
+            [animated]="config.animated"
+            [authorName]="config.author_id"
+            [inGallery]="config.in_gallery"
+            (edit)="editConfiguration($event)"
+            (add)="addConfiguration($event)"
+            (create_post)="createPost($event)"
+          >
+          </app-configuration-card>
+        </div>
+
+      </mat-tab>
+    </mat-tab-group>
+
+  </div>
+</div>

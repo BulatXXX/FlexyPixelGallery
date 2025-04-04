@@ -1,0 +1,67 @@
+.inspector-container{
+  background-color: var(--surface-color);
+  height: 80vh;
+  width: 20vw;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  box-sizing: border-box;
+  border-left: 1px solid white;
+  border-top: 1px solid white;
+}
+.framesCounter{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  gap:2px
+}
+.frame{
+  width: 40px;
+  text-align: center;
+}
+.counterButton{
+  text-align: center;
+  color: white;
+  align-self: center;
+}
+
+
+::ng-deep .color-picker {
+  background-color: var(--surface-color) !important;
+  border: none !important;
+  display: block !important;
+}
+
+::ng-deep .color-picker input {
+  background-color: #333 !important;
+  color: #fff !important;
+  border: 1px solid #555 !important;
+}
+
+::ng-deep .color-picker .color-picker-slider {
+  background: #444 !important;
+}
+
+::ng-deep .color-picker .color-picker-alpha {
+  background: #666 !important;
+}
+
+::ng-deep .color-picker .color-picker-hue {
+  background: #777 !important;
+}
+
+::ng-deep .color-picker .color-picker-preview {
+  border: 1px solid #888 !important;
+}
+
+::ng-deep .color-picker .color-picker-container {
+  background: #222 !important;
+  color: #ddd !important;
+}
+
+::ng-deep .color-picker .color-picker-action {
+  background: #333 !important;
+  border: 1px solid #555 !important;
+}

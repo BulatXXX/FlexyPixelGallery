@@ -1,0 +1,124 @@
+/* Основной контейнер, который делит экран на 2 части */
+.container {
+  padding-left: 64px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 90vh;
+}
+
+.grid-container {
+  display: grid;
+  grid-template-rows: repeat(8, 1fr);
+  grid-template-columns: repeat(8, 1fr);
+  width: 60vh;
+  height: 60vh;
+  grid-gap: 0;
+  transform: rotate(90deg);
+}
+
+.grid-row{
+  grid-gap: 0;
+}
+
+/* Стиль для каждой ячейки */
+.cell {
+  grid-gap: 0;
+  /*border: 1px solid var(--primary-color);*/
+  width: 100%;
+  height: 100%;
+  z-index: 0.8;
+  /*box-shadow: 0 0 20px 2px rgba(255, 255, 255, 0.6);*/
+  /*animation: glowing 5s ease-in-out infinite;*/
+
+}
+
+@keyframes glowing {
+  0% {
+    box-shadow: 0 0 10px 5px rgba(255, 255, 255, 0.6);
+  }
+  50% {
+    box-shadow: 0 0 20px 10px rgba(255, 255, 255, 0.2);
+  }
+  100% {
+    box-shadow: 0 0 10px 5px rgba(255, 255, 255, 0.6);
+  }
+}
+
+.cell:hover {
+  transition: transform 0.2s ease-in;
+  transform: scale(1.4);
+  z-index: 0.9;
+}
+.cell:not(hover){
+  transition: transform 0.1s ease;
+}
+
+
+
+
+/* Контейнер с текстом */
+.text-container {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  padding-left: 100px;
+  font-family: Unbounded, sans-serif;
+
+}
+
+/* Заголовок */
+.text-container h1 {
+  font-size: 96px;
+  font-weight: bold;
+  color: #ffffff; /* Белый цвет */
+  margin: 0;
+  text-shadow: 0 0 20px rgba(255, 255, 255, 0.8);
+  animation: text-glowing 3s ease-in-out infinite;
+}
+
+/* Подзаголовок */
+.text-container p {
+  font-size: 42px;
+  font-weight: bold;
+  color: #ffffff; /* Белый цвет */
+  margin-top: 0;
+  text-shadow: 0 0 20px rgba(255, 255, 255, 0.8);
+  animation: text-glowing 3s ease-in-out infinite;
+}
+@keyframes text-glowing {
+  0% {
+    text-shadow: 0 0 10px rgba(255, 255, 255, 0.6);
+  }
+  50% {
+    text-shadow: 0 0 20px rgba(255, 255, 255, 0.2);
+  }
+  100% {
+    text-shadow: 0 0 10px rgba(255, 255, 255, 0.6);
+  }
+}
+
+/* Кнопка */
+.get-started-btn {
+  padding: 10px 20px;
+  border: 2px solid white;
+  color: white;
+  width: 15vw;
+  margin: 0;
+  border-radius: 30px;
+  font-size: 1em;
+  max-lines: 1;
+  background: none;
+  font-weight: 200;
+  font-family: Unbounded, sans-serif;
+  transition: 0.3s ease;
+}
+
+/* Стили для кнопки при наведении */
+.get-started-btn:hover {
+  color: var(--accent-1);
+  border-color: var(--accent-1);
+
+}

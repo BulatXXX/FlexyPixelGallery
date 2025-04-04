@@ -1,0 +1,48 @@
+.menu-button {
+  color: white;
+}
+
+.menu-button:hover {
+  color: var(--accent-2);
+}
+
+/* Активный элемент */
+.active-icon {
+  color: var(--accent-2) !important; /* Например, яркий акцентный цвет */
+}
+
+
+.menu-container{
+  display: flex;
+  flex-direction: row;
+  gap: 20px;
+  padding: 20px 20px;
+  justify-items: center;
+  box-sizing: border-box;
+  background: var(--surface-color);
+  border-top: 1px solid white;
+  border-bottom: 1px solid white;
+}
+
+.frame-input-container {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.frame-input {
+  width: 40px;
+  /* Убираем всякий фон/бордер */
+  background: transparent;
+  border: none;
+  color: white;
+  text-align: center;
+  /* Можно чуть-чуть добавить bottom-border, если хочется */
+  outline: none; /* чтобы не было стандартного фокуса */
+  font-size: 16px;
+}
+.frame-input:focus {
+  outline: none;
+  /* Можно задать, например, border-bottom: 1px solid white; */
+}
+

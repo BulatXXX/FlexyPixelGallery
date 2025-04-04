@@ -1,1 +1,71 @@
-/* You can add global styles to this file, and also import other style files */
+:root {
+  --primary-color: #708D81;
+  --secondary-color: #F4D58D;
+  --text-color: #FFFFFF;
+  --surface-color: #181818;
+  --accent-1: #001427;
+  --accent-2: #BF0603;
+  --accent-3: #8D0801;
+
+  --text-size-large: 24px;
+  --text-size-medium: 18px;
+  --text-size-small: 16px;
+  --text-size-xsmall: 12px;
+  --text-size-xxsmall: 10px;
+  --text-size-xxxsmall: 8px;
+
+  --gradient: linear-gradient(145deg, var(--primary-color), var(--secondary-color)) no-repeat fixed;
+
+}
+
+* {
+  font-family: Unbounded, sans-serif;
+  font-weight: 200;
+}
+
+.app-root {
+  min-height: 100vh;
+}
+
+
+html, body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  background: -webkit-linear-gradient(90deg,#4b3126,#a6755b,#e8be89); /* Chrome 10-25, Safari 5.1-6 */
+  background: linear-gradient(90deg,#4b3126,#a6755b,#e8be89); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+  /*background: -webkit-linear-gradient(90deg, #1e2d40, #daa520); !* Chrome 10-25, Safari 5.1-6 *!*/
+  /*background: linear-gradient(90deg, #1e2d40, #daa520); !* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ *!*/
+}
+
+a, h1, h2, h3, h4, h5, h6, p {
+  text-decoration: none;
+  color: var(--text-color);
+}
+
+html, body {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+}
+
+/*SnackBar styling
+*/
+.mat-mdc-snack-bar-container {
+  &.error-snackbar {
+    --mdc-snackbar-container-color: #a52222;
+    --mat-mdc-snack-bar-button-color: #fff;
+    --mdc-snackbar-supporting-text-color: #fff;
+  }
+
+  &.success-snackbar {
+    --mdc-snackbar-container-color: #47a60e;
+    --mat-mdc-snack-bar-button-color: #fff;
+    --mdc-snackbar-supporting-text-color: #fff;
+  }
+}
+
+

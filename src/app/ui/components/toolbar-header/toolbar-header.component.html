@@ -1,0 +1,22 @@
+<mat-toolbar color="primary">
+  <!-- Меню-иконка (отображается на узких экранах) -->
+  <button mat-icon-button (click)="toggleMenu()" class="menu-icon">
+    <mat-icon>{{ menuOpen ? 'close' : 'menu' }}</mat-icon>
+  </button>
+
+  <!-- Логотип (всегда центрируется на узких экранах) -->
+  <span class="logo">▩ FlexyPixel</span>
+
+  <!-- Профиль -->
+  <button mat-icon-button class="profile-icon" routerLink="/signIn">
+    <mat-icon>account_circle</mat-icon>
+  </button>
+</mat-toolbar>
+
+<!-- Выпадающее меню (появляется при `menuOpen = true`) -->
+<nav class="nav-links" [ngClass]="{'open': menuOpen}">
+  <a routerLink="/gallery">Gallery</a>
+  <a routerLink="/editor">Editor</a>
+  <a routerLink="/firmware">Firmware</a>
+  <a routerLink="/faq">FAQ</a>
+</nav>

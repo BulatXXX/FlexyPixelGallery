@@ -1,0 +1,38 @@
+<div class="auth-container">
+  <div class="auth-form">
+    <h2>Welcome to FlexyPixel</h2>
+
+    <mat-form-field class="loginInput" appearance="fill">
+      <mat-label class="matLabel">Username</mat-label>
+      <input class="matInput" matInput  [(ngModel)]="username" />
+    </mat-form-field>
+    <mat-form-field class="loginInput" appearance="fill">
+      <mat-label class="matLabel">Email</mat-label>
+      <input type="email" class="matInput" placeholder="example@email.com" matInput [(ngModel)]="email" />
+    </mat-form-field>
+    <mat-form-field class="loginInput" appearance="fill">
+      <mat-label>Phone Number</mat-label>
+      <input
+        matInput
+        type="tel"
+        maxlength="18"
+        placeholder="+7 (XXX) XXX-XX-XX"
+        [(ngModel)]="phoneNumber"
+        (keydown) ="validatePhoneNumber($event)"
+        (input)="formatPhoneNumber()"
+      />
+    </mat-form-field>
+
+    <mat-form-field appearance="fill" class="password-field">
+      <mat-label class="matLabel">Password</mat-label>
+      <input class="matInput" matInput [type]="isPasswordVisible ? 'text' : 'password'"  [(ngModel)]="password" />
+      <button mat-icon-button matSuffix type="button" (click)="togglePasswordVisibility()">
+        <mat-icon>{{ isPasswordVisible ? 'visibility_off' : 'visibility' }}</mat-icon>
+      </button>
+    </mat-form-field>
+
+    <div class="signInButtonContainer">
+      <button mat-raised-button color="primary" (click)="{}">Sign Up</button>
+    </div>
+  </div>
+</div>

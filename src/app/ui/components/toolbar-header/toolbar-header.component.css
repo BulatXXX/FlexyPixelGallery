@@ -1,0 +1,55 @@
+/* 🟢 Material Toolbar */
+mat-toolbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 64px;
+  padding: 0 16px;
+  background-color: var(--surface-color);
+}
+
+/* Логотип центрируется */
+.logo {
+  font-size: var(--text-size-large);
+  font-weight: 400;
+}
+
+/* Иконка меню */
+.menu-icon {
+  display: none;
+}
+
+/* Профиль */
+.profile-icon {
+  color: white;
+}
+
+/* Меню (изначально скрыто) */
+.nav-links {
+  position: absolute;
+  top: 64px;
+  right: 0;
+  width: 100%;
+  background-color: var(--surface-color);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
+  max-height: 0;
+  opacity: 0;
+  overflow: hidden;
+  transition: max-height 0.3s ease-in-out, opacity 0.3s ease-in-out;
+}
+
+/* Меню открыто */
+.nav-links.open {
+  max-height: 500px;
+  opacity: 1;
+}
+
+/* 🟢 Адаптивность: на узких экранах лого центрируется, меню отображается */
+@media (max-width: 768px) {
+  .menu-icon {
+    display: block;
+  }
+}

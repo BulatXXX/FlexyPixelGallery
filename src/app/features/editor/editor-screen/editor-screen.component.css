@@ -1,0 +1,28 @@
+
+.canvas{
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+  height: 0;
+}
+.canvas-area{
+  display: inline-flex;
+  flex-direction: column;
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+  height: fit-content;
+}
+
+.editor-container {
+
+  flex-direction: column;
+  display: inline-flex;
+}
+.menu-inspector-canvas-container{
+  display: inline-flex;
+  flex-direction: row;
+  box-sizing: border-box;
+  padding: 0;
+  width: fit-content;
+}

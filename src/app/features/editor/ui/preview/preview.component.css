@@ -1,0 +1,114 @@
+.preview {
+  overflow-y: hidden;
+  background: var(--surface-color);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: var(--text-color);
+  overflow-x: auto;
+  border-top: 1px solid white;
+}
+
+.preview-container {
+  overflow-x: auto;
+  overflow-y: hidden;
+  display: flex;
+  align-items: center;
+  white-space: nowrap;
+  padding: 10px;
+  box-sizing: border-box;
+}
+
+.preview-viewport {
+  width: 100%;
+  border-top: 1px solid white;
+  background: var(--surface-color);
+}
+
+.preview-list {
+  display: flex;
+  overflow-y: hidden;
+  flex-direction: row;
+  align-items: center;
+  overflow-x: scroll;
+  gap: 30px;
+  transition: padding 0.4s ease;
+}
+
+.preview-item {
+  flex: 0 0 auto;
+  border-color: #ccc;
+  cursor: pointer;
+  position: relative;
+  align-items: center;
+  transition: transform 0.5s ease;
+}
+
+.svg-item{
+  border: 1px solid #ccc;
+}
+.preview-item.active {
+  border-color: #ff0808;
+  transform: scale(1.2);
+  margin-left: 10px;
+  margin-right: 10px;
+  transform-origin: center center;
+  transition: transform 0.5s ease;
+}
+
+@keyframes fadeInScale {
+  0% {
+    opacity: 0;
+    transform: scale(0);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1.2);
+  }
+}
+
+.preview-item.new {
+  animation: fadeInScale 0.5s ease-out;
+}
+
+
+
+.frame-index {
+ // background: rgba(255,255,255,0.7);
+  padding: 2px;
+  font-size: 12px;
+}
+
+.add-item {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #252424;
+  border-radius: 10px;
+  width: 100px;
+  height: 100px;
+  transition: transform 0.3s ease-in-out;
+  will-change: transform;
+}
+
+.example-viewport{
+  width: 1000px;
+  height: 150px;
+
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  padding-left: 40px;
+  padding-right: 40px;
+  margin: 0;
+}
+::ng-deep .cdk-virtual-scroll-content-wrapper {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 30px;
+  padding-left: 100px;
+  padding-right: 100px;
+}

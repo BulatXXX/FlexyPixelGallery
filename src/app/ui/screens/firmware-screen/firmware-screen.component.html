@@ -1,0 +1,13 @@
+<div #container class="container">
+  <cdk-virtual-scroll-viewport itemSize="50" class="example-viewport" [style.height.px]="300">
+    <div *cdkVirtualFor="let item of colorsForDisplay; let i = index" class="rectangle"
+         [ngStyle]="{'background-color': item ? item : 'transparent'}">
+      <ng-container *ngIf="item === null; else colorBlock">
+        <div class="add-content" (click)="addColor()">+</div>
+      </ng-container>
+      <ng-template #colorBlock>
+        <!-- Обычный прямоугольник, здесь ничего не добавляем -->
+      </ng-template>
+    </div>
+  </cdk-virtual-scroll-viewport>
+</div>

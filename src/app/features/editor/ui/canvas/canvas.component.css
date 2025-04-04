@@ -1,0 +1,14 @@
+.editor-container{
+  display: flex;
+  flex-direction: row;
+}
+
+.svg-container {
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+
+}
+
+
+

@@ -1,0 +1,44 @@
+
+<mat-card class="configuration-card">
+
+  <div class="image-container">
+    <img
+      class="configurationImage"
+      src="assets/images/images.png"
+      alt="Image"
+      (load)="onLoad()"
+      (error)="onError()"
+    >
+  </div>
+
+  <mat-card-content class="card-content">
+
+    <h2 class="config-title">{{ configName }}</h2>
+
+    <div class="info">
+      <p>Panels required: {{ panelNumbers }}</p>
+      <p>Animated: {{ animated ? '✅' : '❌' }}</p>
+    </div>
+    <div class="author">
+      <mat-icon>person</mat-icon>
+      <span>{{ authorName }}</span>
+    </div>
+
+    <div class="rating">
+      <mat-icon>star</mat-icon>
+      <span>4.5</span> <!-- Статическое значение для примера -->
+    </div>
+  </mat-card-content>
+
+  <mat-card-actions class="card-actions">
+    <button mat-icon-button class="card-button" (click)="onEdit()">
+      <mat-icon>edit</mat-icon>
+    </button>
+    <button *ngIf="inGallery" mat-icon-button class="card-button" (click)="onAdd()">
+      <mat-icon>add</mat-icon>
+    </button>
+    <button *ngIf="!inGallery" mat-icon-button class="card-button" (click)="onCreatePost()">
+      <mat-icon>ios_share</mat-icon>
+    </button>
+  </mat-card-actions>
+</mat-card>

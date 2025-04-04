@@ -1,0 +1,97 @@
+.profile{
+  /*display: grid;*/
+  /*grid-template-columns:1fr 4fr;*/
+  display: flex;
+  padding: 60px 44px;
+}
+
+.profile-info{
+  max-width: 300px;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: start;
+  gap: 10px;
+}
+.profile-pic{
+  max-width: 300px;
+  height: auto;
+  border-radius: 50%;
+  object-fit: cover;
+  aspect-ratio: 1/1;
+  overflow: hidden;
+}
+.profile-text-info{
+  padding-left: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.username{
+  font-size: var(--text-size-large);
+  font-weight: bold;
+  margin: 0;
+}
+.registration-date{
+  margin: 0;
+  font-size: var(--text-size-small);
+  font-weight: normal;
+}
+
+.likes-container{
+  display: flex;
+  flex-direction: row;
+  justify-content: start;
+  gap: 10px;
+  align-items: center;
+  color: var(--text-color);
+  margin: 0;
+}
+.likes-container p{
+  font-size: var(--text-size-small);
+  font-weight: normal;
+}
+
+.configurationsListContainer{
+  flex: 4;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  align-items: center;
+  padding: 0 30px;
+}
+
+.searchFormField {
+  width: 100%;
+  max-width: 1000px; /* Ограничиваем максимальную ширину */
+}
+
+
+
+
+.configurationItem{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+  width: 100%;
+  background-color: #8D0801;
+  height: 40px;
+}
+
+.tabGroup{
+  max-width: 1000px;
+  width: 100%;
+}
+
+.configurationCardsContainer{
+  padding-top: 40px;
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+  width: 100%;
+  gap: 20px;
+  align-items: center;
+  justify-content: center;
+
+}
+
