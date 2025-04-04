@@ -1,11 +1,16 @@
 import {Component, ElementRef, ViewChild} from '@angular/core';
-import {NgForOf, NgStyle} from '@angular/common';
+import {NgForOf, NgIf, NgStyle} from '@angular/common';
+import {CdkFixedSizeVirtualScroll, CdkVirtualForOf, CdkVirtualScrollViewport} from '@angular/cdk/scrolling';
 
 @Component({
   selector: 'app-firmware-screen',
   imports: [
     NgStyle,
-    NgForOf
+    NgForOf,
+    CdkVirtualForOf,
+    CdkVirtualScrollViewport,
+    CdkFixedSizeVirtualScroll,
+    NgIf
   ],
   templateUrl: './firmware-screen.component.html',
   standalone: true,
@@ -14,17 +19,29 @@ import {NgForOf, NgStyle} from '@angular/common';
 export class FirmwareScreenComponent {
   colors: string[] = ['#FF5733', '#33FF57', '#3357FF'];
 
+  get colorsForDisplay(): (string | null)[] {
+    return [...this.colors, null];
+  }
+
+  @ViewChild(CdkVirtualScrollViewport) viewport!: CdkVirtualScrollViewport;
   // Получаем доступ к контейнеру через @ViewChild
   @ViewChild('container') container!: ElementRef;
   @ViewChild('add') addRect!: ElementRef;
 
 
-
   // Метод добавления нового элемента и прокрутки списка вниз
   addColor(): void {
-    this.colors.push(this.getRandomColor());
+    console.log("Ok");
+    for (let i = 0; i < 100; i++) {
+      this.colors.push(this.getRandomColor());
+    }
+
+
     // Ждем, чтобы Angular обновил представление, затем прокручиваем список
-    setTimeout(() => this.scrollToBottom(), 0);
+    setTimeout(() => {
+      if (this.viewport)
+        this.viewport.scrollToIndex(this.colors.length);
+    }, 20);
 
   }
 

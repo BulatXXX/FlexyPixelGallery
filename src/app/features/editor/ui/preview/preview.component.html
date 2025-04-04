@@ -1,39 +1,43 @@
-<div class = "preview" [ngStyle]="{'width.px': width, 'height.px': height}">
+<div class="preview" [ngStyle]="{'width.px': width, 'height.px': height}">
   <div class="preview-container" #previewContainer [ngStyle]="{'height.px': height}">
     <div class="preview-list" #previewList [ngStyle]="{'height.px': height}">
-      <!-- Перебираем массив кадров -->
-      <div *ngFor="let frame of frames; let i = index"
-           class="preview-item"
-           [ngClass]="{'active': i === currentFrameIndex}"
-           [attr.id]="i === frames.length - 1 ? 'new-frame' : 'old-frame{{i}}'"
-           (click)="selectFrame(i)"
-           [ngStyle]="{'transform': getItemTransform(i)}"
-      >
-        <svg  [attr.width]="previewListItemSize" [attr.height]="previewListItemSize">
-          <!-- Для каждой панели в конфигурации: -->
-          <ng-container *ngFor="let panel of panels">
-            <g [attr.transform]="getPanelTransform(panel)">
-              <ng-container *ngIf="getPanelMatrix(frame, panel.id).length > 0">
-                <ng-container *ngFor="let row of getPanelMatrix(frame, panel.id); let rowIndex = index">
-                  <ng-container *ngFor="let color of row; let colIndex = index">
-                    <rect [attr.x]="colIndex * (this.panelPreviewSize / 8)"
-                          [attr.y]="rowIndex * (this.panelPreviewSize / 8)"
-                          [attr.width]="this.panelPreviewSize / 8"
-                          [attr.height]="this.panelPreviewSize / 8"
-                          [attr.fill]="color">
-                    </rect>
+      <cdk-virtual-scroll-viewport orientation="horizontal" itemSize="{{previewListItemSize}}" class="example-viewport"
+                                   [style.height.px]="height" [style.width.px]="width">
+        <div *cdkVirtualFor="let frame of framesForDisplay; let i = index"
+             class="preview-item"
+             [ngClass]="{'active': i === currentFrameIndex}"
+             [attr.id]="i === frames.length - 1 ? 'new-frame' : 'old-frame{{i}}'"
+             (click)="selectFrame(i)"
+             [ngStyle]="{'transform': getItemTransform(i)}"
+             [@newFrameAnimation]="(i === frames.length - 1) ? 'enter' : null"
+        >
+          <svg class="svg-item" *ngIf="i<=frames.length-1" [attr.width]="previewListItemSize" [attr.height]="previewListItemSize">-->
+            <ng-container *ngFor="let panel of panels">
+              <g [attr.transform]="getPanelTransform(panel)">
+                <ng-container *ngIf="getPanelMatrix(frame!, panel.id).length > 0">
+                  <ng-container *ngFor="let row of getPanelMatrix(frame!, panel.id); let rowIndex = index">
+                    <ng-container *ngFor="let color of row; let colIndex = index">
+                      <rect [attr.x]="colIndex * (this.panelPreviewSize / 8)"
+                            [attr.y]="rowIndex * (this.panelPreviewSize / 8)"
+                            [attr.width]="this.panelPreviewSize / 8"
+                            [attr.height]="this.panelPreviewSize / 8"
+                            [attr.fill]="color">
+                      </rect>
+                    </ng-container>
                   </ng-container>
                 </ng-container>
-              </ng-container>
-            </g>
-          </ng-container>
-        </svg>
-      </div>
-
+              </g>
+            </ng-container>
+          </svg>
+          <div *ngIf="i==frames.length" class="preview-item add-item" id="item-add"
+               [ngStyle]="{'width.px': previewListItemSize, 'height.px': previewListItemSize, 'transform': addButtonTransform}"
+               (click)="addFrame() ">
+            <mat-icon>add</mat-icon>
+          </div>
+        </div>
+      </cdk-virtual-scroll-viewport>
       <!-- Кнопка добавления нового кадра -->
-      <div class="preview-item add-item" id="item-add" [ngStyle]="{'width.px': previewListItemSize, 'height.px': previewListItemSize, 'transform': addButtonTransform}"  (click)="addFrame() ">
-        <mat-icon>add</mat-icon>
-      </div>
+
     </div>
   </div>
 

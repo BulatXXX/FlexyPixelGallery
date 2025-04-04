@@ -22,3 +22,7 @@
   color: #000;
   cursor: pointer;
 }
+
+.example-viewport { /* или нужное значение */
+  height: 300px;
+}

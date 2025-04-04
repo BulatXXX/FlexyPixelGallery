@@ -24,3 +24,25 @@
   border-bottom: 1px solid white;
 }
 
+.frame-input-container {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.frame-input {
+  width: 40px;
+  /* Убираем всякий фон/бордер */
+  background: transparent;
+  border: none;
+  color: white;
+  text-align: center;
+  /* Можно чуть-чуть добавить bottom-border, если хочется */
+  outline: none; /* чтобы не было стандартного фокуса */
+  font-size: 16px;
+}
+.frame-input:focus {
+  outline: none;
+  /* Можно задать, например, border-bottom: 1px solid white; */
+}
+

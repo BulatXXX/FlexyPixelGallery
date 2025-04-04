@@ -2,7 +2,7 @@
   <mat-icon matTooltip="Undo" class="menu-button" (click)="undo()">undo</mat-icon>
   <mat-icon matTooltip="Redo" class="menu-button" (click)="redo()">redo</mat-icon>
   <mat-icon matTooltip="Save" class="menu-button" (click)="{}">save</mat-icon>
-  <mat-icon matTooltip="Center grid" class="menu-button" (click)="centerGrid()">location_on</mat-icon>
+  <mat-icon matTooltip="Center grid" class="menu-button" (click)="centerGrid()">zoom_in_map</mat-icon>
   <mat-icon matTooltip="Zoom in" class="menu-button" (click)="zoomIn()">add</mat-icon>
   <mat-icon matTooltip="Zoom out" class="menu-button" (click)="zoomOut()">remove</mat-icon>
 
@@ -22,6 +22,21 @@
     [ngClass]="{'active-icon': (settingsService.setting$ | async)?.showPanelDirections}">
     keyboard_double_arrow_up
   </mat-icon>
+
+  <!-- ...иконки undo, redo, zoom... -->
+  <div class="frame-input-container">
+    <mat-icon (click)="prevFrame()">arrow_back_ios</mat-icon>
+    <input
+      class="frame-input"
+      type="number"
+      [(ngModel)]="currentFrameNumber"
+      (change)="onFrameNumberChange($event)"
+      [attr.min]="0"
+      [attr.max]="585"
+    />
+    <mat-icon (click)="nextFrame()">arrow_forward_ios</mat-icon>
+  </div>
+
 </div>
 
 

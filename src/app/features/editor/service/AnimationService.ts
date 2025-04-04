@@ -34,6 +34,7 @@ export class AnimationService {
   private counter = 0;
 
   constructor(private editorStateService: PanelStateService) {
+    this.frames = [this.createDefaultFrame()]
     this.editorStateService.panels$.subscribe(panels => {
       this.ensureAllFramesContainPanels(panels);
     });
@@ -55,7 +56,7 @@ export class AnimationService {
 
   selectFrame(index: number): void {
     if(this.frames.length==0){
-      this.frames = [...this.frames, this.createDefaultFrame()];
+      this.frames = [this.createDefaultFrame()];
     }
     while (this.frames.length <= index) {
       this.duplicateCurrentFrame()
@@ -146,7 +147,7 @@ export class AnimationService {
       const newPanelPixelColors = { ...frame.panelPixelColors };
       panels.forEach(panel => {
         if (!(panel.id in newPanelPixelColors)) {
-          newPanelPixelColors[panel.id] = panels[panels.length-1].pixels;
+          newPanelPixelColors[panel.id] = this.createEmptyMatrix(8,8);
           updated = true;
         }
       });

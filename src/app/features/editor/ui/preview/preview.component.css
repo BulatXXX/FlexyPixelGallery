@@ -16,6 +16,13 @@
   align-items: center;
   white-space: nowrap;
   padding: 10px;
+  box-sizing: border-box;
+}
+
+.preview-viewport {
+  width: 100%;
+  border-top: 1px solid white;
+  background: var(--surface-color);
 }
 
 .preview-list {
@@ -30,15 +37,18 @@
 
 .preview-item {
   flex: 0 0 auto;
-  border: 1px solid #ccc;
+  border-color: #ccc;
   cursor: pointer;
   position: relative;
   align-items: center;
   transition: transform 0.5s ease;
 }
 
+.svg-item{
+  border: 1px solid #ccc;
+}
 .preview-item.active {
-  border: 2px solid #7373a1;
+  border-color: #ff0808;
   transform: scale(1.2);
   margin-left: 10px;
   margin-right: 10px;
@@ -64,7 +74,7 @@
 
 
 .frame-index {
-  background: rgba(255,255,255,0.7);
+ // background: rgba(255,255,255,0.7);
   padding: 2px;
   font-size: 12px;
 }
@@ -81,3 +91,24 @@
   will-change: transform;
 }
 
+.example-viewport{
+  width: 1000px;
+  height: 150px;
+
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  padding-left: 40px;
+  padding-right: 40px;
+  margin: 0;
+}
+::ng-deep .cdk-virtual-scroll-content-wrapper {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 30px;
+  padding-left: 100px;
+  padding-right: 100px;
+}
