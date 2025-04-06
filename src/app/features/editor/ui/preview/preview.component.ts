@@ -200,17 +200,19 @@ export class PreviewComponent implements OnChanges, OnInit, AfterViewInit {
     const shift = this.previewListItemSize / 2;
     this.itemsShiftTransform = `translateX(-${shift}px)`;
     this.addButtonTransform = `translateX(${shift}px)`;
+    this.selectFrame(this.animationService.frames.length);
+    //
+    // setTimeout(()=>{
+    //   //this.animationService.selectFrame(this.animationService.frames.length);
+    // },100)
 
-    this.animationService.selectFrame(this.animationService.frames.length);
     setTimeout(() => {
 
       this.itemsShiftTransform = 'translateX(0px)';
       this.addButtonTransform = 'translateX(0px)';
     }, this.animationDuration)
 
-    setTimeout(() => {
-      //this.viewport.scrollToIndex(this.frames.length, "smooth")
-    },2000)
+
   }
 
 

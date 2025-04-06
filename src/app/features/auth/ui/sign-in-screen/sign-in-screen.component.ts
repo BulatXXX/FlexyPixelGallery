@@ -5,10 +5,11 @@ import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatIconModule} from '@angular/material/icon';
 import {MatInput} from '@angular/material/input';
 import {MatButton, MatIconButton} from '@angular/material/button';
-import {AuthService} from '../../../services/AuthService';
+
 import {Router, RouterLink} from '@angular/router';
-import {LoadingService} from '../../../services/LoadingService';
-import {NotificationService} from '../../../services/NotificationService';
+import {LoadingService} from '../../../../services/LoadingService';
+import {NotificationService} from '../../../../services/NotificationService';
+import {AuthService} from '../../services/AuthService';
 
 @Component({
   selector: 'app-sign-in-screen',
@@ -43,25 +44,21 @@ export class SignInScreenComponent {
 
   login() {
     this.loadingService.show();
-    this.authService.login(this.username, this.password).subscribe(
+    this.authService.signIn(this.username, this.password).subscribe(
       (response) => {
         this.loadingService.hide();
-        // Если вход успешен, сохраняем токен и имя пользователя
-        localStorage.setItem('token', response.token);
-        localStorage.setItem('username', response.username);
-        this.notificationService.showSuccess('Login successful!');
-        // Перенаправляем на экран профиля
-        this.router.navigate(['/profile']);
+        if (response) {
+          this.notificationService.showSuccess('Login successful!');
+          // Переходим на профиль, где будет использован токен для получения данных
+          this.router.navigate(['/profile']);
+        }
       },
       (error) => {
-        // Обработка ошибки
-
-        setTimeout(()=>{
+        setTimeout(() => {
           this.notificationService.showError('Invalid username or password');
           this.loadingService.hide();
           console.error('Ошибка при авторизации:', error);
-        },2000)
-
+        }, 2000);
       }
     );
   }

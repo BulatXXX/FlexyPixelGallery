@@ -1,12 +1,11 @@
 import {Component, ElementRef, ViewChild} from '@angular/core';
-import {NgForOf, NgIf, NgStyle} from '@angular/common';
+import {NgIf, NgStyle} from '@angular/common';
 import {CdkFixedSizeVirtualScroll, CdkVirtualForOf, CdkVirtualScrollViewport} from '@angular/cdk/scrolling';
 
 @Component({
   selector: 'app-firmware-screen',
   imports: [
     NgStyle,
-    NgForOf,
     CdkVirtualForOf,
     CdkVirtualScrollViewport,
     CdkFixedSizeVirtualScroll,

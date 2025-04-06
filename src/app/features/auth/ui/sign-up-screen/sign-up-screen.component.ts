@@ -5,6 +5,12 @@ import {MatButton, MatIconButton} from '@angular/material/button';
 import {MatCardModule} from '@angular/material/card';
 import {MatLabel} from '@angular/material/input';
 import {MatIcon} from '@angular/material/icon';
+import {NgStyle} from '@angular/common';
+import {AuthService} from '../../services/AuthService';
+import {SignUpData} from '../../models/SignUpData';
+import {NotificationService} from '../../../../services/NotificationService';
+import {Router} from '@angular/router';
+import {AuthRepository, AuthRepositoryImpl} from '../../AuthRepository';
 
 @Component({
   selector: 'app-sign-up-screen',
@@ -16,16 +22,18 @@ import {MatIcon} from '@angular/material/icon';
     MatButton,
     MatFormField,
     MatIcon,
-    MatLabel
+    MatLabel,
+    NgStyle
   ],
   templateUrl: './sign-up-screen.component.html',
   standalone: true,
-  styleUrl: './sign-up-screen.component.css'
+  styleUrl: './sign-up-screen.component.css',
 })
 export class SignUpScreenComponent {
   username: string = '';
   password: string = '';
   email: string = '';
+  login:string = '';
   isPasswordVisible: boolean = false;
 
   togglePasswordVisibility() {
@@ -42,7 +50,9 @@ export class SignUpScreenComponent {
       event.preventDefault();
     }
   }
+  constructor(private authService: AuthService,private notificationService: NotificationService,) {
 
+  }
   formatPhoneNumber() {
     let cleaned = this.phoneNumber.replace(/\D/g, ''); // Удаляем все нечисловые символы
 
@@ -65,10 +75,25 @@ export class SignUpScreenComponent {
 
   signUp(){
     this.validateInputs()
-    //TODO sign up logic
+    const data: SignUpData = {
+      email: this.email,
+      login: this.login,
+      displayName: this.username,
+      password: this.password,
+      phone: this.phoneNumber,
+    }
+    this.authService.signUp(data).subscribe((success)=>{
+      if (success) {
+        this.notificationService.showSuccess('Регистрация успешна!');
+      } else {
+        this.notificationService.showError('Ошибка при регистрации');
+      }
+    });
   }
 
   private validateInputs() {
     //TODO validation options
   }
+
+  protected readonly window = window;
 }

@@ -1,10 +1,14 @@
-<div class="auth-container">
+<div class="auth-container" [ngStyle]="{'height.px': window.innerHeight-77}">
   <div class="auth-form">
     <h2>Welcome to FlexyPixel</h2>
 
     <mat-form-field class="loginInput" appearance="fill">
       <mat-label class="matLabel">Username</mat-label>
       <input class="matInput" matInput  [(ngModel)]="username" />
+    </mat-form-field>
+    <mat-form-field class="loginInput" appearance="fill">
+      <mat-label class="matLabel">Login</mat-label>
+      <input class="matInput" matInput  [(ngModel)]="login" />
     </mat-form-field>
     <mat-form-field class="loginInput" appearance="fill">
       <mat-label class="matLabel">Email</mat-label>
@@ -32,7 +36,7 @@
     </mat-form-field>
 
     <div class="signInButtonContainer">
-      <button mat-raised-button color="primary" (click)="{}">Sign Up</button>
+      <button mat-raised-button color="primary" (click)="signUp()">Sign Up</button>
     </div>
   </div>
 </div>

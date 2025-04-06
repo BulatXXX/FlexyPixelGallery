@@ -11,7 +11,9 @@
              [ngStyle]="{'transform': getItemTransform(i)}"
              [@newFrameAnimation]="(i === frames.length - 1) ? 'enter' : null"
         >
-          <svg class="svg-item" *ngIf="i<=frames.length-1" [attr.width]="previewListItemSize" [attr.height]="previewListItemSize">-->
+          <svg class="svg-item" *ngIf="i<=frames.length-1" [attr.width]="previewListItemSize" [attr.height]="previewListItemSize"
+          [ngStyle]="{'transform':itemsShiftTransform}"
+          >
             <ng-container *ngFor="let panel of panels">
               <g [attr.transform]="getPanelTransform(panel)">
                 <ng-container *ngIf="getPanelMatrix(frame!, panel.id).length > 0">
