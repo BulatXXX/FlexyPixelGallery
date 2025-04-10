@@ -8,8 +8,6 @@ import {Direction, Panel} from '../models/Panel';
 })
 export class PanelStateService {
 
-  configId: string = 'config_1';
-
   private panelsSubject = new BehaviorSubject<Panel[]>([]);
   panels$ = this.panelsSubject.asObservable();
   get panels(): Panel[] {
@@ -80,7 +78,7 @@ export class PanelStateService {
     gridY: number,
     panelSize: number
   ): Panel {
-    const newId = `${this.configId}_${this.panels.length + 1}`;
+    const newId = `${this.panels.length + 1}`;
 
     // По умолчанию новая панель наследует направление предыдущей
     const newDirection = this.panels.length > 0 ? this.panels[this.panels.length - 1].direction : Direction.Bottom;
@@ -125,7 +123,7 @@ export class PanelStateService {
     // Обновляем направление последней панели – теперь оно равно выбранному направлению
     lastPanel.direction = direction;
     const newPanel: Panel = {
-      id: `${this.configId}_${this.panels.length + 1}`,
+      id: `${this.panels.length + 1}`,
       x: validation.gridX,
       y: validation.gridY,
       direction: direction,

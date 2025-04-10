@@ -9,6 +9,7 @@ import {MatTooltip} from '@angular/material/tooltip';
 import {SettingsService} from '../../service/SettingsService';
 import {FormsModule} from '@angular/forms';
 import {AnimationService} from '../../service/AnimationService';
+import {ConfigurationService} from '../../service/ConfigurationService';
 
 @Component({
   selector: 'app-menu',
@@ -52,7 +53,7 @@ export class MenuComponent implements OnInit{
     const newIndex = Math.min(585, this.currentFrameNumber + 1);
     this.animationService.selectFrame(newIndex);
   }
-  constructor(protected editorStateService: PanelStateService, private commandManager: CommandManager,protected settingsService: SettingsService,protected animationService: AnimationService) {
+  constructor(private configurationService: ConfigurationService,protected editorStateService: PanelStateService, private commandManager: CommandManager,protected settingsService: SettingsService,protected animationService: AnimationService) {
   }
 
   undo(){
@@ -84,5 +85,9 @@ export class MenuComponent implements OnInit{
   }
   zoomOut() {
     this.editorStateService.triggerAction(EditorActions.ZoomOut);
+  }
+
+  save() {
+    this.configurationService.saveConfiguration()
   }
 }

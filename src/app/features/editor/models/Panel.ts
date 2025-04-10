@@ -7,8 +7,8 @@ export interface Panel {
 }
 
 export enum Direction {
-  Left,
-  Right,
-  Top,
-  Bottom
+  Left = 'left',
+  Right = 'right',
+  Top = 'top',
+  Bottom = 'bottom'
 }
