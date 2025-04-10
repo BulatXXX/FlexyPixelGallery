@@ -134,7 +134,6 @@ export class PreviewComponent implements OnChanges, OnInit, AfterViewInit {
 
     this.offsetX = (minX / PANEL_SIZE) * this.panelPreviewSize;
     this.offsetY = (minY / PANEL_SIZE) * this.panelPreviewSize;
-    console.log(this.offsetX, this.offsetY)
 
   }
 

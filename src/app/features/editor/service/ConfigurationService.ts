@@ -84,7 +84,8 @@ export class ConfigurationService {
   saveConfiguration(): Observable<{ publicId: string }> {
     console.log("saveConfiguration");
     const payload = this.serializeConfiguration();
-    return this.http.post<{ publicId: string }>(`${this.baseUrl}/full`, payload);
+    console.log("payload", payload);
+    return this.http.post<{ publicId: string }>(`http://localhost:8080/configurations/full`, payload);
   }
 
   loadConfiguration(publicId: string): Observable<ConfigurationResponse> {

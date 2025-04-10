@@ -10,6 +10,7 @@ import {SettingsService} from '../../service/SettingsService';
 import {FormsModule} from '@angular/forms';
 import {AnimationService} from '../../service/AnimationService';
 import {ConfigurationService} from '../../service/ConfigurationService';
+import {DialogService} from '../../../../services/dialog.service';
 
 @Component({
   selector: 'app-menu',
@@ -25,7 +26,7 @@ import {ConfigurationService} from '../../service/ConfigurationService';
   standalone: true,
   styleUrl: './menu.component.css'
 })
-export class MenuComponent implements OnInit{
+export class MenuComponent implements OnInit {
   @Input() width: number = 0;
   @Input() height: number = 0;
 
@@ -36,6 +37,7 @@ export class MenuComponent implements OnInit{
       this.currentFrameNumber = index;
     });
   }
+
   onFrameNumberChange(event: any) {
     let val = parseInt(event.target.value, 10);
     if (isNaN(val)) val = 0;
@@ -49,24 +51,31 @@ export class MenuComponent implements OnInit{
     const newIndex = Math.max(0, this.currentFrameNumber - 1);
     this.animationService.selectFrame(newIndex);
   }
+
   nextFrame() {
     const newIndex = Math.min(585, this.currentFrameNumber + 1);
     this.animationService.selectFrame(newIndex);
   }
-  constructor(private configurationService: ConfigurationService,protected editorStateService: PanelStateService, private commandManager: CommandManager,protected settingsService: SettingsService,protected animationService: AnimationService) {
+
+  constructor(private configurationService: ConfigurationService,
+              private dialogService: DialogService,
+              protected editorStateService: PanelStateService,
+              private commandManager: CommandManager,
+              protected settingsService: SettingsService,
+              protected animationService: AnimationService) {
   }
 
-  undo(){
+  undo() {
     this.commandManager.undo()
   }
-  redo(){
+
+  redo() {
     this.commandManager.redo()
   }
 
   centerGrid() {
     this.editorStateService.triggerAction(EditorActions.CenterGrid);
   }
-
 
 
   toggleBorders() {
@@ -83,11 +92,37 @@ export class MenuComponent implements OnInit{
   zoomIn() {
     this.editorStateService.triggerAction(EditorActions.ZoomIn)
   }
+
   zoomOut() {
     this.editorStateService.triggerAction(EditorActions.ZoomOut);
   }
 
   save() {
-    this.configurationService.saveConfiguration()
+    this.configurationService.saveConfiguration().subscribe(
+      res => console.log('Response:', res),
+      err => console.error('Error:', err)
+    );
+
   }
+
+  load(): void {
+    // Открываем диалог, который вернет publicId конфигурации
+    this.dialogService.openConfigurationDialog().subscribe(publicId => {
+      if (publicId) {
+        // Если пользователь ввел значение, выполняем загрузку
+        this.configurationService.loadConfiguration(publicId).subscribe(
+          response => {
+            this.configurationService.applyConfiguration(response);
+            console.log('Configuration loaded successfully:', response);
+          },
+          err => {
+            console.error('Error loading configuration:', err);
+          }
+        );
+      } else {
+        console.log('Dialog cancelled or no ID provided.');
+      }
+    });
+  }
+
 }
