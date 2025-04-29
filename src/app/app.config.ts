@@ -18,5 +18,5 @@ export const appConfig: ApplicationConfig = {
 };
 
 export const environment = {
-  apiUrl: 'http://localhost:8080'
+  apiUrl: 'http://91.200.13.57:8080'
 };

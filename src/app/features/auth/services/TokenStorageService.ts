@@ -1,37 +1,52 @@
-// token-storage.service.ts
+// src/app/core/services/token-storage.service.ts
+
 import { Injectable } from '@angular/core';
 
 @Injectable({
   providedIn: 'root'
 })
 export class TokenStorageService {
-  private readonly TOKEN_KEY = 'token';
-  private readonly USERNAME_KEY = 'username';
+  private readonly ACCESS_TOKEN_KEY  = 'access_token';
+  private readonly REFRESH_TOKEN_KEY = 'refresh_token';
+  private readonly USERNAME_KEY      = 'username';
 
-  saveToken(token: string): void {
-    console.log("save: ",token);
-    localStorage.setItem(this.TOKEN_KEY, token);
+  // — ACCESS TOKEN
+  saveAccessToken(token: string): void {
+    localStorage.setItem(this.ACCESS_TOKEN_KEY, token);
+  }
+  getAccessToken(): string | null {
+    return localStorage.getItem(this.ACCESS_TOKEN_KEY);
+  }
+  clearAccessToken(): void {
+    localStorage.removeItem(this.ACCESS_TOKEN_KEY);
   }
 
-  getToken(): string | null {
-    const token = localStorage.getItem(this.TOKEN_KEY);
-    console.log("get: ",token);
-    return token;
+  // — REFRESH TOKEN
+  saveRefreshToken(token: string): void {
+    localStorage.setItem(this.REFRESH_TOKEN_KEY, token);
+  }
+  getRefreshToken(): string | null {
+    return localStorage.getItem(this.REFRESH_TOKEN_KEY);
+  }
+  clearRefreshToken(): void {
+    localStorage.removeItem(this.REFRESH_TOKEN_KEY);
   }
 
-  clearToken(): void {
-    localStorage.removeItem(this.TOKEN_KEY);
-  }
-
+  // — USERNAME (или ID)
   saveUsername(username: string): void {
     localStorage.setItem(this.USERNAME_KEY, username);
   }
-
   getUsername(): string | null {
     return localStorage.getItem(this.USERNAME_KEY);
   }
-
   clearUsername(): void {
     localStorage.removeItem(this.USERNAME_KEY);
+  }
+
+  // — всё сразу очистить
+  clearAll(): void {
+    this.clearAccessToken();
+    this.clearRefreshToken();
+    this.clearUsername();
   }
 }

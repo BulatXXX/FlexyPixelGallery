@@ -10,7 +10,7 @@ import {SettingsService} from '../../service/SettingsService';
 import {FormsModule} from '@angular/forms';
 import {AnimationService} from '../../service/AnimationService';
 import {ConfigurationService} from '../../service/ConfigurationService';
-import {DialogService} from '../../../../services/dialog.service';
+import {DialogService} from '../../../../core/services/dialog.service';
 import {Subscription} from 'rxjs';
 
 @Component({

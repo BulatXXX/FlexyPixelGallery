@@ -1,3 +1,16 @@
+@use '@angular/material' as mat;
+
+$flexy-theme: mat.define-theme((
+  color: (
+    theme-type: light,
+    primary: mat.$azure-palette,
+    tertiary: mat.$red-palette
+  )
+));
+html {
+  @include mat.core();
+  @include mat.all-component-themes($flexy-theme);
+}
 :root {
   --primary-color: #708D81;
   --secondary-color: #F4D58D;
@@ -18,6 +31,21 @@
   --bg: hsl(var(--hue), 10%, 90%);
   --fg: hsl(var(--hue), 10%, 10%);
 
+
+  --mdc-theme-primary: #f60000;
+  --mdc-theme-on-primary: #0029ff;
+
+  --mdc-theme-secondary: #0029ff;
+  --mdc-theme-on-secondary: #0029ff;
+
+  --mdc-theme-background: #0029ff;            /* ваш фон */
+  --mdc-theme-on-background: #0029ff;
+
+  --mdc-theme-surface: #0029ff;
+  --mdc-theme-on-surface: #0029ff;
+
+  --mdc-theme-error: #0029ff;
+  --mdc-theme-on-error: #0029ff;
 }
 
 *, *::before, *::after {

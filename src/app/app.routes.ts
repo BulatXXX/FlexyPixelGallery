@@ -19,7 +19,7 @@ export const routes: Routes = [
   {path: 'firmware', component: FirmwareScreenComponent},
   {path: 'faq', component: FaqScreenComponent},
   {path: 'profile', component: ProfileScreenComponent, canActivate: [AuthGuard]},
-  {path: 'signIn', component: SignInScreenComponent},
-  {path: 'signUp', component: SignUpScreenComponent},
+  {path: 'sign-in', component: SignInScreenComponent},
+  {path: 'sign-up', component: SignUpScreenComponent},
   {path: 'recovery', component: PasswordRecoveryScreenComponent}
 ];

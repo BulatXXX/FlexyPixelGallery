@@ -2,24 +2,25 @@
   <div class="auth-form">
     <h2>Signing In</h2>
 
-    <mat-form-field class="loginInput" appearance="fill">
+    <mat-form-field appearance="fill" class="loginInput">
       <mat-label class="matLabel">Username</mat-label>
-      <input class="matInput" matInput placeholder="Username" [(ngModel)]="username" />
+      <input class="matInput" matInput placeholder="Username" [(ngModel)]="username"/>
     </mat-form-field>
 
     <mat-form-field appearance="fill" class="password-field">
       <mat-label class="matLabel">Password</mat-label>
-      <input class="matInput" matInput [type]="isPasswordVisible ? 'text' : 'password'" placeholder="Password" [(ngModel)]="password" />
+      <input class="matInput" matInput [type]="isPasswordVisible ? 'text' : 'password'" placeholder="Password"
+             [(ngModel)]="password"/>
       <button mat-icon-button matSuffix type="button" (click)="togglePasswordVisibility()">
         <mat-icon>{{ isPasswordVisible ? 'visibility_off' : 'visibility' }}</mat-icon>
       </button>
     </mat-form-field>
     <div class="options">
       <a routerLink="/recovery" class="password-option">Forgot password?</a>
-      <a routerLink="/signUp" class="password-option">Sign up</a>
+      <a routerLink="/sign-up" class="password-option">Sign up</a>
     </div>
     <div class="signInButtonContainer">
-    <button mat-raised-button color="primary" (click)="login()">Sign In</button>
+      <button mat-raised-button color="primary" (click)="login()">Sign In</button>
     </div>
   </div>
 </div>

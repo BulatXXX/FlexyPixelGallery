@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import {Component} from '@angular/core';
 import {FormsModule} from '@angular/forms';
 import {MatFormField, MatInput} from '@angular/material/input';
 import {MatButton, MatIconButton} from '@angular/material/button';
@@ -8,9 +8,10 @@ import {MatIcon} from '@angular/material/icon';
 import {NgStyle} from '@angular/common';
 import {AuthService} from '../../services/AuthService';
 import {SignUpData} from '../../models/SignUpData';
-import {NotificationService} from '../../../../services/NotificationService';
+import {NotificationService} from '../../../../core/services/NotificationService';
 import {Router} from '@angular/router';
 import {AuthRepository, AuthRepositoryImpl} from '../../AuthRepository';
+import {LoadingService} from '../../../../core/services/LoadingService';
 
 @Component({
   selector: 'app-sign-up-screen',
@@ -33,7 +34,7 @@ export class SignUpScreenComponent {
   username: string = '';
   password: string = '';
   email: string = '';
-  login:string = '';
+  login: string = '';
   isPasswordVisible: boolean = false;
 
   togglePasswordVisibility() {
@@ -50,9 +51,12 @@ export class SignUpScreenComponent {
       event.preventDefault();
     }
   }
-  constructor(private authService: AuthService,private notificationService: NotificationService,) {
+
+  constructor(private authService: AuthService, private notificationService: NotificationService,
+              private loadingService: LoadingService, private router: Router) {
 
   }
+
   formatPhoneNumber() {
     let cleaned = this.phoneNumber.replace(/\D/g, ''); // Удаляем все нечисловые символы
 
@@ -73,22 +77,25 @@ export class SignUpScreenComponent {
     this.phoneNumber = formatted;
   }
 
-  signUp(){
-    this.validateInputs()
-    const data: SignUpData = {
-      email: this.email,
-      login: this.login,
-      displayName: this.username,
-      password: this.password,
-      phone: this.phoneNumber,
+  async signUp() {
+    this.loadingService.show();
+    try {
+      const data: SignUpData = {
+        displayName: this.username,
+        login: this.login,
+        email: this.email,
+        phone: this.phoneNumber,
+        password: this.password
+      };
+      await this.authService.signUp(data);
+      this.notificationService.showSuccess('Registration successful!');
+      await this.router.navigate(['/sign-in']);
+    } catch (err) {
+      this.notificationService.showError('Registration failed');
+      console.error('SignUp error:', err);
+    } finally {
+      this.loadingService.hide();
     }
-    this.authService.signUp(data).subscribe((success)=>{
-      if (success) {
-        this.notificationService.showSuccess('Регистрация успешна!');
-      } else {
-        this.notificationService.showError('Ошибка при регистрации');
-      }
-    });
   }
 
   private validateInputs() {

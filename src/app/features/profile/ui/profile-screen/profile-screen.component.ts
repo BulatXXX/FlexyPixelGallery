@@ -9,7 +9,8 @@ import {panelConfigurations} from '../../../../models/PanelConfiguration';
 import {MatIcon} from '@angular/material/icon';
 import {UserService} from '../../UserService';
 import {Router} from '@angular/router';
-import {NotificationService} from '../../../../services/NotificationService';
+import {NotificationService} from '../../../../core/services/NotificationService';
+import {environment} from '../../../../app.config';
 
 
 @Component({
@@ -85,6 +86,8 @@ export class ProfileScreenComponent implements OnInit {
 
   constructor(private userService: UserService,private notificationService: NotificationService,) {
   }
+
+  protected readonly environment = environment;
 }
 
 //заглушки

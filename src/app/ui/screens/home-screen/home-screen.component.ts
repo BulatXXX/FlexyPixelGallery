@@ -1,6 +1,6 @@
 import {Component} from '@angular/core';
 import {NgForOf, NgStyle} from '@angular/common';
-import {LoadingService} from '../../../services/LoadingService';
+import {LoadingService} from '../../../core/services/LoadingService';
 
 @Component({
   selector: 'app-home-screen',

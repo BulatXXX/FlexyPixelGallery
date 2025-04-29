@@ -1,10 +1,9 @@
-import { Injectable } from '@angular/core';
+import {Injectable} from '@angular/core';
+import {Router} from '@angular/router';
+import {firstValueFrom, BehaviorSubject, Observable, throwError} from 'rxjs';
 
-import { SignUpData } from '../models/SignUpData';
-
-import {BehaviorSubject, Observable, catchError, finalize, of, tap, map} from 'rxjs';
+import {SignUpData} from '../models/SignUpData';
 import {AuthRepository} from '../AuthRepository';
-import {SignInResponse} from '../models/SignInResponse';
 import {TokenStorageService} from './TokenStorageService';
 
 @Injectable({
@@ -12,48 +11,81 @@ import {TokenStorageService} from './TokenStorageService';
 })
 export class AuthService {
   private loadingSubject = new BehaviorSubject<boolean>(false);
-  private errorSubject = new BehaviorSubject<string | null>(null);
-
   loading$ = this.loadingSubject.asObservable();
+
+  private errorSubject = new BehaviorSubject<string | null>(null);
   error$ = this.errorSubject.asObservable();
 
-  constructor(private authRepo: AuthRepository, private tokenStorage: TokenStorageService) {}
+  constructor(
+    private authRepo: AuthRepository,
+    private tokenStorage: TokenStorageService,
+    private router: Router
+  ) {
+  }
 
-  signIn(loginOrEmail: string, password: string): Observable<SignInResponse | null> {
+  /** Логин: сохраняем access + refresh + username, затем редирект */
+  async signIn(loginOrEmail: string, password: string): Promise<void> {
     this.loadingSubject.next(true);
     this.errorSubject.next(null);
 
-    return this.authRepo.signIn(loginOrEmail, password).pipe(
-      tap((res) => {
-        if (res) {
-          // Сохраняем токен и имя пользователя через TokenStorageService
-          this.tokenStorage.saveToken(res.token);
-          this.tokenStorage.saveUsername(res.username);
-        }
-      }),
-      catchError(() => {
-        this.errorSubject.next('Неверный логин или пароль');
-        return of(null);
-      }),
-      finalize(() => this.loadingSubject.next(false))
-    );
+    try {
+      const res = await firstValueFrom(
+        this.authRepo.signIn(loginOrEmail, password)
+      );
+
+      // сохраняем оба токена
+      this.tokenStorage.saveAccessToken(res.accessToken);
+      this.tokenStorage.saveRefreshToken(res.refreshToken);
+      this.tokenStorage.saveUsername(res.publicId);
+
+      await this.router.navigate(['/profile']);
+    } catch (err) {
+      this.errorSubject.next('Неверный логин или пароль');
+      return Promise.reject(err);
+    } finally {
+      this.loadingSubject.next(false);
+    }
   }
 
-  signUp(data: SignUpData): Observable<boolean> {
+  /** Регистрация */
+  async signUp(data: SignUpData): Promise<void> {
     this.loadingSubject.next(true);
     this.errorSubject.next(null);
 
-    return this.authRepo.signUp(data).pipe(
-      tap(() => {
-        console.log('Регистрация успешна:', data);
-      }),
-      map(() => true), // <-- тут мы явно возвращаем true
-      catchError(() => {
-        this.errorSubject.next('Ошибка при регистрации');
-        return of(false);
-      }),
-      finalize(() => this.loadingSubject.next(false)),
-    );
+    try {
+      await firstValueFrom(this.authRepo.signUp(data));
+      // здесь можно сразу делать signIn или показывать уведомление
+    } catch (err) {
+      this.errorSubject.next('Ошибка при регистрации');
+      return Promise.reject(err);
+    } finally {
+      this.loadingSubject.next(false);
+    }
   }
 
+  /** Обновление access-токена по refresh-токену */
+  async refreshToken(): Promise<void> {
+    const rt = this.tokenStorage.getRefreshToken();
+    if (!rt) {
+      return Promise.reject(new Error('Нет refresh-токена'));
+    }
+
+    this.loadingSubject.next(true);
+    try {
+      const res = await firstValueFrom(this.authRepo.refresh(rt));
+      this.tokenStorage.saveAccessToken(res.accessToken);
+      this.tokenStorage.saveRefreshToken(res.refreshToken);
+    } catch (err) {
+      await this.logout(); // если не удалось обновить — выкидываем пользователя
+      return Promise.reject(err);
+    } finally {
+      this.loadingSubject.next(false);
+    }
+  }
+
+  /** Выход — очищаем всё */
+  async logout() {
+    this.tokenStorage.clearAll();
+    await this.router.navigate(['/sign-in']);
+  }
 }

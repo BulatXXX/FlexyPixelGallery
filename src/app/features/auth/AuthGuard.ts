@@ -1,7 +1,8 @@
-// auth.guard.ts
-import { Injectable } from '@angular/core';
+// src/app/features/auth/AuthGuard.ts
+import { Injectable }   from '@angular/core';
 import { CanActivate, Router } from '@angular/router';
 import {TokenStorageService} from './services/TokenStorageService';
+import {AuthService} from './services/AuthService';
 
 
 @Injectable({
@@ -10,15 +11,26 @@ import {TokenStorageService} from './services/TokenStorageService';
 export class AuthGuard implements CanActivate {
   constructor(
     private tokenStorage: TokenStorageService,
+    private authService: AuthService,
     private router: Router
   ) {}
 
-  canActivate(): boolean {
-    if (this.tokenStorage.getToken()) {
+  async canActivate(): Promise<boolean> {
+    const access = this.tokenStorage.getAccessToken();
+    if (access) {
       return true;
-    } else {
-      this.router.navigate(['/login']);
-      return false;
     }
+    const refresh = this.tokenStorage.getRefreshToken();
+    if (refresh) {
+      try {
+        await this.authService.refreshToken();
+        return true;
+      } catch {
+        // refresh не сработал — сбрасываем и редиректим
+        this.tokenStorage.clearAll();
+      }
+    }
+    await this.router.navigate(['/sign-in']);
+    return false;
   }
 }
