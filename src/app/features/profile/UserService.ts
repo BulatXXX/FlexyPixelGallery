@@ -9,7 +9,7 @@ export class UserService {
   constructor(private http: HttpClient) {}
 
   getUserProfile(): Observable<User> {
-    return this.http.get<User>('http://localhost:8080/me');
+    return this.http.get<User>('http://localhost:8080/users/me');
   }
 }
 

@@ -1,5 +1,6 @@
 import {Component} from '@angular/core';
 import {NgForOf, NgStyle} from '@angular/common';
+import {LoadingService} from '../../../services/LoadingService';
 
 @Component({
   selector: 'app-home-screen',
@@ -12,6 +13,9 @@ import {NgForOf, NgStyle} from '@angular/common';
   styleUrl: './home-screen.component.css'
 })
 export class HomeScreenComponent {
+
+  constructor(private loadingService: LoadingService) {
+  }
   gridItems = [
     ["#F4D58D","#F4D58D","#8D0801","#8D0801","#8D0801","#8D0801","#F4D58D","#F4D58D"],
     ["#F4D58D","#D9D9D9","#8D0801","#8D0801","#8D0801","#8D0801","#D9D9D9","#F4D58D"],
@@ -22,6 +26,10 @@ export class HomeScreenComponent {
     ["#D9D9D9","#F4D58D","#D9D9D9","#D9D9D9","#D9D9D9","#D9D9D9","#F4D58D","#8D0801"],
     ["#D9D9D9","#D9D9D9","#8D0801","#8D0801","#8D0801","#8D0801","#D9D9D9","#D9D9D9"],
   ];
+
+  load() {
+    this.loadingService.show()
+  }
 }
 
 

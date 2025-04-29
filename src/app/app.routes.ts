@@ -13,7 +13,7 @@ import {
 import {AuthGuard} from './features/auth/AuthGuard';
 
 export const routes: Routes = [
-  {path: 'home', component: HomeScreenComponent},  // Главная страница
+  {path: '', component: HomeScreenComponent},  // Главная страница
   {path: 'gallery', component: GalleryScreenComponent},
   {path: 'editor', component: EditorScreenComponent},
   {path: 'firmware', component: FirmwareScreenComponent},

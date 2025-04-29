@@ -11,6 +11,7 @@ import {FormsModule} from '@angular/forms';
 import {AnimationService} from '../../service/AnimationService';
 import {ConfigurationService} from '../../service/ConfigurationService';
 import {DialogService} from '../../../../services/dialog.service';
+import {Subscription} from 'rxjs';
 
 @Component({
   selector: 'app-menu',
@@ -31,6 +32,10 @@ export class MenuComponent implements OnInit {
   @Input() height: number = 0;
 
   currentFrameNumber = 0;
+
+  currentPublicId: string | null = null;
+  private configurationIdSubscription!: Subscription;
+
 
   ngOnInit() {
     this.animationService.currentFrameIndex$.subscribe((index) => {
@@ -106,10 +111,8 @@ export class MenuComponent implements OnInit {
   }
 
   load(): void {
-    // Открываем диалог, который вернет publicId конфигурации
     this.dialogService.openConfigurationDialog().subscribe(publicId => {
       if (publicId) {
-        // Если пользователь ввел значение, выполняем загрузку
         this.configurationService.loadConfiguration(publicId).subscribe(
           response => {
             this.configurationService.applyConfiguration(response);

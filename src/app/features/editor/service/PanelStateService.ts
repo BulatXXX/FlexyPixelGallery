@@ -14,11 +14,6 @@ export class PanelStateService {
     return this.panelsSubject.getValue();
   }
 
-  getPanelById(panelId: string): Panel | undefined {
-    return this.panels.find(panel => panel.id === panelId);
-  }
-
-
   private actionSubject = new Subject<string>();
   action$ = this.actionSubject.asObservable();
 
@@ -80,7 +75,6 @@ export class PanelStateService {
   ): Panel {
     const newId = `${this.panels.length + 1}`;
 
-    // По умолчанию новая панель наследует направление предыдущей
     const newDirection = this.panels.length > 0 ? this.panels[this.panels.length - 1].direction : Direction.Bottom;
     return {
       id: newId,
@@ -123,7 +117,7 @@ export class PanelStateService {
     // Обновляем направление последней панели – теперь оно равно выбранному направлению
     lastPanel.direction = direction;
     const newPanel: Panel = {
-      id: `${this.panels.length + 1}`,
+      id: `${this.panels.length+1}`,
       x: validation.gridX,
       y: validation.gridY,
       direction: direction,

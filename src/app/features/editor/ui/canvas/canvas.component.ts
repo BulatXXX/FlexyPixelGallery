@@ -30,7 +30,7 @@ export class CanvasComponent implements OnInit {
 
   cellSize: number = 20;
 
-  virtualGridWidth: number = 200;
+  virtualGridWidth: number = 400;
   virtualGridHeight: number = 200;
 
   panOffsetX: number = 0;
@@ -118,7 +118,7 @@ export class CanvasComponent implements OnInit {
     const zoomFactor = 1.05;
     let newScale = event.deltaY < 0 ? this.scale * zoomFactor : this.scale / zoomFactor;
 
-    newScale = Math.max(0.3, Math.min(newScale, 3));
+    newScale = Math.max(0.5, Math.min(newScale, 3));
 
     // Позиция указателя относительно SVG
     const pointerX = event.clientX - rect.left;

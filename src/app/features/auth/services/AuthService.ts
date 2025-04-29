@@ -19,11 +19,11 @@ export class AuthService {
 
   constructor(private authRepo: AuthRepository, private tokenStorage: TokenStorageService) {}
 
-  signIn(username: string, password: string): Observable<SignInResponse | null> {
+  signIn(loginOrEmail: string, password: string): Observable<SignInResponse | null> {
     this.loadingSubject.next(true);
     this.errorSubject.next(null);
 
-    return this.authRepo.signIn(username, password).pipe(
+    return this.authRepo.signIn(loginOrEmail, password).pipe(
       tap((res) => {
         if (res) {
           // Сохраняем токен и имя пользователя через TokenStorageService
@@ -31,7 +31,7 @@ export class AuthService {
           this.tokenStorage.saveUsername(res.username);
         }
       }),
-      catchError((err) => {
+      catchError(() => {
         this.errorSubject.next('Неверный логин или пароль');
         return of(null);
       }),
@@ -48,7 +48,7 @@ export class AuthService {
         console.log('Регистрация успешна:', data);
       }),
       map(() => true), // <-- тут мы явно возвращаем true
-      catchError((err) => {
+      catchError(() => {
         this.errorSubject.next('Ошибка при регистрации');
         return of(false);
       }),
