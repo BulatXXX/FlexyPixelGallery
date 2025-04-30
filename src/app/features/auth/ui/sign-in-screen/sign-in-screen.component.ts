@@ -53,11 +53,11 @@ export class SignInScreenComponent {
     try {
       await this.authService.signIn(this.username, this.password);
       this.notificationService.showSuccess('Login successful!');
-      // ждём, пока навигация завершится (опционально)
+
       await this.router.navigate(['/profile']);
     } catch (err) {
-      // можно добавить задержку, чтобы сообщение не мелькало
       await new Promise(res => setTimeout(res, 2000));
+
       this.notificationService.showError('Invalid username or password');
       console.error('SignIn error:', err);
     } finally {

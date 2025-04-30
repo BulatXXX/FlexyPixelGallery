@@ -1,42 +1,67 @@
-<div class="auth-container" [ngStyle]="{'height.px': window.innerHeight-77}">
-  <div class="auth-form">
+<div class="auth-container">
+  <form class="auth-form" (ngSubmit)="signUp()" #form="ngForm">
     <h2>Welcome to FlexyPixel</h2>
 
-    <mat-form-field class="loginInput" appearance="fill">
-      <mat-label class="matLabel">Username</mat-label>
-      <input class="matInput" matInput  [(ngModel)]="username" />
+    <mat-form-field appearance="fill">
+      <mat-label>Username</mat-label>
+      <input matInput name="username" [(ngModel)]="username" required />
     </mat-form-field>
-    <mat-form-field class="loginInput" appearance="fill">
-      <mat-label class="matLabel">Login</mat-label>
-      <input class="matInput" matInput  [(ngModel)]="login" />
+
+    <mat-form-field appearance="fill">
+      <mat-label>Login</mat-label>
+      <input matInput name="login" [(ngModel)]="login" required />
     </mat-form-field>
-    <mat-form-field class="loginInput" appearance="fill">
-      <mat-label class="matLabel">Email</mat-label>
-      <input type="email" class="matInput" placeholder="example@email.com" matInput [(ngModel)]="email" />
+
+    <mat-form-field appearance="fill">
+      <mat-label>Email</mat-label>
+      <input
+        matInput
+        type="email"
+        name="email"
+        placeholder="example@email.com"
+        [(ngModel)]="email"
+        required
+      />
     </mat-form-field>
-    <mat-form-field class="loginInput" appearance="fill">
+
+    <mat-form-field appearance="fill">
       <mat-label>Phone Number</mat-label>
       <input
         matInput
         type="tel"
+        name="phone"
         maxlength="18"
         placeholder="+7 (XXX) XXX-XX-XX"
         [(ngModel)]="phoneNumber"
-        (keydown) ="validatePhoneNumber($event)"
+        (keydown)="validatePhoneNumber($event)"
         (input)="formatPhoneNumber()"
+        required
       />
     </mat-form-field>
 
-    <mat-form-field appearance="fill" class="password-field">
-      <mat-label class="matLabel">Password</mat-label>
-      <input class="matInput" matInput [type]="isPasswordVisible ? 'text' : 'password'"  [(ngModel)]="password" />
+    <mat-form-field appearance="fill">
+      <mat-label>Password</mat-label>
+      <input
+        matInput
+        name="password"
+        [type]="isPasswordVisible ? 'text' : 'password'"
+        [(ngModel)]="password"
+        required
+      />
       <button mat-icon-button matSuffix type="button" (click)="togglePasswordVisibility()">
         <mat-icon>{{ isPasswordVisible ? 'visibility_off' : 'visibility' }}</mat-icon>
       </button>
     </mat-form-field>
 
-    <div class="signInButtonContainer">
-      <button mat-raised-button color="primary" (click)="signUp()">Sign Up</button>
+    <div class="submit-button">
+      <button
+        mat-raised-button
+        color="primary"
+        type="submit"
+        [disabled]="!form.valid"
+      >
+        Sign Up
+      </button>
     </div>
-  </div>
+  </form>
 </div>

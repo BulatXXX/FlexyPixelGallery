@@ -1,16 +1,17 @@
 @use '@angular/material' as mat;
-
-$flexy-theme: mat.define-theme((
-  color: (
-    theme-type: light,
-    primary: mat.$azure-palette,
-    tertiary: mat.$red-palette
-  )
-));
+@use "./app/styles/theme-colors";
 html {
-  @include mat.core();
-  @include mat.all-component-themes($flexy-theme);
+  color-scheme: light dark;
+  @include mat.theme((
+    color: theme-colors.$primary-palette,
+    //color: mat.$azure-palette,
+    typography: Unbounded,
+    font-weight: 200,
+    theme-type: light,
+    density: 0
+  ));
 }
+
 :root {
   --primary-color: #708D81;
   --secondary-color: #F4D58D;
@@ -31,21 +32,6 @@ html {
   --bg: hsl(var(--hue), 10%, 90%);
   --fg: hsl(var(--hue), 10%, 10%);
 
-
-  --mdc-theme-primary: #f60000;
-  --mdc-theme-on-primary: #0029ff;
-
-  --mdc-theme-secondary: #0029ff;
-  --mdc-theme-on-secondary: #0029ff;
-
-  --mdc-theme-background: #0029ff;            /* ваш фон */
-  --mdc-theme-on-background: #0029ff;
-
-  --mdc-theme-surface: #0029ff;
-  --mdc-theme-on-surface: #0029ff;
-
-  --mdc-theme-error: #0029ff;
-  --mdc-theme-on-error: #0029ff;
 }
 
 *, *::before, *::after {
@@ -62,12 +48,12 @@ html, body {
   overflow-x: hidden;
 
   background: linear-gradient(90deg, #4b3126, #a6755b, #e8be89);
-
+  color: var(--text-color);
   font-family: Unbounded, sans-serif;
   font-weight: 200;
   font-size: var(--text-size-small);
   line-height: 1.5;
-  color: var(--text-color);
+
 
 }
 
@@ -86,6 +72,7 @@ a, h1, h2, h3, h4, h5, h6, p {
   --mdc-snackbar-container-color: #47a60e;
   --mat-mdc-snack-bar-button-color: #fff;
   --mdc-snackbar-supporting-text-color: #fff;
+
 }
 
 

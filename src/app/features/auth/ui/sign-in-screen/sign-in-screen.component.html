@@ -1,26 +1,35 @@
 <div class="auth-container">
-  <div class="auth-form">
-    <h2>Signing In</h2>
+  <form class="auth-form" (ngSubmit)="login()" #form="ngForm">
+    <h2>Sign In</h2>
 
-    <mat-form-field appearance="fill" class="loginInput">
-      <mat-label class="matLabel">Username</mat-label>
-      <input class="matInput" matInput placeholder="Username" [(ngModel)]="username"/>
+    <mat-form-field appearance="fill">
+      <mat-label>Username</mat-label>
+      <input matInput placeholder="Username" [(ngModel)]="username" name="username" required />
     </mat-form-field>
 
-    <mat-form-field appearance="fill" class="password-field">
-      <mat-label class="matLabel">Password</mat-label>
-      <input class="matInput" matInput [type]="isPasswordVisible ? 'text' : 'password'" placeholder="Password"
-             [(ngModel)]="password"/>
+    <mat-form-field appearance="fill">
+      <mat-label>Password</mat-label>
+      <input matInput [type]="isPasswordVisible ? 'text' : 'password'" placeholder="Password"
+             [(ngModel)]="password" name="password" required />
       <button mat-icon-button matSuffix type="button" (click)="togglePasswordVisibility()">
         <mat-icon>{{ isPasswordVisible ? 'visibility_off' : 'visibility' }}</mat-icon>
       </button>
     </mat-form-field>
-    <div class="options">
-      <a routerLink="/recovery" class="password-option">Forgot password?</a>
-      <a routerLink="/sign-up" class="password-option">Sign up</a>
+
+    <div class="auth-options">
+      <a routerLink="/recovery">Forgot password?</a>
+      <a routerLink="/sign-up">Sign up</a>
     </div>
-    <div class="signInButtonContainer">
-      <button mat-raised-button color="primary" (click)="login()">Sign In</button>
+
+    <div class="submit-button">
+      <button
+        mat-raised-button
+        color="primary"
+        type="submit"
+        [disabled]="!form.valid"
+      >
+        Sign Up
+      </button>
     </div>
-  </div>
+  </form>
 </div>

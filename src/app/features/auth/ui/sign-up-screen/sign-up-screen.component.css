@@ -6,70 +6,29 @@
 }
 
 .auth-form {
-  background-color: var(--surface-color);
-  padding: 20px 40px;
+  background: var(--surface-color);
+  padding: 24px;
+  max-width: 400px;
+  width: 100%;
   border-radius: 8px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-  width: 100%;
-  margin: 0 10vw;
-  max-width: 400px; /* Максимальная ширина формы */
 }
 
 h2 {
   text-align: center;
-  margin-bottom: 20px;
+  margin-bottom: 24px;
 }
 
-.mat-form-field {
+mat-form-field {
   width: 100%;
   margin-bottom: 20px;
 }
 
-
-.password-field {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-
-  margin: 0;
-  padding: 0;
+.submit-button {
+  margin-top: 24px;
 }
 
-button {
+.submit-button button {
   width: 100%;
-
-}
-.signInButtonContainer{
-  padding-top: 20px;
-}
-
-.options{
-  display: flex;
-  justify-content: space-between;
-  font-size: var(--text-size-small);
-  padding: 0;
-  width: 100%;
-}
-.password-option{
-  margin: 0;
-  padding: 0;
-}
-
-.signInButtonContainer button{
-  border-radius: 10px;
-  background: white;
-}
-@media (max-width: 768px) {
-  .signInButtonContainer button {
-    font-size: var(--text-size-xsmall);
-  }
-  h2{
-    font-size: var(--text-size-medium);
-  }
-  .matLabel{
-    font-size: var(--text-size-xsmall);
-  }
-  .matInput{
-    font-size: var(--text-size-xsmall);
-  }
+  border-radius: 8px;
 }

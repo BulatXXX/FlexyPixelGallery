@@ -3,7 +3,7 @@ import {SignInResponse} from './models/SignInResponse';
 import {SignUpData} from './models/SignUpData';
 import {Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
-import {environment} from '../../app.config';
+import {environment} from '../../core/environment';
 
 export abstract class AuthRepository {
   abstract signIn(loginOrEmail: string, password: string): Observable<SignInResponse>;

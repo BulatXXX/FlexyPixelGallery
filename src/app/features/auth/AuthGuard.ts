@@ -26,7 +26,6 @@ export class AuthGuard implements CanActivate {
         await this.authService.refreshToken();
         return true;
       } catch {
-        // refresh не сработал — сбрасываем и редиректим
         this.tokenStorage.clearAll();
       }
     }

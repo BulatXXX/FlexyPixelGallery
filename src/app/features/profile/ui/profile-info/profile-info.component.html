@@ -1,0 +1,40 @@
+<mat-card class="profile-info-card">
+  <div class="avatar-section">
+    <img [src]="user.avatarUrl" alt="Avatar" class="avatar"/>
+  </div>
+
+  <div class="info-section">
+    <h2>{{ user.displayName }}</h2>
+
+    <div class="username">
+      #{{ user.username }}
+    </div>
+
+    <div class="verified" *ngIf="user.isVerified">
+      <mat-icon color="primary">verified</mat-icon>
+      Verified
+    </div>
+
+    <ng-container *ngIf="isOwnProfile">
+
+      <div class="role">
+        <mat-icon>security</mat-icon>
+        {{ user.role }}
+      </div>
+      <div class="bio">
+        <mat-icon>book</mat-icon>
+        {{ user.bio === '' || user.bio == null ? 'no data' : user.bio }}
+      </div>
+      <div class="created-at">
+        <mat-icon>calendar_today</mat-icon>
+        Joined on {{ user.createdAt | date:'dd.MM.yyyy' }}
+      </div>
+
+
+      <button mat-raised-button color="primary" class="edit-btn">
+        <mat-icon>edit</mat-icon>
+        Edit Profile
+      </button>
+    </ng-container>
+  </div>
+</mat-card>

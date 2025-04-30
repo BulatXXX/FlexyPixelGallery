@@ -1,5 +1,5 @@
-import {Component, OnInit} from '@angular/core';
-import {NgForOf, NgOptimizedImage} from '@angular/common';
+import {Component, computed, inject, OnInit, signal} from '@angular/core';
+import {NgForOf, NgIf} from '@angular/common';
 import {MatFormField} from '@angular/material/form-field';
 import {MatInput, MatLabel} from '@angular/material/input';
 import {MatTab, MatTabGroup} from '@angular/material/tabs';
@@ -8,9 +8,14 @@ import {ConfigurationCardComponent} from '../../../../ui/components/configuratio
 import {panelConfigurations} from '../../../../models/PanelConfiguration';
 import {MatIcon} from '@angular/material/icon';
 import {UserService} from '../../UserService';
-import {Router} from '@angular/router';
 import {NotificationService} from '../../../../core/services/NotificationService';
-import {environment} from '../../../../app.config';
+import {MatButton} from '@angular/material/button';
+import {FormsModule} from '@angular/forms';
+import { ActivatedRoute } from '@angular/router';
+import {HttpClient} from '@angular/common/http';
+import {ProfileInfoComponent} from '../profile-info/profile-info.component';
+import {ProfileTabsComponent} from '../profile-tabs/profile-tabs.component';
+
 
 
 @Component({
@@ -26,73 +31,26 @@ import {environment} from '../../../../app.config';
     MatTab,
     ConfigurationCardComponent,
     MatIcon,
-    MatLabel
+    MatLabel,
+    MatButton,
+    NgIf,
+    FormsModule,
+    ProfileInfoComponent,
+    ProfileTabsComponent
   ],
   styleUrl: './profile-screen.component.css'
 })
-export class ProfileScreenComponent implements OnInit {
-  token = '';
+export class ProfileScreenComponent {
+  private route = inject(ActivatedRoute);
+  private userService = inject(UserService);
 
-  publicId: string = '';
-  email: string = '';
-  username: string = '';
-  displayName: string = '';
-  phone: string = '';
-  avatarUrl: any = '';
-  bio: any = '';
-  isVerified: boolean = false;
-  role: string = '';
-  mobileRole: string = '';
-  createdAt: string = '';
+  readonly publicId = this.route.snapshot.paramMap.get('publicId');
+  readonly user = this.userService.user;
+  readonly configurations = this.userService.all;
+  readonly isOwnProfile = this.userService.isOwnProfile;
 
-  //заглушки
-  profileConfigurations= panelConfigurations.filter(elem=>!elem.in_gallery)
-
-  myPostConfigurations= panelConfigurations.filter(elem=>elem.in_gallery)
-  editConfiguration(configId: string) {
-    console.log(`Edit config: ${configId}`);
-    // Здесь будет логика вызова ConfigurationService
-  }
-
-  addConfiguration(configId: string) {
-    console.log(`Add config: ${configId}`);
-    // Здесь будет логика вызова ConfigurationService
-  }
-
-  ngOnInit() {
-    this.userService.getUserProfile().subscribe({
-      next: (data) => {
-        this.publicId = data.publicId;
-        this.email = data.email;
-        this.username = data.username;
-        this.displayName = data.displayName;
-        this.phone = data.phone;
-        this.avatarUrl = data.avatarUrl;
-        this.bio = data.bio;
-        this.isVerified = data.isVerified;
-        this.role = data.role;
-        this.mobileRole = data.mobileRole;
-        this.createdAt = data.createdAt;
-      },
-      error: (err) => {
-        this.notificationService.showError('Error loading user profile');
-      }
-    });
-  }
-
-  createPost(configId: string) {
-    console.log(`Create post with config: ${configId}`);
-  }
-
-  constructor(private userService: UserService,private notificationService: NotificationService,) {
-  }
-
-  protected readonly environment = environment;
-}
-
-//заглушки
-class Item{
-  constructor(public num:number,public name:string) {
+  constructor() {
+    this.userService.loadUserProfile(this.publicId?.toString());
   }
 }
 
