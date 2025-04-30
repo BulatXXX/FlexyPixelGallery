@@ -21,10 +21,7 @@
         <mat-icon>security</mat-icon>
         {{ user.role }}
       </div>
-      <div class="bio">
-        <mat-icon>book</mat-icon>
-        {{ user.bio === '' || user.bio == null ? 'no data' : user.bio }}
-      </div>
+
       <div class="created-at">
         <mat-icon>calendar_today</mat-icon>
         Joined on {{ user.createdAt | date:'dd.MM.yyyy' }}
@@ -35,6 +32,21 @@
         <mat-icon>edit</mat-icon>
         Edit Profile
       </button>
+      <div class="bio">
+        <mat-icon>book</mat-icon>
+
+        <p class="bio-text">
+          {{
+            user.bio === '' || user.bio == null
+              ? 'This user has not written a biography yet. In the meantime, feel free to explore their public configurations and animations. ' +
+              'When they’re ready to share their story—perhaps their inspirations, goals, ' +
+              'or favorite LED effects—it will appear here. Stay tuned for updates, and don’t hesitate to reach out if you’d like to connect!'
+              : user.bio
+          }}
+        </p>
+
+
+      </div>
     </ng-container>
   </div>
 </mat-card>

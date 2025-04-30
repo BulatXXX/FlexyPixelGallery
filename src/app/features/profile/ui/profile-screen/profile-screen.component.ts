@@ -24,19 +24,10 @@ import {ProfileTabsComponent} from '../profile-tabs/profile-tabs.component';
   templateUrl: './profile-screen.component.html',
   standalone: true,
   imports: [
-    MatFormField,
-    MatInput,
-    NgForOf,
-    MatTabGroup,
-    MatTab,
-    ConfigurationCardComponent,
-    MatIcon,
-    MatLabel,
-    MatButton,
-    NgIf,
     FormsModule,
     ProfileInfoComponent,
-    ProfileTabsComponent
+    ProfileTabsComponent,
+    NgIf
   ],
   styleUrl: './profile-screen.component.css'
 })

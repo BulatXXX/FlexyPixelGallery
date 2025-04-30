@@ -10,7 +10,6 @@ import {AuthService} from '../../services/AuthService';
 import {SignUpData} from '../../models/SignUpData';
 import {NotificationService} from '../../../../core/services/NotificationService';
 import {Router} from '@angular/router';
-import {AuthRepository, AuthRepositoryImpl} from '../../AuthRepository';
 import {LoadingService} from '../../../../core/services/LoadingService';
 
 @Component({
@@ -24,7 +23,6 @@ import {LoadingService} from '../../../../core/services/LoadingService';
     MatFormField,
     MatIcon,
     MatLabel,
-    NgStyle
   ],
   templateUrl: './sign-up-screen.component.html',
   standalone: true,

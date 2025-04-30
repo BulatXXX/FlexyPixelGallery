@@ -1,0 +1,38 @@
+<mat-card class="cfg-card">
+  <div class="preview">
+    <img
+      *ngIf="config.previewImageUrl; else placeholder"
+      [src]="config.previewImageUrl"
+      alt="Preview"
+    />
+    <ng-template #placeholder>
+      <div class="no-preview">
+        <mat-icon>image_not_supported</mat-icon>
+      </div>
+    </ng-template>
+  </div>
+
+  <mat-card-content class="content">
+    <h3 class="title">{{ config.name }}</h3>
+    <p class="desc">
+      {{ config.description || 'No description provided.' }}
+    </p>
+  </mat-card-content>
+
+  <mat-card-actions class="actions">
+    <div class="meta">
+      <mat-icon inline>calendar_today</mat-icon>
+      <span>{{ config.createdAt | date:'dd.MM.yyyy' }}</span>
+    </div>
+    <div class="status">
+      <mat-icon inline>
+        {{ config.forkStatus === 'ORIGINAL' ? 'fiber_manual_record' : 'call_split' }}
+      </mat-icon>
+      <span>{{ config.forkStatus }}</span>
+    </div>
+    <button mat-icon-button [routerLink]="['/config', config.publicId]">
+      <mat-icon>chevron_right</mat-icon>
+    </button>
+  </mat-card-actions>
+</mat-card>
+

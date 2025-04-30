@@ -1,18 +1,26 @@
+/* Корневая карточка профиля */
 .profile-info-card {
   width: 100%;
   max-width: 300px;
+  height: 100%;                /* растягиваем на всю доступную высоту */
   padding: 16px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 16px;
   box-sizing: border-box;
+
+  display: flex;
+  flex-direction: column;      /* в колонку: аватар + секция инфо */
+  align-items: flex-start;
+
+  border-right: 1px solid #333;
+  background-color: #111;
+  overflow: hidden;            /* чтобы внутренний скролл работал корректно */
 }
 
+/* Аватар остаётся статичным сверху */
 .avatar-section {
+  width: 100%;
   display: flex;
   justify-content: center;
-  width: 100%;
+  margin-bottom: 16px;
 }
 
 .avatar {
@@ -23,28 +31,50 @@
   border: 2px solid #ccc;
 }
 
+/* Секция с текстом (сразмерена под flex-контейнер) */
 .info-section {
   width: 100%;
   display: flex;
   flex-direction: column;
+  flex: 1 1 auto;     /* занимает всё оставшееся место под аватар */
+  overflow: hidden;    /* обрезает лишнее, чтобы прокрутка шла внутри bio */
   gap: 8px;
-  text-align: left; /* по левому краю */
-  word-break: break-word;
-  overflow-wrap: anywhere;
+  text-align: left;
   box-sizing: border-box;
 }
-
-mat-icon {
-  vertical-align: middle;
-  margin-right: 4px;
+.info-section > h2 {
+  word-break: break-word;
+  overflow-wrap: break-word;
+  white-space: normal;
+  width: 100%;
 }
 
+/* Все элементы в info-section выше bio — статичны */
+.info-section > h2,
+.info-section > .username,
+.info-section > .verified,
+.info-section > .role,
+.info-section > .created-at,
+.info-section > .edit-btn {
+  flex: 0 0 auto;
+}
+
+/* Настройка username для переноса */
+.username {
+  width: 100%;
+  box-sizing: border-box;
+  white-space: normal;
+  word-break: break-word;
+  overflow-wrap: anywhere;
+}
+
+/* Кнопка */
 .edit-btn {
-  margin-top: 16px;
-  align-self: center;
-  width: 100%; /* на всю ширину */
+  width: 100%;
+  margin: 16px 0;
 }
 
+/* Роль пользователя */
 .role {
   display: flex;
   align-items: center;
@@ -52,17 +82,44 @@ mat-icon {
   font-size: 14px;
 }
 
-.bio {
-  display: flex;
-  align-items: center;
-  gap: 4px;
-  font-size: 14px;
-}
-
+/* Дата регистрации */
 .created-at {
   display: flex;
   align-items: center;
   gap: 4px;
   font-size: 14px;
   color: #666;
+}
+
+/* Блок биографии: занимает всё, что осталось, и скроллится */
+.bio {
+  display: flex;
+  align-items: flex-start;
+  flex: 1 1 auto;    /* занимает всё свободное пространство внизу */
+  width: 100%;
+  gap: 8px;
+  box-sizing: border-box;
+  overflow-y: auto;  /* прокрутка только здесь */
+  padding-right: 4px;/* место под скроллбар */
+}
+
+/* Иконка в bio */
+.bio mat-icon {
+  flex: 0 0 auto;
+  margin-top: 4px;
+  color: #ccc;
+}
+
+/* Текст биографии */
+.bio-text {
+  flex: 1 1 auto;
+  min-width: 0;      /* позволяет flex-сжатию */
+  margin: 0;
+
+  word-break: break-word;
+  overflow-wrap: break-word;
+
+  font-size: 14px;
+  line-height: 1.5;
+  color: #ccc;
 }
