@@ -1,9 +1,12 @@
-import { Injectable, inject, signal } from '@angular/core';
-import { UserRepository } from './UserRepository';
+import {Injectable, inject, signal} from '@angular/core';
+import {UserRepository} from './UserRepository';
+import {LoadingService} from '../../core/services/LoadingService';
+import {finalize, map, tap} from 'rxjs';
 
-@Injectable({ providedIn: 'root' })
+@Injectable({providedIn: 'root'})
 export class UserService {
   private readonly repo = inject(UserRepository);
+  private readonly loadingService = inject(LoadingService);
 
   user = signal<any | null>(null);
 
@@ -23,14 +26,33 @@ export class UserService {
       : this.repo.getUserById(publicId);
 
     user$.subscribe(user => this.user.set(user));
-
+    this.loadingService.show()
     if (isOwn) {
-      this.repo.getAllConfigurations().subscribe(this.all.set);
+      this.repo.getAllConfigurations().pipe(
+        finalize(() => {
+          this.loadingService.hide()
+        })
+      ).subscribe(this.all.set);
       this.repo.getOriginalConfigurations().subscribe(this.original.set);
       this.repo.getForkedConfigurations().subscribe(this.forked.set);
       this.repo.getPublicConfigurations().subscribe(this.publicOnly.set);
     } else {
-      this.repo.getPublicConfigurationsByUser(publicId!).subscribe(this.publicOnly.set);
+      this.repo.getPublicConfigurationsByUser(publicId!).pipe(finalize(() => {
+        this.loadingService.hide()
+      })).subscribe(this.publicOnly.set);
     }
+  }
+  updateAvatar(file: File) {
+    return this.repo.uploadAvatar(file).pipe(
+      // ответ { avatarUrl: string }
+      map(resp => resp.avatarUrl),
+      tap(newUrl => {
+        // обновляем всю модель user
+        const u = this.user();
+        if (u) {
+          this.user.set({ ...u, avatarUrl: newUrl });
+        }
+      })
+    );
   }
 }

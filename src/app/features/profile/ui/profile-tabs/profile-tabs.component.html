@@ -3,24 +3,23 @@
     <mat-label>Search Configurations</mat-label>
     <input
       matInput
-      [value]="searchTerm()"
-      (input)="searchTerm.set($any($event.target).value)"
+      [(ngModel)]="searchTerm"
       placeholder="Type to filter..."
     />
     <mat-icon matSuffix>search</mat-icon>
   </mat-form-field>
 
-  <mat-tab-group
-    [selectedIndex]="selectedTab"
-    (selectedIndexChange)="onTabChange($event)"
-  >
-    <mat-tab *ngFor="let tab of tabs()" [label]="tab"></mat-tab>
+
+  <mat-tab-group [selectedIndex]="selectedTab"
+                 (selectedIndexChange)="onTabChange($event)">
+    <mat-tab *ngFor="let t of tabs" [label]="t"></mat-tab>
   </mat-tab-group>
 
   <div class="config-list">
     <app-configuration-card
-      *ngFor="let cfg of configurations"
-      [config]="cfg"
-    ></app-configuration-card>
+      *ngFor="let cfg of filteredConfigs"
+      [config]="cfg">
+    </app-configuration-card>
   </div>
+
 </div>

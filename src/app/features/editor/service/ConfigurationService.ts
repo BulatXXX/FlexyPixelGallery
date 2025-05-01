@@ -5,6 +5,7 @@ import {PanelStateService} from './PanelStateService';
 import {Frame} from '../models/Frame';
 import {Direction, Panel} from '../models/Panel';
 import {BehaviorSubject, Observable, tap} from 'rxjs';
+import {environment} from '../../../core/environment';
 
 export interface SaveConfigurationRequest {
     name: string;
@@ -44,7 +45,7 @@ export interface ConfigurationResponse {
 
 @Injectable({providedIn: 'root'})
 export class ConfigurationService {
-    private readonly baseUrl = 'http://localhost:8080/configurations/my';
+    private readonly baseUrl = `${environment.apiUrl}/configurations/my/`;
 
     private currentPublicIdSubject = new BehaviorSubject<string | null>(null);
     public currentPublicId$ = this.currentPublicIdSubject.asObservable();
@@ -106,7 +107,7 @@ export class ConfigurationService {
         const payload = this.serializeConfiguration();
         const duration = performance.now() - start;
         console.log(`serializeConfiguration took ${duration.toFixed(2)} ms`);
-        this.downloadPayloadAsFile(payload, 'configuration-payload.json');
+        //this.downloadPayloadAsFile(payload, 'configuration-payload.json');
 
         if (this.currentPublicIdSubject.getValue()) {
 

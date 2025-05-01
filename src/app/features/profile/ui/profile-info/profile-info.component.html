@@ -1,7 +1,32 @@
 <mat-card class="profile-info-card">
-  <div class="avatar-section">
-    <img [src]="user.avatarUrl" alt="Avatar" class="avatar"/>
+  <div
+    class="avatar-wrapper"
+    (mouseenter)="hover = true"
+    (mouseleave)="hover = false"
+  >
+    <img [src]="user.avatarUrl" alt="Avatar" class="avatar" />
+
+    <!-- Прямоугольный оверлей теперь внутри wrapper -->
+    <div
+      *ngIf="hover"
+
+      class="avatar-overlay"
+      (click)="fileInput.click()"
+    >
+      <mat-icon>edit</mat-icon>
+    </div>
+
+    <input
+      #fileInput
+      type="file"
+      accept="image/png, image/jpeg, image/gif"
+      hidden
+      (change)="onAvatarSelected($event)"
+    />
   </div>
+
+
+
 
   <div class="info-section">
     <h2>{{ user.displayName }}</h2>

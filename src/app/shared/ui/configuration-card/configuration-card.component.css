@@ -2,6 +2,7 @@
   display: flex;
   flex-direction: column;
   height: 100%;
+  max-height: 320px;
   box-sizing: border-box;
   overflow: hidden;
 
@@ -9,8 +10,9 @@
 
 .preview {
   width: 100%;
-  padding-top: 56.25%; /* 16:9 aspect */
+  padding-top: 46.25%; /* 16:9 aspect */
   position: relative;
+  flex: 0 0 auto;
   background-color: #222;
 }
 
@@ -20,8 +22,12 @@
   left: 0;
   width: 100%;
   height: 100%;
-  object-fit: cover;
+
+  /* масштабируем по большей стороне, чтобы всё помещалось */
+  object-fit: contain;
+  object-position: center;
 }
+
 
 .no-preview {
   position: absolute;
@@ -47,6 +53,9 @@
   font-size: 16px;
   font-weight: 600;
   word-break: break-word;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
 }
 
 .desc {
@@ -55,6 +64,7 @@
   font-size: 14px;
   color: #ccc;
   overflow: hidden;
+  white-space: nowrap;
   text-overflow: ellipsis;
   display: -webkit-box;
   -webkit-line-clamp: 3; /* show up to 3 lines */

@@ -1,16 +1,21 @@
 <mat-card class="cfg-card">
   <div class="preview">
-    <img
-      *ngIf="config.previewImageUrl; else placeholder"
-      [src]="config.previewImageUrl"
-      alt="Preview"
-    />
+    <ng-container *ngIf="getPreviewUrl(config) as url; else placeholder">
+      <!-- Если URL есть, проверяем флаг ошибки -->
+      <img
+        *ngIf="!previewError; else placeholder"
+        [src]="url"
+        alt="Preview"
+        (error)="onImageError()"
+      />
+    </ng-container>
     <ng-template #placeholder>
       <div class="no-preview">
         <mat-icon>image_not_supported</mat-icon>
       </div>
     </ng-template>
   </div>
+
 
   <mat-card-content class="content">
     <h3 class="title">{{ config.name }}</h3>

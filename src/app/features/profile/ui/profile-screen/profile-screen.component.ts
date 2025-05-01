@@ -33,11 +33,14 @@ import {ProfileTabsComponent} from '../profile-tabs/profile-tabs.component';
 })
 export class ProfileScreenComponent {
   private route = inject(ActivatedRoute);
-  private userService = inject(UserService);
+  protected userService = inject(UserService);
 
   readonly publicId = this.route.snapshot.paramMap.get('publicId');
   readonly user = this.userService.user;
-  readonly configurations = this.userService.all;
+  readonly all = this.userService.all;
+  readonly original = this.userService.original;
+  readonly forked = this.userService.forked;
+  readonly publicOnly = this.userService.publicOnly;
   readonly isOwnProfile = this.userService.isOwnProfile;
 
   constructor() {

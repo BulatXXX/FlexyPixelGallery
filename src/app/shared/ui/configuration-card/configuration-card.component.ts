@@ -18,12 +18,27 @@ export class ConfigurationCardComponent {
     name: string;
     description: string;
     previewImageUrl: string | null;
+    miniPreviewImageUrl: string | null;
+    miniPreviewPanelUid: string | null;
+    useMiniPreview: boolean;
     createdAt: string;
     updatedAt: string;
     forkStatus: 'ORIGINAL' | 'ADDED' | 'MODIFIED';
     forkInfo: any | null;
     isPublic?: boolean;
   };
+
+  previewError = false;
+  onImageError() {
+    this.previewError = true;               // при ошибке ставим флаг
+  }
+  getPreviewUrl(config: any): string | null {
+    if (config.useMiniPreview) {
+      return config.miniPreviewImageUrl || config.previewImageUrl || null;
+    } else {
+      return config.previewImageUrl || config.miniPreviewImageUrl || null;
+    }
+  }
 
   onPublish(publicId: string) {
 
