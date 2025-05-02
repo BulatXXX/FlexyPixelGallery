@@ -8,7 +8,7 @@ import { Injectable } from '@angular/core';
 export class TokenStorageService {
   private readonly ACCESS_TOKEN_KEY  = 'access_token';
   private readonly REFRESH_TOKEN_KEY = 'refresh_token';
-  private readonly USERNAME_KEY      = 'username';
+  private readonly PUBLIC_ID_KEY      = 'public_id';
 
   // — ACCESS TOKEN
   saveAccessToken(token: string): void {
@@ -33,20 +33,20 @@ export class TokenStorageService {
   }
 
   // — USERNAME (или ID)
-  saveUsername(username: string): void {
-    localStorage.setItem(this.USERNAME_KEY, username);
+  savePublicId(username: string): void {
+    localStorage.setItem(this.PUBLIC_ID_KEY, username);
   }
-  getUsername(): string | null {
-    return localStorage.getItem(this.USERNAME_KEY);
+  getPublicId(): string | null {
+    return localStorage.getItem(this.PUBLIC_ID_KEY);
   }
-  clearUsername(): void {
-    localStorage.removeItem(this.USERNAME_KEY);
+  clearPublicId(): void {
+    localStorage.removeItem(this.PUBLIC_ID_KEY);
   }
 
   // — всё сразу очистить
   clearAll(): void {
     this.clearAccessToken();
     this.clearRefreshToken();
-    this.clearUsername();
+    this.clearPublicId();
   }
 }

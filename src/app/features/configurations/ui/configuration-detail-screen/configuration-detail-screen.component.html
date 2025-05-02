@@ -1,0 +1,53 @@
+<div class="screen-container">
+  <div class="detail-container" *ngIf="service.config() as cfg">
+    <div class="detail-info">
+      <mat-form-field appearance="outline" class="name-field">
+              <mat-label>Name</mat-label>
+              <input
+                matInput
+                [(ngModel)]="cfg.name"
+                placeholder="Enter name"
+              />
+            </mat-form-field>
+      <mat-form-field appearance="outline" class="description-field">
+              <mat-label>Description</mat-label>
+              <textarea
+                matInput
+                [(ngModel)]="cfg.description"
+                placeholder="Enter detailed description"
+              ></textarea>
+            </mat-form-field>
+
+      <mat-slide-toggle [(ngModel)]="cfg.useMiniPreview">
+        Use Mini Preview
+      </mat-slide-toggle>
+
+      <div class="meta">
+        <div>Created: {{ cfg.createdAt | date:'dd.MM.yyyy' }}</div>
+        <div>Status: {{ cfg.forkStatus }}</div>
+        <div>Updated: {{ cfg.updatedAt | date:'dd.MM.yyyy' }}</div>
+      </div>
+
+      <div class="actions">
+        <button mat-raised-button color="primary" (click)="save()">
+          Save
+        </button>
+        <button
+          *ngIf="cfg.forkStatus === 'ORIGINAL' && cfg.isOwner && !cfg.isPublic"
+          mat-stroked-button
+          color="accent"
+          (click)="publish(cfg.publicId)"
+        >
+          Publish to Gallery
+        </button>
+      </div>
+    </div>
+    <div class="detail-preview">
+      <img
+        [src]="cfg.previewImageUrl"
+        alt="Configuration Preview"
+        class="preview-img"
+      />
+    </div>
+  </div>
+</div>

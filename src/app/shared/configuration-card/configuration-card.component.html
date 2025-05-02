@@ -1,0 +1,107 @@
+<mat-card class="cfg-card">
+  <div class="preview">
+    <ng-container *ngIf="getPreviewUrl(config) as url; else placeholder">
+      <!-- Если URL есть, проверяем флаг ошибки -->
+      <img
+        *ngIf="!previewError; else placeholder"
+        [src]="url"
+        alt="Preview"
+        (error)="onImageError()"
+      />
+    </ng-container>
+    <ng-template #placeholder>
+      <div class="no-preview">
+        <mat-icon>image_not_supported</mat-icon>
+      </div>
+    </ng-template>
+  </div>
+
+
+  <mat-card-content class="content">
+    <h3 class="title">{{ config.name }}</h3>
+    <p class="desc">
+      {{ config.description || 'No description provided.' }}
+    </p>
+  </mat-card-content>
+
+  <mat-card-actions class="actions">
+    <div class="meta">
+      <mat-icon inline>calendar_today</mat-icon>
+      <span>{{ config.createdAt | date:'dd.MM.yyyy' }}</span>
+    </div>
+    <div class="status">
+      <mat-icon inline>
+        {{ config.forkStatus === 'ORIGINAL' ? 'fiber_manual_record' : 'call_split' }}
+      </mat-icon>
+      <span>{{ config.forkStatus }}</span>
+    </div>
+
+    <button mat-icon-button [matMenuTriggerFor]="configMenu">
+      <mat-icon>chevron_right</mat-icon>
+    </button>
+
+    <mat-menu #configMenu="matMenu">
+      <!-- 1) Всегда: перейти в detail/view -->
+      <button mat-menu-item (click)="view(config.publicId)">
+        <mat-icon>visibility</mat-icon>
+        View
+      </button>
+
+      <!-- 2) Собственник всегда может редактировать -->
+      <button *ngIf="isOwnProfile" mat-menu-item (click)="edit(config.publicId)">
+        <mat-icon>edit</mat-icon>
+        Edit
+      </button>
+
+      <!-- 3) Publish / Unpublish для оригиналов -->
+      <button
+        *ngIf="config.forkStatus==='ORIGINAL' && !config.isPublic"
+        mat-menu-item (click)="publish(config.publicId)"
+      >
+        <mat-icon>public</mat-icon>
+        Publish
+      </button>
+      <button
+        *ngIf="config.forkStatus==='ORIGINAL' && config.isPublic"
+        mat-menu-item (click)="unpublish(config.publicId)"
+      >
+        <mat-icon>lock</mat-icon>
+        Unpublish
+      </button>
+      <button
+        *ngIf="config.forkStatus==='ORIGINAL' && config.isPublic"
+        mat-menu-item (click)="viewOnGallery(config.publicId)"
+      >
+        <mat-icon>link</mat-icon>
+        View on Gallery
+      </button>
+
+      <!-- 4) Forked: редактировать и перейти к original -->
+      <button
+        *ngIf="config.forkStatus==='ADDED' || config.forkStatus==='MODIFIED'"
+        mat-menu-item (click)="gotoOriginal(config.forkInfo.publicId)"
+      >
+        <mat-icon>call_split</mat-icon>
+        Go to Original
+      </button>
+
+      <!-- 5) Fork any public config -->
+      <button
+        *ngIf="config.isPublic && isOwnProfile"
+        mat-menu-item (click)="fork(config.publicId)"
+      >
+        <mat-icon>content_copy</mat-icon>
+        Fork
+      </button>
+
+      <!-- 7) Delete (только свой контент) -->
+      <button *ngIf="isOwnProfile" mat-menu-item (click)="delete(config.publicId)">
+        <mat-icon>delete</mat-icon>
+        Delete
+      </button>
+    </mat-menu>
+
+
+  </mat-card-actions>
+</mat-card>
+

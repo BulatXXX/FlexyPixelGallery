@@ -11,12 +11,16 @@ import {
   PasswordRecoveryScreenComponent
 } from './ui/screens/password-recovery-screen/password-recovery-screen.component';
 import {AuthGuard} from './features/auth/AuthGuard';
+import {
+  ConfigurationDetailScreenComponent
+} from './features/configurations/ui/configuration-detail-screen/configuration-detail-screen.component';
 
 export const routes: Routes = [
   {path: '', component: HomeScreenComponent},  // Главная страница
   {path: 'gallery', component: GalleryScreenComponent},
-  {path: 'editor', component: EditorScreenComponent },
-  {path: 'editor/:publicId', component: EditorScreenComponent},
+  {path: 'editor', component: EditorScreenComponent, canActivate: [AuthGuard]},
+  {path: 'editor/:publicId', component: EditorScreenComponent, canActivate: [AuthGuard]},
+  {path: 'configurations/:publicId', component: ConfigurationDetailScreenComponent, canActivate: [AuthGuard]},
   {path: 'firmware', component: FirmwareScreenComponent},
   {path: 'faq', component: FaqScreenComponent},
   {path: 'profile', component: ProfileScreenComponent, canActivate: [AuthGuard]},

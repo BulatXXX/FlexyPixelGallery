@@ -36,7 +36,7 @@ export class AuthService {
       // сохраняем оба токена
       this.tokenStorage.saveAccessToken(res.accessToken);
       this.tokenStorage.saveRefreshToken(res.refreshToken);
-      this.tokenStorage.saveUsername(res.publicId);
+      this.tokenStorage.savePublicId(res.publicId);
 
       await this.router.navigate(['/profile']);
     } catch (err) {

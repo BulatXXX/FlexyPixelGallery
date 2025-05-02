@@ -18,6 +18,7 @@
   <div class="config-list">
     <app-configuration-card
       *ngFor="let cfg of filteredConfigs"
+      [isOwnProfile]="isOwnProfile"
       [config]="cfg">
     </app-configuration-card>
   </div>

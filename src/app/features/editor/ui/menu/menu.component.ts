@@ -12,6 +12,7 @@ import {AnimationService} from '../../service/AnimationService';
 import {ConfigurationService} from '../../service/ConfigurationService';
 import {DialogService} from '../../../../core/services/dialog.service';
 import {Subscription} from 'rxjs';
+import {CreateResponse} from '../../../configurations/library-configuration.repository';
 
 @Component({
   selector: 'app-menu',
@@ -103,10 +104,20 @@ export class MenuComponent implements OnInit {
   }
 
   save() {
-    this.configurationService.saveConfiguration().subscribe(
-      res => console.log('Response:', res),
-      err => console.error('Error:', err)
-    );
+    this.configurationService.saveConfiguration().subscribe({
+      next: (res: CreateResponse | void) => {
+        if (res) {
+          // ветка CREATE
+          console.log('Новая конфигурация, publicId =', (res as CreateResponse).publicId);
+        } else {
+          // ветка UPDATE
+          console.log('Конфигурация успешно обновлена');
+        }
+      },
+      error: err => {
+        console.error('Ошибка при сохранении:', err);
+      }
+    });
 
   }
 
