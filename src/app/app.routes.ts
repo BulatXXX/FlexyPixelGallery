@@ -15,7 +15,8 @@ import {AuthGuard} from './features/auth/AuthGuard';
 export const routes: Routes = [
   {path: '', component: HomeScreenComponent},  // Главная страница
   {path: 'gallery', component: GalleryScreenComponent},
-  {path: 'editor', component: EditorScreenComponent},
+  {path: 'editor', component: EditorScreenComponent },
+  {path: 'editor/:publicId', component: EditorScreenComponent},
   {path: 'firmware', component: FirmwareScreenComponent},
   {path: 'faq', component: FaqScreenComponent},
   {path: 'profile', component: ProfileScreenComponent, canActivate: [AuthGuard]},

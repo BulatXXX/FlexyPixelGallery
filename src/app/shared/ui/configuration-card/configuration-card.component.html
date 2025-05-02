@@ -35,9 +35,24 @@
       </mat-icon>
       <span>{{ config.forkStatus }}</span>
     </div>
-    <button mat-icon-button [routerLink]="['/config', config.publicId]">
+
+    <button mat-icon-button [matMenuTriggerFor]="configMenu">
       <mat-icon>chevron_right</mat-icon>
     </button>
+
+    <mat-menu #configMenu="matMenu">
+      <button *ngIf="config.forkStatus === 'ORIGINAL'" mat-menu-item>
+        <mat-icon>public</mat-icon>
+        Publish
+      </button>
+
+      <button mat-menu-item (click)="edit(config.publicId)">
+        <mat-icon>edit</mat-icon>
+        Edit
+      </button>
+
+    </mat-menu>
+
   </mat-card-actions>
 </mat-card>
 

@@ -45,7 +45,7 @@ export interface ConfigurationResponse {
 
 @Injectable({providedIn: 'root'})
 export class ConfigurationService {
-    private readonly baseUrl = `${environment.apiUrl}/configurations/my/`;
+    private readonly baseUrl = `${environment.apiUrl}/configurations/my`;
 
     private currentPublicIdSubject = new BehaviorSubject<string | null>(null);
     public currentPublicId$ = this.currentPublicIdSubject.asObservable();

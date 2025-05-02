@@ -1,10 +1,13 @@
-import { Component } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {CanvasComponent} from '../ui/canvas/canvas.component';
 import {InspectorComponent} from '../ui/inspector/inspector.component';
 import {DimensionService, EditorComponentsDimensions} from '../service/DimensionService';
 import {MenuComponent} from '../ui/menu/menu.component';
 import {ToolsComponent} from '../ui/tools/tools.component';
 import {PreviewComponent} from '../ui/preview/preview.component';
+import {ConfigurationService} from '../service/ConfigurationService';
+import {ActivatedRoute} from '@angular/router';
+import {firstValueFrom} from 'rxjs';
 
 @Component({
   selector: 'app-editor-screen',
@@ -19,9 +22,9 @@ import {PreviewComponent} from '../ui/preview/preview.component';
   standalone: true,
   styleUrl: './editor-screen.component.css',
 })
-export class EditorScreenComponent {
+export class EditorScreenComponent implements OnInit {
 
-  constructor(protected dimensionService: DimensionService) {
+  constructor(protected dimensionService: DimensionService,private configurationService: ConfigurationService,private route: ActivatedRoute) {
   }
 
   dimensions: EditorComponentsDimensions = {
@@ -33,8 +36,23 @@ export class EditorScreenComponent {
   };
 
 
+  async loadById(publicId: string): Promise<void> {
+    try {
+      const config = await firstValueFrom(
+        this.configurationService.loadConfiguration(publicId)
+      );
+      this.configurationService.applyConfiguration(config);
+      console.log('Configuration loaded successfully:', config);
+    } catch (err) {
+      console.error('Error loading configuration:', err);
+    }
+  }
 
   ngOnInit(): void {
+    const publicId = this.route.snapshot.paramMap.get('publicId');
+    if (publicId) {
+      void this.loadById(publicId);
+    }
     this.dimensionService.dimensions$.subscribe(dims => {
       this.dimensions = dims;
     });

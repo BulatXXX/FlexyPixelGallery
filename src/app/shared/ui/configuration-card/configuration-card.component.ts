@@ -3,12 +3,13 @@ import { CommonModule } from '@angular/common';
 import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
-import {RouterLink} from '@angular/router';
+import {Router, RouterLink} from '@angular/router';
+import {MatMenu, MatMenuItem, MatMenuTrigger} from '@angular/material/menu';
 
 @Component({
   selector: 'app-configuration-card',
   standalone: true,
-  imports: [CommonModule, MatCardModule, MatButtonModule, MatIconModule, RouterLink],
+  imports: [CommonModule, MatCardModule, MatButtonModule, MatIconModule, RouterLink, MatMenu, MatMenuItem, MatMenuTrigger],
   templateUrl: './configuration-card.component.html',
   styleUrls: ['./configuration-card.component.css']
 })
@@ -28,6 +29,8 @@ export class ConfigurationCardComponent {
     isPublic?: boolean;
   };
 
+  constructor(private router:Router) {
+  }
   previewError = false;
   onImageError() {
     this.previewError = true;               // при ошибке ставим флаг
@@ -42,5 +45,9 @@ export class ConfigurationCardComponent {
 
   onPublish(publicId: string) {
 
+  }
+
+  edit(publicId: string) {
+    this.router.navigate(['/editor', publicId]).then(r => {});
   }
 }
