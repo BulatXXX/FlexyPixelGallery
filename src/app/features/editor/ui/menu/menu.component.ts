@@ -121,22 +121,33 @@ export class MenuComponent implements OnInit {
 
   }
 
-  load(): void {
-    this.dialogService.openConfigurationDialog().subscribe(publicId => {
-      if (publicId) {
-        this.configurationService.loadConfiguration(publicId).subscribe(
-          response => {
-            this.configurationService.applyConfiguration(response);
-            console.log('Configuration loaded successfully:', response);
-          },
-          err => {
-            console.error('Error loading configuration:', err);
+  load() {
+    this.dialogService
+      .openConfigurationDialog()
+      .subscribe({
+        next: publicId => {
+          if (!publicId) {
+            console.log('Dialog cancelled or no ID provided.');
+            return;
           }
-        );
-      } else {
-        console.log('Dialog cancelled or no ID provided.');
-      }
-    });
+
+          this.configurationService
+            .loadConfiguration(publicId)
+            .subscribe({
+              next: response => {
+                this.configurationService.applyConfiguration(response);
+                console.log('Configuration loaded successfully:', response);
+              },
+              error: err => {
+                console.error('Error loading configuration:', err);
+              }
+            });
+        },
+        error: err => {
+          console.error('Error opening dialog:', err);
+        }
+      });
   }
+
 
 }

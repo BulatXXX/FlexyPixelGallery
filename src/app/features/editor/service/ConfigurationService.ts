@@ -6,7 +6,10 @@ import {Frame} from '../models/Frame';
 import {Direction, Panel} from '../models/Panel';
 import {BehaviorSubject, finalize, Observable, tap} from 'rxjs';
 import {environment} from '../../../core/environment';
-import {CreateResponse, LibraryConfigurationRepository} from '../../configurations/library-configuration.repository';
+import {
+  CreateResponse,
+  LibraryConfigurationRepository
+} from '../../configurations/library-configuration.repository';
 import {LoadingService} from '../../../core/services/LoadingService';
 
 
@@ -29,6 +32,7 @@ export interface ConfigurationResponse {
     panelPixelColors: string; // JSON-строка
   }[];
 }
+
 
 @Injectable({providedIn: 'root'})
 export class ConfigurationService {
@@ -107,7 +111,11 @@ export class ConfigurationService {
   }
 
   loadConfiguration(publicId: string): Observable<ConfigurationResponse> {
-    return this.http.get<ConfigurationResponse>(`${this.baseUrl}/${publicId}`);
+    this.loadingService.show();
+    return this.libraryConfigurationRepository.getConfiguration(publicId).pipe(
+      tap(res => this.setCurrentPublicId(res.publicId)),
+      finalize(() => this.loadingService.hide())
+    );
   }
 
   applyConfiguration(response: ConfigurationResponse): void {
@@ -127,7 +135,6 @@ export class ConfigurationService {
     this.panelStateService.updatePanels(panels);
     this.animationService.frames = frames;
     this.animationService.selectFrame(0);
-    this.setCurrentPublicId(response.publicId);
   }
 
   private convertToDirection(dir: string): Direction {

@@ -2,6 +2,8 @@ import {Injectable, inject} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {environment} from '../../core/environment';
 import {Observable} from 'rxjs';
+import {PublishResponse} from './gallery-configuration.repository';
+import {ConfigurationResponse} from '../editor/service/ConfigurationService';
 
 @Injectable({providedIn: 'root'})
 export class LibraryConfigurationRepository {
@@ -35,7 +37,10 @@ export class LibraryConfigurationRepository {
     return this.http.patch<void>(url, updateConfigurationStructureRequest);
   }
 
-
+  getConfiguration(publicId: string): Observable<ConfigurationResponse> {
+    const url = `${environment.apiUrl}/configurations/my/${publicId}`;
+    return this.http.get<ConfigurationResponse>(url);
+  }
 
 
 }
