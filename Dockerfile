@@ -10,5 +10,5 @@ RUN npm run build --prod
 # Продакшн nginx
 FROM nginx:alpine
 
-COPY --from=build /app/dist/FlexyPixelGallery/ /usr/share/nginx/html
+COPY --from=build /app/dist/flexy-pixel-gallery /usr/share/nginx/html
 COPY nginx.conf /etc/nginx/conf.d/default.conf
