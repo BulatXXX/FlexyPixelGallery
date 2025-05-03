@@ -6,7 +6,6 @@ import { AnimationService } from '../../service/AnimationService';
 import { SettingsService } from '../../service/SettingsService';
 import {Mode} from '../../models/Mode';
 import {ImageAttachingService} from '../../service/ImageAttachingService';
-import {async} from 'rxjs';
 
 @Component({
   selector: 'app-inspector',
@@ -16,7 +15,6 @@ import {async} from 'rxjs';
     MatIcon,
     NgForOf,
     NgIf,
-    AsyncPipe
   ],
   templateUrl: './inspector.component.html',
   standalone: true,
@@ -86,5 +84,4 @@ export class InspectorComponent {
     await this.imageAttachingService.apply();
   }
 
-  protected readonly async = async;
 }
