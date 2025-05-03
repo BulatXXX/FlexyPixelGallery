@@ -173,26 +173,33 @@ export class ImageAttachingService {
 
   async loadFile(file: File): Promise<void> {
     if (file.type === 'image/gif') {
-      // динамически импортируем, чтобы не тащить в бандл всё сразу
-      const { parseGIF, decompressFrames } = await import('gifuct-js');
+      // динамический импорт
+      const mod = await import('gifuct-js');
+
+      // если модуль в prod-сборке упакован в default, используем его,
+      // иначе — берем именованные экспорты из корня
+      const { default: def, ...rest } = mod;
+      const { parseGIF, decompressFrames } = def ?? rest;
+
+      // дальше без изменений
       const buffer = await file.arrayBuffer();
       const gif = parseGIF(buffer);
       const frames = decompressFrames(gif, true);
 
-      // создаём ImageBitmap из raw-патчей через OffscreenCanvas
-      this.bitmaps = await Promise.all(frames.map(async frame => {
-        const { dims, patch } = frame;
-        const off = new OffscreenCanvas(dims.width, dims.height);
-        const ctx = off.getContext('2d')!;
-        // patch — Uint8ClampedArray RGBA
-        const imgData = new ImageData(patch, dims.width, dims.height);
-        ctx.putImageData(imgData, 0, 0);
-        return await createImageBitmap(off);
-      }));
+      this.bitmaps = await Promise.all(
+        frames.map(async ({ dims, patch }) => {
+          const off = new OffscreenCanvas(dims.width, dims.height);
+          const ctx = off.getContext('2d')!;
+          ctx.putImageData(new ImageData(patch, dims.width, dims.height), 0, 0);
+          return createImageBitmap(off);
+        })
+      );
     } else {
       this.bitmaps = [ await createImageBitmap(file) ];
     }
   }
+
+
 
 
 
