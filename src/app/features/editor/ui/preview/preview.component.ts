@@ -86,9 +86,6 @@ export class PreviewComponent implements OnChanges, OnInit, AfterViewInit {
     })
     this.animationService.currentFrameIndex$.subscribe(currentFrameIndex => {
       this.currentFrameIndex = currentFrameIndex;
-      setTimeout(() => {
-        this.viewport.scrollToIndex(currentFrameIndex-1, "smooth")
-      }, this.animationDuration*2)
     })
 
     this.panelStateService.panels$.subscribe(panels => {

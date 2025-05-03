@@ -42,6 +42,22 @@ export class LibraryConfigurationRepository {
     return this.http.get<ConfigurationResponse>(url);
   }
 
+  getAllConfigurations(): Observable<ConfigurationResponse[]> {
+    return this.http.get<any[]>(`${environment.apiUrl}/configurations/my/all`);
+  }
+
+  getOriginalConfigurations(): Observable<ConfigurationResponse[]> {
+    return this.http.get<any[]>(`${environment.apiUrl}/configurations/my/all?forkStatus=ORIGINAL`);
+  }
+
+  getForkedConfigurations(): Observable<ConfigurationResponse[]> {
+    return this.http.get<any[]>(`${environment.apiUrl}/configurations/my/all?forkStatus=FORKED`);
+  }
+
+  getPublicConfigurations(): Observable<ConfigurationResponse[]> {
+    return this.http.get<any[]>(`${environment.apiUrl}/configurations/my/all?isPublic=true`);
+  }
+
 
 }
 

@@ -1,0 +1,28 @@
+<!-- gallery-screen.component.html -->
+<div class="gallery-container">
+  <mat-form-field appearance="outline" class="search">
+    <mat-icon matPrefix>search</mat-icon>
+    <input matInput
+           placeholder="Search..."
+           [value]="svc.searchQuery()"
+           (input)="svc.searchQuery.set($any($event.target).value)" />
+  </mat-form-field>
+
+  <div class="content">
+    <aside class="filters">
+      <h3>Filters</h3>
+    </aside>
+
+    <main class="grid">
+      <ng-container *ngIf="!svc.loading(); else loadingTpl">
+        <app-gallery-card
+          *ngFor="let item of svc.results()"
+          [item]="item">
+        </app-gallery-card>
+      </ng-container>
+      <ng-template #loadingTpl>
+
+      </ng-template>
+    </main>
+  </div>
+</div>

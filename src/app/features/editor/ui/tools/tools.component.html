@@ -33,4 +33,13 @@
     delete
   </mat-icon>
 
+  <mat-icon
+    matTooltip="Image attaching mode"
+    matTooltipPosition="right"
+    class="mode-button"
+    (click)="switchMode(Mode.ImageAttaching)"
+    [ngClass]="{'active-icon': (settingsService.setting$ | async)?.mode === Mode.ImageAttaching}">
+    image
+  </mat-icon>
+
 </div>

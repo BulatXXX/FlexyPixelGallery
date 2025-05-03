@@ -21,4 +21,13 @@
     <mat-icon class="counterButton" (click)="nextFrame()">arrow_forward_ios</mat-icon>
   </div>
   <mat-icon class="counterButton" (click)="playAnimation()">play_arrow</mat-icon>
+
+  <ng-container *ngIf="settingsService.setting.mode == Mode.ImageAttaching">
+    <div class="image-inspector">
+      <input type="file" (change)="onFileSelected($event)">
+      <button (click)="applyImage()">Применить</button>
+
+    </div>
+
+  </ng-container>
 </div>

@@ -1,0 +1,58 @@
+<mat-card class="gallery-card">
+
+  <!-- 1. Превью-изображение сверху -->
+  <img
+    mat-card-image
+    class="preview"
+    [src]="item.previewImageUrl"
+    alt="Preview"
+  />
+
+  <div class="card-content">
+
+    <!-- 2. Название — одна строка, обрезается по переполнению -->
+    <h3 class="title">{{ item.name }}</h3>
+
+    <!-- 3. Описание — максимум 2 строки, остальное скрывается с троеточием -->
+    <p class="description">{{ item.description }}</p>
+
+    <!-- 4. Автор + меню -->
+    <div class="author-container">
+      <div class="author-details">
+        <img
+          class="author-avatar"
+          [src]="item.author.avatarUrl"
+          alt="{{ item.author.displayName }}"
+        />
+        <span class="author-name">{{ item.author.displayName }}</span>
+      </div>
+      <button
+        mat-icon-button
+        [matMenuTriggerFor]="menu"
+        aria-label="Меню карточки"
+      >
+        <mat-icon>more_vert</mat-icon>
+      </button>
+      <mat-menu #menu="matMenu">
+        <!-- пример пунктов меню -->
+        <button mat-menu-item (click)="subscribe(item.publicId)">
+          <mat-icon>add</mat-icon>
+          Add to account
+        </button>
+      </mat-menu>
+    </div>
+
+    <!-- 5. Статистика: рейтинг · добавлений · дата -->
+    <div class="stats">
+      <p class="rating">
+        {{ item.averageRating | number:'1.1-1' }}
+        <mat-icon inline>star</mat-icon>
+      </p>
+      <p class="dot">·</p>
+      <p class="adds">{{ item.addedCount }} adds</p>
+      <p class="dot">·</p>
+      <p class="created">{{ item.createdAt | date:'dd.MM.yyyy' }}</p>
+    </div>
+
+  </div>
+</mat-card>

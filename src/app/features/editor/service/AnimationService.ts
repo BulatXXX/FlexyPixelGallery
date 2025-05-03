@@ -160,5 +160,40 @@ export class AnimationService {
   }
 
 
+  // ── ВНУТРИ класса AnimationService ────────────────────────────
+// (добавь после любого существующего метода)
+
+  /** Кол-во кадров в анимации */
+  get framesCount(): number {
+    return this.frames.length;
+  }
+
+  /** Цвет конкретного пикселя выбранного кадра */
+  getPixelColor(frameIdx: number, panelIdx: number, x: number, y: number): string {
+    const frame = this.frames[frameIdx];
+    const panel = this.editorStateService.panels[panelIdx];
+    const matrix = frame?.panelPixelColors[panel?.id];
+    return matrix?.[y]?.[x] ?? '#ffffff';   // по умолчанию белый
+  }
+
+  /** Установить цвет пикселя (и визуально обновить, если текущий кадр) */
+  setPixelColor(frameIdx: number, panelIdx: number, x: number, y: number, color: string): void {
+    const frame = this.frames[frameIdx];
+    const panel = this.editorStateService.panels[panelIdx];
+    if (!frame || !panel) { return; }
+
+    let matrix = frame.panelPixelColors[panel.id];
+    if (!matrix) {
+      matrix = this.createEmptyMatrix(8, 8);
+      frame.panelPixelColors[panel.id] = matrix;
+    }
+    matrix[y][x] = color;
+
+    // если меняем активный кадр — сразу красим панель, чтобы канвас отобразился
+    if (frameIdx === this.currentFrameIndex) {
+      panel.pixels[y][x] = color;
+    }
+  }
+
 
 }

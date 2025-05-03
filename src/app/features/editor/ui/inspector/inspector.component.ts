@@ -1,10 +1,12 @@
 import { Component, Input } from '@angular/core';
 import { ColorPickerModule } from 'ngx-color-picker';
-import {NgForOf, NgIf, NgStyle} from '@angular/common';
+import {AsyncPipe, NgForOf, NgIf, NgStyle} from '@angular/common';
 import { MatIcon } from '@angular/material/icon';
 import { AnimationService } from '../../service/AnimationService';
 import { SettingsService } from '../../service/SettingsService';
 import {Mode} from '../../models/Mode';
+import {ImageAttachingService} from '../../service/ImageAttachingService';
+import {async} from 'rxjs';
 
 @Component({
   selector: 'app-inspector',
@@ -13,7 +15,8 @@ import {Mode} from '../../models/Mode';
     NgStyle,
     MatIcon,
     NgForOf,
-    NgIf
+    NgIf,
+    AsyncPipe
   ],
   templateUrl: './inspector.component.html',
   standalone: true,
@@ -33,7 +36,8 @@ export class InspectorComponent {
 
   constructor(
     protected animationService: AnimationService,
-    protected settingsService: SettingsService
+    protected settingsService: SettingsService,
+    private imageAttachingService: ImageAttachingService,
   ) {
     this.animationService.currentFrameIndex$.subscribe(frameIndex => {
       this.frameIndex = frameIndex;
@@ -61,4 +65,26 @@ export class InspectorComponent {
 
 
   protected readonly Mode = Mode;
+
+  async onFileSelected(evt: Event) {
+    const file = (evt.target as HTMLInputElement).files?.[0];
+    if (!file) return;
+    await this.imageAttachingService.loadFile(file);
+  }
+  // cover: radio buttons (cover/fit)
+  onCoverageChange(cov: 'cover'|'fit') {
+   // this.imageAttachingService.setOptions({ coverage: cov });
+  }
+
+// target: radio buttons (current/all/selected)
+  onTargetChange(t: 'current'|'all'|'selected', selectedFrames?: number[]) {
+  //  this.imageAttachingService.setOptions({ target: t, selectedFrames });
+  }
+
+
+  async applyImage() {
+    await this.imageAttachingService.apply();
+  }
+
+  protected readonly async = async;
 }

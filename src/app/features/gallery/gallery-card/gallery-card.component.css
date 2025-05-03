@@ -1,0 +1,102 @@
+.gallery-card {
+  display: flex;
+  flex-direction: column;
+  height: 500px;
+  box-sizing: border-box;
+}
+
+/* 1. Превью-изображение */
+.preview {
+  width: 100%;
+  object-fit: cover;
+  height: 300px;
+}
+
+/* Контейнер всего контента под картинкой */
+.card-content {
+  display: flex;
+  flex-direction: column;
+  padding: 16px;
+  flex: 1;
+  box-sizing: border-box;
+}
+
+/* 2. Название */
+.title {
+  margin: 0;
+  font-size: 1.1rem;
+  font-weight: 600;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* 3. Описание (2 строки) */
+.description {
+  margin: 8px 0 16px 0;
+  font-size: 0.9rem;
+  line-height: 1.2em;
+  max-height: 2.4em;       /* 2 строки × line-height */
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+}
+
+/* 4. Автор и кнопка меню */
+.author-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.author-details {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.author-avatar {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.author-name {
+  font-size: 0.85rem;
+  font-weight: 500;
+}
+
+/* 5. Статистика */
+.stats {
+  margin-top: 12px;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 4px;
+  font-size: 0.75rem;
+  color: rgba(0, 0, 0, 0.6);
+}
+
+.rating {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+}
+
+.rating mat-icon {
+  font-size: 16px;
+  vertical-align: middle;
+  color: gold;
+}
+
+.dot {
+  margin: 0 4px;
+}
+
+.adds,
+.created {
+  white-space: nowrap;
+}

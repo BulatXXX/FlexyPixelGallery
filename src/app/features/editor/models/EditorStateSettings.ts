@@ -7,4 +7,9 @@ export interface EditorStateSetting {
   showPanelDirections: boolean;
   //inspector settings
   drawingColor: string;
+  // imageAttaching: {
+  //   coverage: 'cover' | 'fit';
+  //   target: 'current'
+  //   selectedFrames: []
+  // }
 }

@@ -4,6 +4,9 @@
   [attr.height]="canvasHeight"
   (click)="onAddPanelOnCanvas($event)"
   (wheel)="onWheel($event)"
+  (mousemove)="onMouseMove($event)"
+  (mousedown)="onMouseDown($event)"
+  (mouseup)="onMouseUp($event)"
 >
 
   <g [attr.transform]="'translate(' + panOffsetX + ',' + panOffsetY + ') scale(' + scale + ')'">
@@ -115,6 +118,34 @@
       </ng-container>
 
 
+    </g>
+    <g *ngIf="settingsService.setting?.mode === Mode.ImageAttaching && selection as sel">
+      <!-- нормализуем координаты -->
+      <ng-container *ngIf="{
+         x:(sel.startX < sel.endX ? sel.startX : sel.endX)*cellSize,
+         y:(sel.startY < sel.endY ? sel.startY : sel.endY)*cellSize,
+         w:(Math.abs(sel.endX - sel.startX)+1)*cellSize,
+         h:(Math.abs(sel.endY - sel.startY)+1)*cellSize } as rect">
+
+        <!-- прямоугольник выделения -->
+        <rect [attr.x]="rect.x" [attr.y]="rect.y"
+              [attr.width]="rect.w" [attr.height]="rect.h"
+              fill="rgba(0,128,255,0.1)" stroke="#0080ff" stroke-dasharray="4"/>
+
+        <!-- 4 кружка‑хэндла -->
+        <circle class="resize-handle" data-handle="tl"
+                [attr.cx]="rect.x"               [attr.cy]="rect.y" r="4"
+                fill="#0080ff"/>
+        <circle class="resize-handle" data-handle="tr"
+                [attr.cx]="rect.x + rect.w"     [attr.cy]="rect.y" r="4"
+                fill="#0080ff"/>
+        <circle class="resize-handle" data-handle="bl"
+                [attr.cx]="rect.x"               [attr.cy]="rect.y + rect.h" r="4"
+                fill="#0080ff"/>
+        <circle class="resize-handle" data-handle="br"
+                [attr.cx]="rect.x + rect.w"     [attr.cy]="rect.y + rect.h" r="4"
+                fill="#0080ff"/>
+      </ng-container>
     </g>
     <!-- Если есть хотя бы одна панель, отрисовываем подсказки для всех 4 направлений -->
     <g *ngIf="(panels.length > 0) && (settingsService.setting?.mode === Mode.EditorMode)">

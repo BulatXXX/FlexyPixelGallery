@@ -2,10 +2,12 @@ import {Injectable, inject, signal} from '@angular/core';
 import {UserRepository} from './UserRepository';
 import {LoadingService} from '../../core/services/LoadingService';
 import {finalize, map, tap} from 'rxjs';
+import {LibraryConfigurationRepository} from '../configurations/library-configuration.repository';
 
 @Injectable({providedIn: 'root'})
 export class UserService {
   private readonly repo = inject(UserRepository);
+  private readonly libraryConfigurationRepository = inject(LibraryConfigurationRepository);
   private readonly loadingService = inject(LoadingService);
 
   user = signal<any | null>(null);
@@ -28,14 +30,14 @@ export class UserService {
     user$.subscribe(user => this.user.set(user));
     this.loadingService.show()
     if (isOwn) {
-      this.repo.getAllConfigurations().pipe(
+      this.libraryConfigurationRepository.getAllConfigurations().pipe(
         finalize(() => {
           this.loadingService.hide()
         })
       ).subscribe(this.all.set);
-      this.repo.getOriginalConfigurations().subscribe(this.original.set);
-      this.repo.getForkedConfigurations().subscribe(this.forked.set);
-      this.repo.getPublicConfigurations().subscribe(this.publicOnly.set);
+      this.libraryConfigurationRepository.getOriginalConfigurations().subscribe(this.original.set);
+      this.libraryConfigurationRepository.getForkedConfigurations().subscribe(this.forked.set);
+      this.libraryConfigurationRepository.getPublicConfigurations().subscribe(this.publicOnly.set);
     } else {
       this.repo.getPublicConfigurationsByUser(publicId!).pipe(finalize(() => {
         this.loadingService.hide()

@@ -15,10 +15,12 @@ import {LoadingService} from '../../../core/services/LoadingService';
 
 export interface ConfigurationResponse {
   publicId: string;
-  ownerId: number;
   name: string;
   description: string;
   previewImageUrl: string;
+  miniPreviewImageUrl: string;
+  miniPreviewPanelUid: string | null;
+  useMiniPreview: boolean;
   createdAt: string;
   updatedAt: string;
   panels: {

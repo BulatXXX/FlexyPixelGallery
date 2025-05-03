@@ -1,0 +1,35 @@
+/* gallery-screen.component.css */
+.gallery-container {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  padding: 16px;
+}
+.search {
+  width: 50%;
+  margin: 0 auto 16px auto;
+}
+.content {
+  display: flex;
+  flex: 1;
+  gap: 16px;
+}
+.filters {
+  width: 250px;
+  border-left: 1px solid rgba(0,0,0,.12);
+  padding: 8px;
+  box-sizing: border-box;
+}
+.grid {
+  flex: 1;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 16px;
+  overflow-y: auto;
+}
+.spinner {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+}

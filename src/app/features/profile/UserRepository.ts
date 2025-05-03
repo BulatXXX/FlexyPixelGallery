@@ -18,26 +18,6 @@ export class UserRepository {
     return this.http.get<any[]>(`${environment.apiUrl}/users/${publicId}/configurations/public`);
   }
 
-
-  getAllConfigurations(): Observable<any[]> {
-    return this.http.get<any[]>(`${environment.apiUrl}/configurations/my/all`);
-  }
-
-  getOriginalConfigurations(): Observable<any[]> {
-    // Заглушка — в будущем заменишь на /configurations/my/original
-    return this.http.get<any[]>(`${environment.apiUrl}/configurations/my/all?forkStatus=ORIGINAL`);
-  }
-
-  getForkedConfigurations(): Observable<any[]> {
-    // Заглушка — в будущем заменишь на /configurations/my/forked
-    return this.http.get<any[]>(`${environment.apiUrl}/configurations/my/all?forkStatus=FORKED`);
-  }
-
-  getPublicConfigurations(): Observable<any[]> {
-    // Заглушка — в будущем заменишь на /configurations/my/public
-    return this.http.get<any[]>(`${environment.apiUrl}/configurations/my/all?isPublic=true`);
-  }
-
   // user.repository.ts
   uploadAvatar(file: File) {
     const fd = new FormData();

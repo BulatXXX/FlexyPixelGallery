@@ -1,4 +1,4 @@
-import {Component, HostListener, Input, OnInit} from '@angular/core';
+import {Component, ElementRef, HostListener, Input, OnDestroy, OnInit} from '@angular/core';
 import {NgForOf, NgIf} from '@angular/common';
 import {PanelStateService} from '../../service/PanelStateService';
 import {Subscription} from 'rxjs';
@@ -11,9 +11,14 @@ import {Mode} from '../../models/Mode';
 import {RemovePanelCommand} from '../../models/Commands/RemovePanelCommand';
 import {DrawingService} from '../../service/DrawingService';
 import {SettingsService} from '../../service/SettingsService';
+import {ImageAttachingService, SelectionRect} from '../../service/ImageAttachingService';
 
 
 const PANEL_SIZE = 8;
+
+const EDGE_TOL = 0.1;
+// сразу после const EDGE_TOL
+type HandleId = 'tl'|'tr'|'bl'|'br'|'t'|'b'|'l'|'r'|'inside';
 
 @Component({
   selector: 'app-canvas',
@@ -22,7 +27,7 @@ const PANEL_SIZE = 8;
   templateUrl: './canvas.component.html',
   styleUrls: ['./canvas.component.css']
 })
-export class CanvasComponent implements OnInit {
+export class CanvasComponent implements OnInit, OnDestroy {
 
   panels: Panel[] = [];
 
@@ -52,15 +57,14 @@ export class CanvasComponent implements OnInit {
   hintVisibleMap: { [key in Direction]?: boolean } = {};
   availableDirections = [Direction.Top, Direction.Right, Direction.Bottom, Direction.Left];
 
+  selection: SelectionRect | null = null;
+  private selSub?: Subscription;
+  private resizing = false;
 
-  ngOnInit() {
+  private activeHandle: HandleId | null = null;
+  private dragStartPoint: { gx: number; gy: number } | null = null;
+  private startRect!: SelectionRect;   // сохраняем прямоугольник в момент mousedown
 
-    this.centerGrid();
-
-    this.drawingService.initDrawingListeners()
-
-    this.subscribeEditorState();
-  }
 
   private subscribeEditorState() {
     this.panelsSubscription = this.editorService.panels$.subscribe(panels => {
@@ -94,8 +98,118 @@ export class CanvasComponent implements OnInit {
               private commandManager: CommandManager,
               protected drawingService: DrawingService,
               protected settingsService: SettingsService,
+              private imageAttaching: ImageAttachingService,
+              private elRef: ElementRef<SVGSVGElement>
   ) {
   }
+
+  ngOnDestroy(): void {
+    this.selSub?.unsubscribe();
+  }
+
+  ngOnInit() {
+
+    this.centerGrid();
+
+    this.drawingService.initDrawingListeners()
+
+    this.subscribeEditorState();
+
+    this.selSub = this.imageAttaching.selection$.subscribe(sel => this.selection = sel);
+
+  }
+///
+
+  // в private‑секции класса
+  private detectHandle(gx:number, gy:number): HandleId|null {
+    if (!this.selection) { return null; }
+    const {startX,startY,endX,endY} = this.selection;
+    const minX=Math.min(startX,endX), maxX=Math.max(startX,endX);
+    const minY=Math.min(startY,endY), maxY=Math.max(startY,endY);
+    const near=(v:number,r:number)=>Math.abs(v-r)<=EDGE_TOL;
+    if (near(gx,minX)&&near(gy,minY)) return 'tl';
+    if (near(gx,maxX)&&near(gy,minY)) return 'tr';
+    if (near(gx,minX)&&near(gy,maxY)) return 'bl';
+    if (near(gx,maxX)&&near(gy,maxY)) return 'br';
+    if (near(gy,minY)&&gx>=minX&&gx<=maxX) return 't';
+    if (near(gy,maxY)&&gx>=minX&&gx<=maxX) return 'b';
+    if (near(gx,minX)&&gy>=minY&&gy<=maxY) return 'l';
+    if (near(gx,maxX)&&gy>=minY&&gy<=maxY) return 'r';
+    if (gx>minX&&gx<maxX&&gy>minY&&gy<maxY) return 'inside';
+    return null;
+  }
+
+  private cursorFor(h: HandleId|null): string {
+    return ({
+      tl:'nw-resize', tr:'ne-resize', bl:'sw-resize', br:'se-resize',
+      t:'n-resize',  b:'s-resize',   l:'w-resize',   r:'e-resize',
+      inside:'move'
+    } as Record<HandleId,string>)[h as HandleId] ?? 'default';
+  }
+
+  private isPointInRect(px:number,py:number,rect:SelectionRect):boolean {
+    return px>=rect.startX && px<=rect.endX && py>=rect.startY && py<=rect.endY;
+  }
+
+  private clientToGrid(evt: MouseEvent): { gx: number; gy: number } {
+    const svgRect = this.elRef.nativeElement.getBoundingClientRect();
+    const x = (evt.clientX - svgRect.left - this.panOffsetX) / (this.cellSize * this.scale);
+    const y = (evt.clientY - svgRect.top - this.panOffsetY)  / (this.cellSize * this.scale);
+    return { gx: Math.floor(x), gy: Math.floor(y) };
+  }
+
+  onMouseDown(evt: MouseEvent): void {
+    if (this.settingsService.setting?.mode !== Mode.ImageAttaching) { return; }
+    const { gx, gy } = this.clientToGrid(evt);
+    const handle = this.detectHandle(gx, gy);
+
+    if (this.selection && handle) {          // уже есть выделение
+      this.startRect = { ...this.selection };
+      if (handle === 'inside') {
+        this.imageAttaching.startDrag(gx, gy);
+      } else {
+        this.imageAttaching.startHandleResize(handle as Exclude<HandleId,'inside'>);
+      }
+      this.activeHandle = handle;
+      this.dragStartPoint = { gx, gy };
+      this.resizing = true;
+    } else if (!this.selection) {            // нет выделения — создаём
+      this.imageAttaching.beginSelection(gx, gy);
+      this.activeHandle = 'br';
+      this.resizing = true;
+    }
+
+    evt.stopPropagation();
+  }
+
+  onMouseMove(evt: MouseEvent): void {
+    if (this.settingsService.setting?.mode !== Mode.ImageAttaching) { return; }
+    const { gx, gy } = this.clientToGrid(evt);
+
+    /* смена курсора */
+    (this.elRef.nativeElement as SVGSVGElement).style.cursor = this.cursorFor(this.detectHandle(gx, gy));
+
+    /* тащим, если идёт drag */
+    if (!this.resizing) { return; }
+
+    if (this.activeHandle === 'inside') {
+      this.imageAttaching.updateDrag(gx, gy);
+    } else {
+      this.imageAttaching.updateHandleResize(gx, gy);
+    }
+  }
+
+
+  onMouseUp(evt: MouseEvent): void {
+    if (this.resizing && this.settingsService.setting?.mode === Mode.ImageAttaching) {
+      this.imageAttaching.endInteraction();
+      this.resizing = false;
+      this.activeHandle = null;
+      (this.elRef.nativeElement as SVGSVGElement).style.cursor = 'default';
+    }
+    console.log(this.imageAttaching.getSelectedPixelMap())
+  }
+
 
   onWheel(event: WheelEvent) {
     event.preventDefault();
@@ -279,4 +393,5 @@ export class CanvasComponent implements OnInit {
   protected readonly PANEL_SIZE = PANEL_SIZE;
   protected readonly Direction = Direction;
 
+  protected readonly Math = Math;
 }

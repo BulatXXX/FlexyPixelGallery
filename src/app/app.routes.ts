@@ -1,6 +1,6 @@
 import {Routes} from '@angular/router';
 import {HomeScreenComponent} from './ui/screens/home-screen/home-screen.component';
-import {GalleryScreenComponent} from './ui/screens/gallery-screen/gallery-screen.component';
+
 import {EditorScreenComponent} from './features/editor/editor-screen/editor-screen.component';
 import {FaqScreenComponent} from './ui/screens/faq-screen/faq-screen.component';
 import {FirmwareScreenComponent} from './ui/screens/firmware-screen/firmware-screen.component';
@@ -14,6 +14,7 @@ import {AuthGuard} from './features/auth/AuthGuard';
 import {
   ConfigurationDetailScreenComponent
 } from './features/configurations/ui/configuration-detail-screen/configuration-detail-screen.component';
+import {GalleryScreenComponent} from './features/gallery/gallery-screen/gallery-screen.component';
 
 export const routes: Routes = [
   {path: '', component: HomeScreenComponent},  // Главная страница

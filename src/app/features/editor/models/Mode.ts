@@ -3,4 +3,5 @@ export enum Mode {
   EditorMode,
   DeleteMode,
   DrawingMode,
+  ImageAttaching
 }
