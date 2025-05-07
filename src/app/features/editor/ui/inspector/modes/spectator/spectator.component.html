@@ -1,14 +1,14 @@
 <div class="container" *ngIf="configurationService.configurationData() as data; else loading">
   <!-- NAME -->
   <div class="editable-container">
-    <h2>Title:</h2>
-    <h3
+    <h2>Name:</h2>
+    <span
       #editableName
       [attr.contenteditable]="true"
       class="editable-text title-editable"
       (blur)="saveName(editableName.innerText)"
       (keydown)="onNameKeydown($event, editableName.innerText)"
-    >{{ data.name }}</h3>
+    >{{ data.name }}</span>
   </div>
 
   <!-- DESCRIPTION -->

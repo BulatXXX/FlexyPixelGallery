@@ -16,7 +16,21 @@ export class SettingsService {
     showPanelBorders: false,
     borderColor: 'red',
     showPanelDirections: false,
-    drawingColor: 'red'
+    drawingColor: 'red',
+    paletteColors: [
+      '#FF6B6B', // коралловый
+      '#F7B801', // желтый
+      '#6BCB77', // мятный
+      '#4D96FF', // небесно-голубой
+      '#845EC2', // лавандовый
+      '#FF9671', // персиковый
+      '#FFC75F', // лимонный
+      '#00C9A7', // бирюзовый
+      '#0081CF', // васильковый
+    ],
+    selectedColorIndex: null ,
+    pipetteActive: false
+
   });
   setting$ = this.settingSubject.asObservable();
 

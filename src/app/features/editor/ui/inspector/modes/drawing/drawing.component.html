@@ -1,1 +1,38 @@
-<p>drawing works!</p>
+<div class="container">
+  <div
+    [colorPicker]="settingsService.setting.drawingColor"
+    [cpToggle]="true"
+    [cpDialogDisplay]="'inline'"
+    [cpPosition]="'right'"
+    [cpOutputFormat]="'hex'"
+    [cpAlphaChannel]="'disabled'"
+    (colorPickerChange)="onColorChange($event)"
+  ></div>
+
+
+  <div class="color-palette">
+    <button *ngFor="let color of settingsService.setting.paletteColors; let i = index"
+            class="color-swatch"
+            [attr.aria-label]="'Выбрать цвет ' + color"
+            [style.background]="color"
+            [class.selected]="i === settingsService.setting.selectedColorIndex"
+            (click)="selectColor(color,i)">
+    </button>
+    <button
+      class="pipette-btn"
+      mat-icon-button
+      (click)="settingsService.setting.pipetteActive = !settingsService.setting.pipetteActive"
+      [class.active]="settingsService.setting.pipetteActive"
+      aria-label="Пипетка">
+      <mat-icon>colorize</mat-icon>
+    </button>
+  </div>
+  <button
+  class="generate-button"
+  mat-raised-button
+  (click)="generatePalette()"
+  >
+Generate Palette
+  </button>
+
+</div>

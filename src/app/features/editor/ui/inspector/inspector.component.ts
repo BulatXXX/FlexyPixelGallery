@@ -1,13 +1,11 @@
 import { Component, Input } from '@angular/core';
 import { ColorPickerModule } from 'ngx-color-picker';
 import {AsyncPipe, NgForOf, NgIf, NgStyle, NgSwitch, NgSwitchCase} from '@angular/common';
-import { MatIcon } from '@angular/material/icon';
 import { AnimationService } from '../../service/AnimationService';
 import { SettingsService } from '../../service/SettingsService';
 import {Mode} from '../../models/Mode';
 import {ImageAttachingService} from '../../service/ImageAttachingService';
 import {SpectatorComponent} from './modes/spectator/spectator.component';
-import {EditorComponent} from './modes/editor/editor.component';
 import {ImageAttachingComponent} from './modes/image-attaching/image-attaching.component';
 import {DrawingComponent} from './modes/drawing/drawing.component';
 
@@ -16,11 +14,9 @@ import {DrawingComponent} from './modes/drawing/drawing.component';
   imports: [
     ColorPickerModule,
     NgStyle,
-    NgForOf,
     NgSwitch,
     NgSwitchCase,
     SpectatorComponent,
-    EditorComponent,
     ImageAttachingComponent,
     DrawingComponent,
   ],
@@ -35,7 +31,7 @@ export class InspectorComponent {
   frameIndex = 0;
 
   // Предопределённая палитра цветов
-  paletteColors: string[] = ['#FF0000', '#00FF00', '#0000FF', '#FFFF00', '#FF00FF', '#00FFFF'];
+
 
   // Делаем enum Mode доступным в шаблоне
   mode = Mode;
@@ -51,48 +47,9 @@ export class InspectorComponent {
 
   }
 
-  prevFrame() {
-    this.animationService.selectFrame(this.frameIndex - 1);
-  }
-
-  nextFrame() {
-    this.animationService.selectFrame(this.frameIndex + 1);
-  }
-
-  playAnimation() {
-    this.animationService.playAnimation();
-  }
-
-  // Метод для выбора цвета из палитры
-  selectColor(color: string): void {
-    this.settingsService.setting.drawingColor = color;
-  }
-
-
 
   protected readonly Mode = Mode;
 
-  async onFileSelected(evt: Event) {
-    const file = (evt.target as HTMLInputElement).files?.[0];
-    if (!file) return;
-    await this.imageAttachingService.loadFile(file);
-  }
-  // cover: radio buttons (cover/fit)
-  onCoverageChange(cov: 'cover'|'fit') {
-   // this.imageAttachingService.setOptions({ coverage: cov });
-  }
-
-// target: radio buttons (current/all/selected)
-  onTargetChange(t: 'current'|'all'|'selected', selectedFrames?: number[]) {
-  //  this.imageAttachingService.setOptions({ target: t, selectedFrames });
-  }
 
 
-  async applyImage() {
-    await this.imageAttachingService.apply();
-  }
-
-  onColorChange(newColor: string) {
-    this.settingsService.setting.drawingColor = newColor;
-  }
 }

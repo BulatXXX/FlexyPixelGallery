@@ -43,7 +43,13 @@ export interface ConfigurationData {
 
 @Injectable({providedIn: 'root'})
 export class ConfigurationService {
-  public configurationData = signal<ConfigurationData | null>(null);
+  public configurationData = signal<ConfigurationData>(
+    {
+      name: "ConfigName",
+      description: "Your config description",
+      useMiniPreview: false,
+    }
+  );
   private readonly baseUrl = `${environment.apiUrl}/configurations/my`;
 
   private currentPublicIdSubject = new BehaviorSubject<string | null>(null);
@@ -107,9 +113,15 @@ export class ConfigurationService {
           finalize(() => this.loadingService.hide())
         );
     } else {
+
       return this.libraryConfigurationRepository
         .createConfigurationFull(
-          {name: "Configuration test", description: "Default", panels: payload.panels, frames: payload.frames,}
+          {
+            name: this.configurationData().name,
+            description:  this.configurationData().description,
+            panels: payload.panels,
+            frames: payload.frames,
+          }
         )
         .pipe(
           tap(res => this.setCurrentPublicId(res.publicId)),

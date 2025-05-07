@@ -1,1 +1,44 @@
-<p>image-attaching works!</p>
+<!-- image-attaching-settings.component.html -->
+<div class="container">
+  <div class="upload-area"
+       (drop)="onFileDropped($event)"
+       (dragover)="$event.preventDefault()"
+       (click)="triggerFileSelect()">
+    <input #fileInput type="file" hidden (change)="onFileSelected($event)">
+    <ng-container  *ngIf="previewUrl$ | async as previewUrl; else placeholder">
+      <img
+        [src]="previewUrl"
+        class="preview-image"
+        [ngClass]="selectedCoverage"
+        alt="P"
+      >
+    </ng-container>
+    <ng-template #placeholder>
+      <div class="placeholder">
+        <mat-icon>image</mat-icon>
+      </div>
+    </ng-template>
+  </div>
+
+  <mat-form-field appearance="outline" class="control">
+    <mat-label>Coverage</mat-label>
+    <mat-select [(value)]="selectedCoverage" (selectionChange)="onCoverageChange($event.value)">
+      <mat-option value="cover">Cover</mat-option>
+      <mat-option value="fit">Fit</mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  <mat-form-field appearance="outline" class="control">
+    <mat-label>Target</mat-label>
+    <mat-select [(value)]="selectedTarget" (selectionChange)="onTargetChange($event.value)">
+      <mat-option value="current">Current</mat-option>
+      <mat-option value="all">All</mat-option>
+      <mat-option disabled value="selected">
+        <span class="strike">Selected (currently unavailable)</span>
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+
+
+  <button class="apply-btn"mat-raised-button color="primary" (click)="apply()">Apply</button>
+</div>

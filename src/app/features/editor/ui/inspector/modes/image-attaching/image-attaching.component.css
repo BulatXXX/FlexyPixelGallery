@@ -1,0 +1,53 @@
+/* image-attaching-settings.component.css */
+.container{
+  height: 100%;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 10px;
+}
+.upload-area {
+  border: 6px dashed #4a4a4a;
+  border-radius: 4px;
+  height: 200px;
+  width: 200px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  margin-bottom: 32px;
+}
+.placeholder {
+  color: #aaa;
+}
+.placeholder mat-icon {
+  scale: 4;
+}
+
+.preview-image {
+  display: block;      /* чтобы margin/padding не съедали контейнер */
+  width: 100%;
+  height: 100%;
+  object-position: center;
+}
+.preview-image.cover {
+  object-fit: cover;
+}
+
+.preview-image.fit {
+  object-fit: contain;
+}
+
+.control {
+  width: 100%;
+  margin-bottom: 16px;
+}
+
+.strike{
+  text-decoration: line-through;
+}
+.apply-btn{
+  width: 100%;
+}

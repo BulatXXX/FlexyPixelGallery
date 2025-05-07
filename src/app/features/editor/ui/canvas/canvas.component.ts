@@ -17,7 +17,7 @@ import {ImageAttachingService, SelectionRect} from '../../service/ImageAttaching
 const PANEL_SIZE = 8;
 
 const EDGE_TOL = 0.1;
-// сразу после const EDGE_TOL
+
 type HandleId = 'tl'|'tr'|'bl'|'br'|'t'|'b'|'l'|'r'|'inside';
 
 @Component({
@@ -388,10 +388,24 @@ export class CanvasComponent implements OnInit, OnDestroy {
       lastPanel
     ));
   }
+  @HostListener('window:keydown', ['$event'])
+  onKeyDown(evt: KeyboardEvent) {
+    // при нажатии Alt или Option
+    if (evt.key === 'Alt' || evt.key === 'Option') {
+      this.settingsService.setting.pipetteActive = true;
+    }
+  }
 
+  @HostListener('window:keyup', ['$event'])
+  onKeyUp(evt: KeyboardEvent) {
+    if (evt.key === 'Alt' || evt.key === 'Option') {
+      this.settingsService.setting.pipetteActive = false;
+    }
+  }
   protected readonly Mode = Mode;
   protected readonly PANEL_SIZE = PANEL_SIZE;
   protected readonly Direction = Direction;
 
   protected readonly Math = Math;
+
 }

@@ -12,14 +12,14 @@ import {SettingsService} from './SettingsService';
 })
 export class DrawingService {
   isDrawing: boolean = false;  // Флаг, показывающий, рисуем ли мы
-  pixelsToPaint: { x: number, y: number, panel: Panel , prevColor:string}[] = [];  // Массив пикселей, которые должны быть закрашены
+  pixelsToPaint: { x: number, y: number, panel: Panel, prevColor: string }[] = [];  // Массив пикселей, которые должны быть закрашены
 
-  constructor(private editorService: PanelStateService, private commandManager: CommandManager, private animationService: AnimationService,private settingsService: SettingsService) {
+  constructor(private editorService: PanelStateService, private commandManager: CommandManager, private animationService: AnimationService, private settingsService: SettingsService) {
   }
 
   /**
-  Необходимо глобально ловить отпускание мыши, потому что при отпускании
-  мыши за пределами компонента событие поднятия не срабатывает
+   Необходимо глобально ловить отпускание мыши, потому что при отпускании
+   мыши за пределами компонента событие поднятия не срабатывает
    **/
   initDrawingListeners(): void {
     document.addEventListener('mouseup', this.handleStopDrawing.bind(this));
@@ -27,12 +27,21 @@ export class DrawingService {
 
   handleStartDrawing(panel: Panel, x: number, y: number): void {
     if (this.settingsService.setting.mode === Mode.DrawingMode) {
-      this.isDrawing = true;
-      this.paintPixel(panel, x, y);
+      if (this.settingsService.setting.pipetteActive) {
+        const colorSample = panel.pixels[y][x]
+        this.settingsService.setting.drawingColor = colorSample
+        if (this.settingsService.setting.selectedColorIndex !== null) {
+          this.settingsService.setting.paletteColors[this.settingsService.setting.selectedColorIndex] = colorSample;
+        }
+        this.settingsService.setting.pipetteActive = false;
+      } else {
+        this.isDrawing = true;
+        this.paintPixel(panel, x, y);
+      }
     }
   }
 
-  handleMouseMoveDrawing(panel:Panel, x: number, y: number): void {
+  handleMouseMoveDrawing(panel: Panel, x: number, y: number): void {
     if (this.isDrawing) {
       if (!this.isPixelAlreadyAdded(x, y, panel)) {
         // Добавляем пиксель в массив
@@ -54,7 +63,7 @@ export class DrawingService {
 
   private paintPixel(panel: Panel, x: number, y: number): void {
     const prevColor = panel.pixels[y][x];
-    this.pixelsToPaint.push({ x, y, panel,prevColor });
+    this.pixelsToPaint.push({x, y, panel, prevColor});
     panel.pixels[y][x] = this.settingsService.setting.drawingColor; // Красим пиксель в новый цвет
   }
 

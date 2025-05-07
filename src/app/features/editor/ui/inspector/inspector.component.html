@@ -1,43 +1,19 @@
 <div class="inspector-container" [ngStyle]="{'height.px': height, 'width.px': width}">
   <ng-container [ngSwitch]="settingsService.setting.mode">
     <ng-container *ngSwitchCase="Mode.SpectatorMode">
-      <app-spectator [ngStyle]="{'height.px': height, 'width.px': width}"></app-spectator>
+      <app-spectator [width]="width" [height]="height"  [ngStyle]="{'height.px': height, 'width.px': width}"></app-spectator>
     </ng-container>
     <ng-container *ngSwitchCase="Mode.EditorMode">
-      <app-spectator [ngStyle]="{'height.px': height, 'width.px': width}"></app-spectator>
+      <app-spectator [width]="width" [height]="height" [ngStyle]="{'height.px': height, 'width.px': width}"></app-spectator>
     </ng-container>
     <ng-container *ngSwitchCase="Mode.DeleteMode">
-      <app-spectator [ngStyle]="{'height.px': height, 'width.px': width}"></app-spectator>
+      <app-spectator [width]="width" [height]="height" [ngStyle]="{'height.px': height, 'width.px': width}"></app-spectator>
     </ng-container>
     <ng-container *ngSwitchCase="Mode.DrawingMode">
-      <app-drawing></app-drawing>
-      <div
-        [colorPicker]="settingsService.setting.drawingColor"
-        [cpToggle]="true"
-      [cpDialogDisplay]="'inline'"
-      [cpPosition]="'right'"
-      [cpOutputFormat]="'hex'"
-      [cpAlphaChannel]="'disabled'"
-      (colorPickerChange)="onColorChange($event)"
-      style="width:300px; height:200px;"
-      ></div>
-
-
-<!--<div class="color-palette">-->
-<!--        <button *ngFor="let color of paletteColors"-->
-<!--                [ngStyle]="{'height.px': 40, 'width.px': 40}"-->
-<!--                [style.background]="color"-->
-<!--                (click)="selectColor(color)">-->
-<!--        </button>-->
-<!--      </div>-->
+      <app-drawing [ngStyle]="{'height.px': height, 'width.px': width}"></app-drawing>
     </ng-container>
     <ng-container *ngSwitchCase="Mode.ImageAttaching">
-      <div class="image-inspector">
-        <input type="file" (change)="onFileSelected($event)">
-        <button (click)="applyImage()">Применить</button>
-
-      </div>
-
+      <app-image-attaching [ngStyle]="{'height.px': height, 'width.px': width}"></app-image-attaching>
     </ng-container>
 
   </ng-container>

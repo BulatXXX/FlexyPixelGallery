@@ -43,6 +43,9 @@ export class ImageAttachingService {
   private dragAnchor: {gx:number; gy:number} | null = null;
   private dragStartRect: SelectionRect | null = null;
 
+  private previewUrlSub = new BehaviorSubject<string|null>(null);
+  previewUrl$ = this.previewUrlSub.asObservable();
+
   private bitmaps: ImageBitmap[] = [];        // 1 шт. для png/jpg, ≥1 для gif
   private opts: ImageAttachingOptions = { coverage:'cover', target:'all' };
 
@@ -172,16 +175,15 @@ export class ImageAttachingService {
   }
 
   async loadFile(file: File): Promise<void> {
+    const url = URL.createObjectURL(file);
+    this.previewUrlSub.next(url);
+
     if (file.type === 'image/gif') {
-      // динамический импорт
       const mod = await import('gifuct-js');
 
-      // если модуль в prod-сборке упакован в default, используем его,
-      // иначе — берем именованные экспорты из корня
       const { default: def, ...rest } = mod;
       const { parseGIF, decompressFrames } = def ?? rest;
 
-      // дальше без изменений
       const buffer = await file.arrayBuffer();
       const gif = parseGIF(buffer);
       const frames = decompressFrames(gif, true);
@@ -198,9 +200,6 @@ export class ImageAttachingService {
       this.bitmaps = [ await createImageBitmap(file) ];
     }
   }
-
-
-
 
 
   async apply(): Promise<void> {
@@ -284,7 +283,10 @@ export class ImageAttachingService {
         this.animation.setPixelColor(f,p,x,y,c); })
     };
   }
-
+  setOptions(options: Partial<ImageAttachingOptions>): void {
+    this.opts = { ...this.opts, ...options };
+    console.log('[ImageAttaching] options updated', this.opts);
+  }
 
 
 
