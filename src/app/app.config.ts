@@ -6,13 +6,14 @@ import {provideAnimationsAsync} from '@angular/platform-browser/animations/async
 import {provideHttpClient, withInterceptors} from '@angular/common/http';
 import {AuthRepository, AuthRepositoryImpl} from './features/auth/AuthRepository';
 import {jwtInterceptor} from './JwtInterceptor';
+import {refreshInterceptor} from './RefreshIntercepter';
 
 export const appConfig: ApplicationConfig = {
   providers: [
     provideZoneChangeDetection({eventCoalescing: true}),
     provideRouter(routes),
     provideAnimationsAsync(),
-    provideHttpClient(withInterceptors([jwtInterceptor])),
+    provideHttpClient(withInterceptors([refreshInterceptor,jwtInterceptor,])),
     {provide: AuthRepository, useClass: AuthRepositoryImpl},
   ]
 };

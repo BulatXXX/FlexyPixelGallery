@@ -1,4 +1,4 @@
-import {Injectable} from '@angular/core';
+import {Injectable, signal} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {AnimationService} from './AnimationService';
 import {PanelStateService} from './PanelStateService';
@@ -35,9 +35,15 @@ export interface ConfigurationResponse {
   }[];
 }
 
+export interface ConfigurationData {
+  name: string;
+  description: string;
+  useMiniPreview: boolean;
+}
 
 @Injectable({providedIn: 'root'})
 export class ConfigurationService {
+  public configurationData = signal<ConfigurationData | null>(null);
   private readonly baseUrl = `${environment.apiUrl}/configurations/my`;
 
   private currentPublicIdSubject = new BehaviorSubject<string | null>(null);
@@ -90,8 +96,8 @@ export class ConfigurationService {
     URL.revokeObjectURL(link.href); // очистка
   }
 
-  saveConfiguration(): Observable<CreateResponse|void>{
-    const payload   = this.serializeConfiguration();
+  saveConfiguration(): Observable<CreateResponse | void> {
+    const payload = this.serializeConfiguration();
     const currentId = this.currentPublicIdSubject.getValue();
     this.loadingService.show();
     if (currentId) {
@@ -103,7 +109,7 @@ export class ConfigurationService {
     } else {
       return this.libraryConfigurationRepository
         .createConfigurationFull(
-          {name:"Configuration test",description:"Default",panels:payload.panels,frames:payload.frames,}
+          {name: "Configuration test", description: "Default", panels: payload.panels, frames: payload.frames,}
         )
         .pipe(
           tap(res => this.setCurrentPublicId(res.publicId)),
@@ -115,7 +121,18 @@ export class ConfigurationService {
   loadConfiguration(publicId: string): Observable<ConfigurationResponse> {
     this.loadingService.show();
     return this.libraryConfigurationRepository.getConfiguration(publicId).pipe(
-      tap(res => this.setCurrentPublicId(res.publicId)),
+      tap(res => {
+        this.setCurrentPublicId(res.publicId);
+        let name = res.name;
+        let description = res.description;
+        let useMiniPreview = res.useMiniPreview;
+        let configData = {
+          name: name,
+          description: description,
+          useMiniPreview: useMiniPreview,
+        }
+        this.configurationData.set(configData);
+      }),
       finalize(() => this.loadingService.hide())
     );
   }
@@ -155,4 +172,17 @@ export class ConfigurationService {
     }
   }
 
+  updateConfigData() {
+    const configId = this.currentPublicIdSubject.getValue()
+    const configData = this.configurationData()
+    if (!configId || !configData) return;
+    this.libraryConfigurationRepository
+      .updateConfigurationData(
+        configId,
+        configData).subscribe({
+        next: () => console.log('ok'),
+        error: err => console.error(err)
+      }
+    )
+  }
 }

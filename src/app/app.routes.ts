@@ -9,12 +9,13 @@ import {SignInScreenComponent} from './features/auth/ui/sign-in-screen/sign-in-s
 import {SignUpScreenComponent} from './features/auth/ui/sign-up-screen/sign-up-screen.component';
 import {
   PasswordRecoveryScreenComponent
-} from './ui/screens/password-recovery-screen/password-recovery-screen.component';
+} from './features/password-recovery/password-recovery-screen/password-recovery-screen.component';
 import {AuthGuard} from './features/auth/AuthGuard';
 import {
   ConfigurationDetailScreenComponent
 } from './features/configurations/ui/configuration-detail-screen/configuration-detail-screen.component';
 import {GalleryScreenComponent} from './features/gallery/gallery-screen/gallery-screen.component';
+import {PasswordResetComponent} from './features/password-recovery/password-reset/password-reset.component';
 
 export const routes: Routes = [
   {path: '', component: HomeScreenComponent},  // Главная страница
@@ -27,5 +28,6 @@ export const routes: Routes = [
   {path: 'profile', component: ProfileScreenComponent, canActivate: [AuthGuard]},
   {path: 'sign-in', component: SignInScreenComponent},
   {path: 'sign-up', component: SignUpScreenComponent},
-  {path: 'recovery', component: PasswordRecoveryScreenComponent}
+  {path: 'recovery', component: PasswordRecoveryScreenComponent},
+  {path: 'password-reset', component: PasswordResetComponent}
 ];

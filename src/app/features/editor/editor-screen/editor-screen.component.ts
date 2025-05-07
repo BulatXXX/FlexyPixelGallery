@@ -8,6 +8,7 @@ import {PreviewComponent} from '../ui/preview/preview.component';
 import {ConfigurationService} from '../service/ConfigurationService';
 import {ActivatedRoute} from '@angular/router';
 import {firstValueFrom} from 'rxjs';
+import {LoadingService} from '../../../core/services/LoadingService';
 
 @Component({
   selector: 'app-editor-screen',
@@ -24,7 +25,10 @@ import {firstValueFrom} from 'rxjs';
 })
 export class EditorScreenComponent implements OnInit {
 
-  constructor(protected dimensionService: DimensionService,private configurationService: ConfigurationService,private route: ActivatedRoute) {
+  constructor(protected dimensionService: DimensionService,
+              private configurationService: ConfigurationService,
+              private route: ActivatedRoute,
+              private loadingService: LoadingService) {
   }
 
   dimensions: EditorComponentsDimensions = {

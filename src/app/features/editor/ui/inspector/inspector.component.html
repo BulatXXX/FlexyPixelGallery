@@ -1,33 +1,46 @@
 <div class="inspector-container" [ngStyle]="{'height.px': height, 'width.px': width}">
-  <!-- Отображать только если включён режим рисования -->
-  <ng-container *ngIf="settingsService.setting.mode === Mode.DrawingMode">
-    <input #inputElement
-           [(colorPicker)]="settingsService.setting.drawingColor"
-           [style.background]="settingsService.setting.drawingColor"/>
+  <ng-container [ngSwitch]="settingsService.setting.mode">
+    <ng-container *ngSwitchCase="Mode.SpectatorMode">
+      <app-spectator [ngStyle]="{'height.px': height, 'width.px': width}"></app-spectator>
+    </ng-container>
+    <ng-container *ngSwitchCase="Mode.EditorMode">
+      <app-spectator [ngStyle]="{'height.px': height, 'width.px': width}"></app-spectator>
+    </ng-container>
+    <ng-container *ngSwitchCase="Mode.DeleteMode">
+      <app-spectator [ngStyle]="{'height.px': height, 'width.px': width}"></app-spectator>
+    </ng-container>
+    <ng-container *ngSwitchCase="Mode.DrawingMode">
+      <app-drawing></app-drawing>
+      <div
+        [colorPicker]="settingsService.setting.drawingColor"
+        [cpToggle]="true"
+      [cpDialogDisplay]="'inline'"
+      [cpPosition]="'right'"
+      [cpOutputFormat]="'hex'"
+      [cpAlphaChannel]="'disabled'"
+      (colorPickerChange)="onColorChange($event)"
+      style="width:300px; height:200px;"
+      ></div>
 
-    <!-- Настраиваемая палитра цветов -->
-    <div class="color-palette">
-      <button *ngFor="let color of paletteColors"
-              [ngStyle]="{'height.px': 40, 'width.px': 40}"
-              [style.background]="color"
-              (click)="selectColor(color)">
-      </button>
-    </div>
+
+<!--<div class="color-palette">-->
+<!--        <button *ngFor="let color of paletteColors"-->
+<!--                [ngStyle]="{'height.px': 40, 'width.px': 40}"-->
+<!--                [style.background]="color"-->
+<!--                (click)="selectColor(color)">-->
+<!--        </button>-->
+<!--      </div>-->
+    </ng-container>
+    <ng-container *ngSwitchCase="Mode.ImageAttaching">
+      <div class="image-inspector">
+        <input type="file" (change)="onFileSelected($event)">
+        <button (click)="applyImage()">Применить</button>
+
+      </div>
+
+    </ng-container>
+
   </ng-container>
 
-  <div class="framesCounter">
-    <mat-icon class="counterButton" (click)="prevFrame()">arrow_back_ios</mat-icon>
-    <p class="frame">{{frameIndex}}</p>
-    <mat-icon class="counterButton" (click)="nextFrame()">arrow_forward_ios</mat-icon>
-  </div>
-  <mat-icon class="counterButton" (click)="playAnimation()">play_arrow</mat-icon>
 
-  <ng-container *ngIf="settingsService.setting.mode == Mode.ImageAttaching">
-    <div class="image-inspector">
-      <input type="file" (change)="onFileSelected($event)">
-      <button (click)="applyImage()">Применить</button>
-
-    </div>
-
-  </ng-container>
 </div>

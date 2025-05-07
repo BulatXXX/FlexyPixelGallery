@@ -1,0 +1,36 @@
+<div class="container" *ngIf="configurationService.configurationData() as data; else loading">
+  <!-- NAME -->
+  <div class="editable-container">
+    <h2>Title:</h2>
+    <h3
+      #editableName
+      [attr.contenteditable]="true"
+      class="editable-text title-editable"
+      (blur)="saveName(editableName.innerText)"
+      (keydown)="onNameKeydown($event, editableName.innerText)"
+    >{{ data.name }}</h3>
+  </div>
+
+  <!-- DESCRIPTION -->
+  <div class="editable-container" [ngStyle]="{'max-height.px': height*0.7}">
+    <h3 class="desc-title">Description:</h3>
+    <p
+      #editableDesc
+      [attr.contenteditable]="true"
+      class="editable-text edit-desc"
+      (blur)="saveDesc(editableDesc.innerText)"
+      (keydown)="onDescKeydown($event,editableDesc.innerText)"
+    >{{ data.description }}</p>
+  </div>
+
+  <div class="toggle-container">
+    <mat-slide-toggle class="toggle-slide" labelPosition="before" [checked]="data.useMiniPreview"
+                      (change)="toggleMiniPreview($event.checked)">Use mini preview:
+    </mat-slide-toggle>
+  </div>
+
+
+</div>
+<ng-template #loading>
+  <p>Загрузка…</p>
+</ng-template>

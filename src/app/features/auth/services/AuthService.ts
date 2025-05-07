@@ -63,7 +63,6 @@ export class AuthService {
     }
   }
 
-  /** Обновление access-токена по refresh-токену */
   async refreshToken(): Promise<void> {
     const rt = this.tokenStorage.getRefreshToken();
     if (!rt) {

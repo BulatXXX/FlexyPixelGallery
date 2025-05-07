@@ -44,6 +44,7 @@ export class UserService {
       })).subscribe(this.publicOnly.set);
     }
   }
+
   updateAvatar(file: File) {
     return this.repo.uploadAvatar(file).pipe(
       // ответ { avatarUrl: string }

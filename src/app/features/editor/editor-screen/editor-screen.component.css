@@ -1,3 +1,11 @@
+/* spectator.component.css */
+:host {
+  display: block;        /* или flex/whatever у вас там */
+  width: 100%;
+  height: 100%;
+  overflow-x: hidden;    /* запретить горизонтальный скролл внутри компонента */
+  overscroll-behavior-x: none; /* опционально: запретить «подёргивания» на тачах */
+}
 
 .canvas{
   box-sizing: border-box;
@@ -14,11 +22,6 @@
   height: fit-content;
 }
 
-.editor-container {
-
-  flex-direction: column;
-  display: inline-flex;
-}
 .menu-inspector-canvas-container{
   display: inline-flex;
   flex-direction: row;

@@ -3,7 +3,7 @@ import {HttpClient} from '@angular/common/http';
 import {environment} from '../../core/environment';
 import {Observable} from 'rxjs';
 import {PublishResponse} from './gallery-configuration.repository';
-import {ConfigurationResponse} from '../editor/service/ConfigurationService';
+import {ConfigurationData, ConfigurationResponse} from '../editor/service/ConfigurationService';
 
 @Injectable({providedIn: 'root'})
 export class LibraryConfigurationRepository {
@@ -59,6 +59,10 @@ export class LibraryConfigurationRepository {
   }
 
 
+  updateConfigurationData(publicId: string, configurationData: ConfigurationData): Observable<void> {
+    const url = `${environment.apiUrl}/configurations/my/${publicId}/data`;
+    return this.http.patch<any>(url, configurationData);
+  }
 }
 
 export interface CreateResponse {

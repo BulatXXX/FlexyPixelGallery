@@ -127,7 +127,7 @@ export class AnimationService {
   }
 
   playAnimation(): void {
-    const fps = 21;
+    const fps = 600;
     let frameIndex = 0;
     const intervalId = setInterval(() => {
       if (frameIndex >= this.frames.length) {

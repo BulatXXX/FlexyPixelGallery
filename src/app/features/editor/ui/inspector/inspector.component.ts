@@ -1,20 +1,28 @@
 import { Component, Input } from '@angular/core';
 import { ColorPickerModule } from 'ngx-color-picker';
-import {AsyncPipe, NgForOf, NgIf, NgStyle} from '@angular/common';
+import {AsyncPipe, NgForOf, NgIf, NgStyle, NgSwitch, NgSwitchCase} from '@angular/common';
 import { MatIcon } from '@angular/material/icon';
 import { AnimationService } from '../../service/AnimationService';
 import { SettingsService } from '../../service/SettingsService';
 import {Mode} from '../../models/Mode';
 import {ImageAttachingService} from '../../service/ImageAttachingService';
+import {SpectatorComponent} from './modes/spectator/spectator.component';
+import {EditorComponent} from './modes/editor/editor.component';
+import {ImageAttachingComponent} from './modes/image-attaching/image-attaching.component';
+import {DrawingComponent} from './modes/drawing/drawing.component';
 
 @Component({
   selector: 'app-inspector',
   imports: [
     ColorPickerModule,
     NgStyle,
-    MatIcon,
     NgForOf,
-    NgIf,
+    NgSwitch,
+    NgSwitchCase,
+    SpectatorComponent,
+    EditorComponent,
+    ImageAttachingComponent,
+    DrawingComponent,
   ],
   templateUrl: './inspector.component.html',
   standalone: true,
@@ -84,4 +92,7 @@ export class InspectorComponent {
     await this.imageAttachingService.apply();
   }
 
+  onColorChange(newColor: string) {
+    this.settingsService.setting.drawingColor = newColor;
+  }
 }
