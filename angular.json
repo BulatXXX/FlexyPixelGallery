@@ -35,7 +35,11 @@
               "@angular/material/prebuilt-themes/rose-red.css",
               "src/styles.scss"
             ],
-            "scripts": []
+            "scripts": [],
+            "allowedCommonJsDependencies": [
+              "gifuct-js",
+              "js-binary-schema-parser"
+            ]
           },
           "configurations": {
             "production": {
@@ -43,7 +47,7 @@
                 {
                   "type": "initial",
                   "maximumWarning": "500kB",
-                  "maximumError": "1MB"
+                  "maximumError": "2MB"
                 },
                 {
                   "type": "anyComponentStyle",
