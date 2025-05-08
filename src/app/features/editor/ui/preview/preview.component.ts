@@ -140,58 +140,6 @@ export class PreviewComponent implements OnChanges, OnInit, AfterViewInit {
   }
 
 
-  // addFrame(): void {
-  //   // 1. Добавляем кадр (он будет добавлен справа)
-  //   const container = this.previewList.nativeElement as HTMLElement;
-  //
-  //  setTimeout(()=>{
-  //    this.viewport.scrollToIndex(0,"smooth");
-  //    // container.scrollTo({
-  //    //   left: container.scrollWidth,
-  //    //   behavior: 'smooth'
-  //    // });
-  //
-  //  },400)
-  //   this.animationService.selectFrame(this.animationService.frames.length);
-  //   // 2. Делаем паузу, чтобы Angular успел отрисовать DOM
-  //   setTimeout(() => {
-  //     const addElement = document.getElementById('item-add');
-  //     const newFrameElement = document.getElementById('new-frame');
-  //
-  //     if (newFrameElement && addElement && this.previewList && this.previewList.nativeElement) {
-  //      // addElement.scrollIntoView({behavior: 'smooth', inline: 'end',block:"nearest"});
-  //
-  //       // container.style.paddingRight = `${this.previewListItemSize}px`;
-  //       // container.style.paddingLeft = `${this.previewListItemSize}px`;
-  //       // 3. Вычисляем смещение вправо
-  //       const scrollOffset = this.previewListItemSize/3;
-  //
-  //       // 4. Сдвигаем кнопку "добавить" вправо
-  //       this.addButtonTransform = `translateX(${scrollOffset}px)`;
-  //       this.itemsShiftTransform = `translateX(-${scrollOffset}px)`;
-  //       // 5. Ждём завершения движения, потом возвращаем на место
-  //
-  //       setTimeout(() => {
-  //         this.addButtonTransform = `translateX(0px)`;
-  //         this.itemsShiftTransform = `translateX(0px)`;
-  //         setTimeout(()=>{
-  //           // container.style.paddingRight = `40px`;
-  //           // container.style.paddingLeft = `40px`;
-  //         },400)
-  //       }, 400);
-  //       // должно совпадать с transition в CSS
-  //     }
-  //
-  //     // 6. Анимация появления кадра
-  //     if (newFrameElement) {
-  //       newFrameElement.classList.add('new');
-  //       setTimeout(() => {
-  //         newFrameElement.classList.remove('new');
-  //       }, 500);
-  //     }
-  //
-  //   }, 10); // небольшая задержка, чтобы DOM успел обновиться
-  // }
   addFrame(): void {
     const shift = this.previewListItemSize / 2;
     this.itemsShiftTransform = `translateX(-${shift}px)`;

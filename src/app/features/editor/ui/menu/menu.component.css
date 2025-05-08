@@ -13,35 +13,52 @@
 
 
 .menu-container{
+  height: 100%;
+  width: 100%;
   display: flex;
   flex-direction: row;
   gap: 20px;
   padding: 20px 20px;
-  justify-items: center;
+  align-items: center;
   box-sizing: border-box;
   background: var(--surface-color);
   border-top: 1px solid white;
   border-bottom: 1px solid white;
 }
-
-.frame-input-container {
-  display: inline-flex;
+.control-icons{
+  flex: 1;
+  display: flex;
+  flex-direction: row;
   align-items: center;
-  gap: 4px;
+  justify-content: start;
+  gap: 20px;
 }
 
-.frame-input {
+.frame-input-container {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  gap: 4px;
+}
+.flip-horizontal {
+  transform: scaleX(-1);
+  /* при необходимости явно выставьте точку поворота */
+  transform-origin: center center;
+}
+.editable-text {
   width: 40px;
-  /* Убираем всякий фон/бордер */
   background: transparent;
   border: none;
   color: white;
   text-align: center;
-  /* Можно чуть-чуть добавить bottom-border, если хочется */
-  outline: none; /* чтобы не было стандартного фокуса */
+  overflow: hidden;
+  text-overflow: clip;
+  white-space: nowrap;
+  outline: none;=
   font-size: 16px;
 }
-.frame-input:focus {
+.editable-text:focus {
   outline: none;
   /* Можно задать, например, border-bottom: 1px solid white; */
 }

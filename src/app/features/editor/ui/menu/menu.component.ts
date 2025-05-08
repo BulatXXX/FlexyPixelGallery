@@ -1,4 +1,4 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, ElementRef, Input, OnInit, ViewChild} from '@angular/core';
 import {MatIcon} from '@angular/material/icon';
 import {PanelStateService} from '../../service/PanelStateService';
 import {AsyncPipe, NgClass, NgStyle} from '@angular/common';
@@ -31,8 +31,10 @@ import {CreateResponse} from '../../../configurations/library-configuration.repo
 export class MenuComponent implements OnInit {
   @Input() width: number = 0;
   @Input() height: number = 0;
+  @ViewChild('editableFrame', { static: true }) editableFrame!: ElementRef<HTMLElement>;
 
   currentFrameNumber = 0;
+  isPlaying = false;
 
   currentPublicId: string | null = null;
   private configurationIdSubscription!: Subscription;
@@ -42,17 +44,42 @@ export class MenuComponent implements OnInit {
     this.animationService.currentFrameIndex$.subscribe((index) => {
       this.currentFrameNumber = index;
     });
+    this.animationService.isPlaying$.subscribe(isPlaying => {
+      this.isPlaying = isPlaying;
+    })
   }
 
-  onFrameNumberChange(event: any) {
-    let val = parseInt(event.target.value, 10);
-    if (isNaN(val)) val = 0;
-    if (val < 0) val = 0;
-    if (val > 585) val = 585;
+  onFrameNumberChange(event: Event) {
+    const target = event.target as HTMLElement;
+    // читаем то, что в span-е
+    let raw = target.innerText.trim();
+    let val = parseInt(raw, 10);
+
+    if (isNaN(val))          val = 0;
+    if (val < 0)             val = 0;
+    if (val > 585)           val = 585;
+
     this.currentFrameNumber = val;
     this.animationService.selectFrame(val);
   }
+  allowOnlyDigits(event: KeyboardEvent) {
+    const allowedKeys = [
+      'Backspace', 'Delete',
+      'ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown',
+      'Home', 'End',
+      'Tab'
+    ];
 
+    // всегда пропускаем навигацию и удаление
+    if (allowedKeys.includes(event.key)) {
+      return;
+    }
+
+    // если это не цифра — блокируем
+    if (!/^\d$/.test(event.key)) {
+      event.preventDefault();
+    }
+  }
   prevFrame() {
     const newIndex = Math.max(0, this.currentFrameNumber - 1);
     this.animationService.selectFrame(newIndex);
@@ -150,4 +177,10 @@ export class MenuComponent implements OnInit {
   }
 
 
+  pauseAnimation() {
+    this.animationService.pauseAnimation();
+  }
+  playAnimation() {
+    this.animationService.playAnimation();
+  }
 }

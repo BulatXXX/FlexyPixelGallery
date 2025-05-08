@@ -1,40 +1,60 @@
-<div class="menu-container" [ngStyle]="{'width.px': width, 'height.px': height}">
-  <mat-icon matTooltip="Undo" class="menu-button" (click)="undo()">undo</mat-icon>
-  <mat-icon matTooltip="Redo" class="menu-button" (click)="redo()">redo</mat-icon>
-  <mat-icon matTooltip="Save" class="menu-button" (click)="save()">save</mat-icon>
-  <mat-icon matTooltip="Load" class="menu-button" (click)="load()">download</mat-icon>
-  <mat-icon matTooltip="Center grid" class="menu-button" (click)="centerGrid()">zoom_in_map</mat-icon>
-  <mat-icon matTooltip="Zoom in" class="menu-button" (click)="zoomIn()">add</mat-icon>
-  <mat-icon matTooltip="Zoom out" class="menu-button" (click)="zoomOut()">remove</mat-icon>
+<div class="menu-container">
+  <div class="control-icons">
+    <mat-icon matTooltip="Undo" class="menu-button" (click)="undo()">undo</mat-icon>
+    <mat-icon matTooltip="Redo" class="menu-button" (click)="redo()">redo</mat-icon>
+    <mat-icon matTooltip="Save" class="menu-button" (click)="save()">save</mat-icon>
+    <mat-icon matTooltip="Load" class="menu-button" (click)="load()">download</mat-icon>
+    <mat-icon matTooltip="Center grid" class="menu-button" (click)="centerGrid()">zoom_in_map</mat-icon>
+    <mat-icon matTooltip="Zoom in" class="menu-button" (click)="zoomIn()">add</mat-icon>
+    <mat-icon matTooltip="Zoom out" class="menu-button" (click)="zoomOut()">remove</mat-icon>
 
+    <mat-icon
+      matTooltip="Panel borders"
+      class="menu-button"
+      (click)="toggleBorders()"
+      [ngClass]="{'active-icon': (settingsService.setting$ | async)?.showPanelBorders}">
+      crop_free
+    </mat-icon>
+    <mat-icon
+      matTooltip="Panel directions"
+      class="menu-button"
+      (click)="toggleDirections()"
+      [ngClass]="{'active-icon': (settingsService.setting$ | async)?.showPanelDirections}">
+      keyboard_double_arrow_up
+    </mat-icon>
 
-  <!-- Тогглы для отображения границ и направлений -->
-  <mat-icon
-    matTooltip="Panel borders"
-    class="menu-button"
-    (click)="toggleBorders()"
-    [ngClass]="{'active-icon': (settingsService.setting$ | async)?.showPanelBorders}">
-    crop_free
-  </mat-icon>
-  <mat-icon
-    matTooltip="Panel directions"
-    class="menu-button"
-    (click)="toggleDirections()"
-    [ngClass]="{'active-icon': (settingsService.setting$ | async)?.showPanelDirections}">
-    keyboard_double_arrow_up
-  </mat-icon>
+    <mat-icon
+      matTooltip="Pause animation"
+      class="menu-button"
+      (click)="pauseAnimation()"
+      [class.active-icon]="!isPlaying">
+      pause_circle
+    </mat-icon>
 
-  <!-- ...иконки undo, redo, zoom... -->
+    <mat-icon
+      matTooltip="Play animation"
+      class="menu-button"
+      (click)="playAnimation()"
+      [class.active-icon]="isPlaying">
+      play_circle
+    </mat-icon>
+
+  </div>
   <div class="frame-input-container">
-    <mat-icon (click)="prevFrame()">arrow_back_ios</mat-icon>
-    <input
-      class="frame-input"
-      type="number"
-      [(ngModel)]="currentFrameNumber"
-      (change)="onFrameNumberChange($event)"
-      [attr.min]="0"
-      [attr.max]="585"
-    />
+    <mat-icon class="flip-horizontal" (click)="prevFrame()">arrow_forward_ios</mat-icon>
+    <span #editableFrame
+          [attr.contenteditable]="true"
+          class="editable-text"
+          (blur)="onFrameNumberChange($event)"
+          (keydown)="allowOnlyDigits($event)"
+          (keydown.enter)="
+         $event.preventDefault();
+         onFrameNumberChange($event)
+      "
+    >
+      {{ currentFrameNumber}}
+    </span>
+
     <mat-icon (click)="nextFrame()">arrow_forward_ios</mat-icon>
   </div>
 

@@ -9,6 +9,7 @@ import {ConfigurationService} from '../service/ConfigurationService';
 import {ActivatedRoute} from '@angular/router';
 import {firstValueFrom} from 'rxjs';
 import {LoadingService} from '../../../core/services/LoadingService';
+import {NgStyle} from '@angular/common';
 
 @Component({
   selector: 'app-editor-screen',
@@ -18,6 +19,7 @@ import {LoadingService} from '../../../core/services/LoadingService';
     InspectorComponent,
     ToolsComponent,
     PreviewComponent,
+    NgStyle,
   ],
   templateUrl: './editor-screen.component.html',
   standalone: true,

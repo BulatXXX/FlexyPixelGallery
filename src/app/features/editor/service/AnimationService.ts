@@ -20,6 +20,15 @@ export class AnimationService {
     this.framesSubject.next(newFrames);
   }
 
+  private isPlayingSubject = new BehaviorSubject<boolean>(false);
+  public isPlaying$ = this.isPlayingSubject.asObservable();
+  get isPlaying(): boolean {
+    return this.isPlayingSubject.getValue();
+  }
+  set isPlaying(newValue: boolean) {
+    this.isPlayingSubject.next(newValue);
+  }
+
 
   private currentFrameIndexSubject = new BehaviorSubject<number>(0);
 
@@ -126,17 +135,39 @@ export class AnimationService {
     this.currentFrameIndex = currentIndex + 1;
   }
 
+  private animationIntervalId: any = null;
+  private readonly MAX_FRAME = 585;
+  private readonly fps = 60;
+
+
   playAnimation(): void {
-    const fps = 600;
-    let frameIndex = 0;
-    const intervalId = setInterval(() => {
-      if (frameIndex >= this.frames.length) {
-        clearInterval(intervalId);
+    if (this.isPlaying) {
+      return;
+    }
+    this.isPlaying = true;
+
+    // на всякий случай очищаем старый таймер
+    if (this.animationIntervalId != null) {
+      clearInterval(this.animationIntervalId);
+    }
+
+    this.animationIntervalId = setInterval(() => {
+      if (this.currentFrameIndex >= this.frames.length) {
+        this.pauseAnimation();
+        this.selectFrame(0)
       } else {
-        this.selectFrame(frameIndex);
-        frameIndex++;
+        this.selectFrame(this.currentFrameIndex);
+        this.currentFrameIndex++;
       }
-    }, 1000 / fps);
+    }, 1000 / this.fps);
+  }
+
+  pauseAnimation(): void {
+    if (this.animationIntervalId != null) {
+      clearInterval(this.animationIntervalId);
+      this.animationIntervalId = null;
+    }
+    this.isPlaying = false;
   }
 
   private ensureAllFramesContainPanels(panels: Panel[]): void {
