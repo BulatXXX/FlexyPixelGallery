@@ -105,7 +105,7 @@ export class ConfigurationService {
   saveConfiguration(): Observable<CreateResponse | void> {
     const payload = this.serializeConfiguration();
     const currentId = this.currentPublicIdSubject.getValue();
-    this.downloadPayloadAsFile(payload,`${currentId}`)
+    // this.downloadPayloadAsFile(payload,`${currentId}`)
     this.loadingService.show();
     if (currentId) {
       return this.libraryConfigurationRepository
