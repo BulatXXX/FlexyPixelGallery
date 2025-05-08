@@ -2,7 +2,7 @@
 <div class="container" *ngIf="configurationService.configurationData() as data; else loading">
 
   <!-- NAME -->
-  <div class="editable-container">
+  <div class="editable-container" [ngStyle]="{'max-height.px': 44}">
     <span
       #editableName
       [attr.contenteditable]="true"
@@ -10,7 +10,9 @@
       (blur)="saveName(editableName.innerText)"
       (keydown)="onNameKeydown($event, editableName.innerText)"
     >{{ data.name }}</span>
+      <mat-divider class="divider"></mat-divider>
   </div>
+
 
   <!-- DESCRIPTION -->
   <div class="editable-container" [ngStyle]="{'max-height.px': height*0.6}">
@@ -22,6 +24,7 @@
       (blur)="saveDesc(editableDesc.innerText)"
       (keydown)="onDescKeydown($event,editableDesc.innerText)"
     >{{ data.description }}</p>
+      <mat-divider class="divider"></mat-divider>
   </div>
 
   <div class="toggle-container">

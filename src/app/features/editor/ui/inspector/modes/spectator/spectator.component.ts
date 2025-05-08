@@ -4,6 +4,7 @@ import {NgIf, NgStyle} from '@angular/common';
 import {MatIconModule} from '@angular/material/icon';
 import {MatSlideToggle} from '@angular/material/slide-toggle';
 import {FormsModule} from '@angular/forms';
+import {MatDivider} from "@angular/material/divider";
 
 
 @Component({
@@ -15,7 +16,8 @@ import {FormsModule} from '@angular/forms';
     MatIconModule,
     NgStyle,
     MatSlideToggle,
-    FormsModule
+    FormsModule,
+    MatDivider
   ],
   standalone: true
 })

@@ -40,7 +40,6 @@
 
 .title-editable {
   color: white;
-  min-height: 2rem;
   font-size: 2rem;
   font-weight: 500;
   overflow-x: scroll;
@@ -61,11 +60,13 @@
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
-  padding-top: 20px;
+  padding-top: 30px;
 }
 .toggle-container span{
   font-weight: bold;
 }
-
-
-.to
+.divider{
+  margin: 4px -10px;
+  border-top-color: #ffffff;
+  width: calc(100% + 20px);
+}
