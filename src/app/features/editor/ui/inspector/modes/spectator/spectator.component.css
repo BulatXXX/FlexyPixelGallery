@@ -7,18 +7,22 @@
   flex-direction: column;
   justify-content: start;
 }
+.wrapper{
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: start;
+}
 .editable-container {
   display: flex;
   flex-direction: column;
   min-height: 2rem;
   margin-bottom: 1rem;
-  width: 95%;
+  width: 100%;
   box-sizing: border-box;
 }
-.editable-container h2{
-  font-size: 2rem;
-  font-weight: 500;
-}
+
 .editable-container h3{
   font-size: 1.2rem;
   font-weight: 500;
@@ -37,19 +41,31 @@
 .title-editable {
   color: white;
   min-height: 2rem;
-  font-size: 1.3rem;
-  font-weight: 200;
+  font-size: 2rem;
+  font-weight: 500;
   overflow-x: scroll;
   text-overflow: fade;
   white-space: nowrap;
+  text-decoration: underline;
 }
 .edit-desc {
   color: white;
+  text-align: justify;
   white-space: pre-wrap;     /* сохранить переводы строк */
   overflow-wrap: break-word; /* переносить длинные слова */
   max-height: 80%;          /* ваша фикс. высота */
   overflow-y: auto;          /* вертикальная прокрутка */
 }
 .toggle-container{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
   padding-top: 20px;
 }
+.toggle-container span{
+  font-weight: bold;
+}
+
+
+.to

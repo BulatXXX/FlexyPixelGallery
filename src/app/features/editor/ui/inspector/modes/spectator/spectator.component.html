@@ -1,7 +1,8 @@
+<div class="wrapper">
 <div class="container" *ngIf="configurationService.configurationData() as data; else loading">
+
   <!-- NAME -->
   <div class="editable-container">
-    <h2>Name:</h2>
     <span
       #editableName
       [attr.contenteditable]="true"
@@ -12,7 +13,7 @@
   </div>
 
   <!-- DESCRIPTION -->
-  <div class="editable-container" [ngStyle]="{'max-height.px': height*0.7}">
+  <div class="editable-container" [ngStyle]="{'max-height.px': height*0.6}">
     <h3 class="desc-title">Description:</h3>
     <p
       #editableDesc
@@ -24,12 +25,14 @@
   </div>
 
   <div class="toggle-container">
-    <mat-slide-toggle class="toggle-slide" labelPosition="before" [checked]="data.useMiniPreview"
-                      (change)="toggleMiniPreview($event.checked)">Use mini preview:
+      <span>Use mini preview:</span>
+    <mat-slide-toggle class="toggle-slide"  [checked]="data.useMiniPreview"
+                      (change)="toggleMiniPreview($event.checked)">
     </mat-slide-toggle>
   </div>
 
 
+</div>
 </div>
 <ng-template #loading>
   <p>Загрузка…</p>

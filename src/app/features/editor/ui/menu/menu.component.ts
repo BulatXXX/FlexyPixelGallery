@@ -1,7 +1,7 @@
 import {Component, ElementRef, Input, OnInit, ViewChild} from '@angular/core';
 import {MatIcon} from '@angular/material/icon';
 import {PanelStateService} from '../../service/PanelStateService';
-import {AsyncPipe, NgClass, NgStyle} from '@angular/common';
+import {AsyncPipe, NgClass} from '@angular/common';
 import {CommandManager} from '../../service/CommandManager';
 import {Mode} from '../../models/Mode';
 import {EditorActions} from '../../models/EditorActions';
@@ -18,7 +18,6 @@ import {CreateResponse} from '../../../configurations/library-configuration.repo
   selector: 'app-menu',
   imports: [
     MatIcon,
-    NgStyle,
     MatTooltip,
     AsyncPipe,
     NgClass,

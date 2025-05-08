@@ -55,7 +55,7 @@
   overflow: hidden;
   text-overflow: clip;
   white-space: nowrap;
-  outline: none;=
+  outline: none;
   font-size: 16px;
 }
 .editable-text:focus {
