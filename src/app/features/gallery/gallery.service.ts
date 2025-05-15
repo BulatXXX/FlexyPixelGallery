@@ -7,7 +7,7 @@ import {
   GalleryConfigurationRepository,
   GalleryItem,
   SearchRequest
-} from '../configurations/gallery-configuration.repository';
+} from './gallery-configuration.repository';
 import {LoadingService} from '../../core/services/LoadingService';
 
 @Injectable({providedIn: 'root'})
@@ -18,7 +18,11 @@ export class GalleryService {
   // фильтры
   searchQuery = signal<string>('');
   tagFilterIds = signal<string[]>([]);
+
   ratingRange = signal<{ from: null | number; to: null | number }>({from: null, to: null});
+  addedCountRange = signal<{ from: number | null; to: number | null }>({ from: null, to: null });
+  publishedAtRange = signal<{ from: Date | null; to: Date | null }>({ from: null, to: null });
+
   sortBy = signal<{ [k: string]: { order: 'ASC' | 'DESC' } }>({'AddedCount': {order: 'DESC'}});
 
   // страница
@@ -38,17 +42,27 @@ export class GalleryService {
       })
     )
   }
+  public updateFilters(){
+
+  }
 
   constructor() {
     // следим за изменениями и перезапрашиваем
     effect(() => {
+      const publishedRange = this.publishedAtRange();
+      const publishedAtRangeFormatted = (publishedRange.from && publishedRange.to)
+        ? {
+          from: publishedRange.from.toISOString(),
+          to: publishedRange.to.toISOString()
+        }
+        : null;
       const req: SearchRequest = {
         searchQuery: this.searchQuery(),
         tagFilterIds: this.tagFilterIds(),
         tagMatchMode: 'ANY',
-        publishedAtRange: null,
+        publishedAtRange: publishedAtRangeFormatted,
         ratingRange: this.ratingRange(),
-        addedCountRange: {from: null, to: null},
+        addedCountRange: this.addedCountRange(),
         sortBy: this.sortBy(),
         offset: this.offset(),
         size: this.size()

@@ -55,7 +55,6 @@ export class DrawingService {
       this.isDrawing = false;
       this.executePaintCommand();
       this.pixelsToPaint = [];
-      //not sure if i must do this but it works
       document.removeEventListener('mouseup', this.handleStopDrawing.bind(this));
     }
     this.animationService.updateFrame()

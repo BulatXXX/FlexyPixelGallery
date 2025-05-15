@@ -5,7 +5,7 @@
   <div class="editable-container" [ngStyle]="{'max-height.px': 44}">
     <span
       #editableName
-      [attr.contenteditable]="true"
+      [attr.contenteditable]="!isInGalleryMode()"
       class="editable-text title-editable"
       (blur)="saveName(editableName.innerText)"
       (keydown)="onNameKeydown($event, editableName.innerText)"
@@ -15,11 +15,11 @@
 
 
   <!-- DESCRIPTION -->
-  <div class="editable-container" [ngStyle]="{'max-height.px': height*0.6}">
+  <div class="editable-container" [ngStyle]="{'max-height.px': height*0.4}">
     <h3 class="desc-title">Description:</h3>
     <p
       #editableDesc
-      [attr.contenteditable]="true"
+      [attr.contenteditable]="!isInGalleryMode()"
       class="editable-text edit-desc"
       (blur)="saveDesc(editableDesc.innerText)"
       (keydown)="onDescKeydown($event,editableDesc.innerText)"
@@ -27,7 +27,7 @@
       <mat-divider class="divider"></mat-divider>
   </div>
 
-  <div class="toggle-container">
+  <div class="toggle-container" *ngIf="!isInGalleryMode()">
       <span>Use mini preview:</span>
     <mat-slide-toggle class="toggle-slide"  [checked]="data.useMiniPreview"
                       (change)="toggleMiniPreview($event.checked)">

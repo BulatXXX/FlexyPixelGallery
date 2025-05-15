@@ -5,8 +5,9 @@ import {NgForOf, NgIf} from '@angular/common';
 import {MatIcon} from '@angular/material/icon';
 import {GalleryCardComponent} from '../gallery-card/gallery-card.component';
 import {MatCard, MatCardModule} from '@angular/material/card';
-import {GalleryConfigurationRepository} from '../../configurations/gallery-configuration.repository';
+import {GalleryConfigurationRepository} from '../gallery-configuration.repository';
 import {GalleryService} from '../gallery.service';
+import {FiltersComponent} from '../filters/filters.component';
 
 
 @Component({
@@ -18,7 +19,8 @@ import {GalleryService} from '../gallery.service';
     NgForOf,
     NgIf,
     GalleryCardComponent,
-    MatCardModule
+    MatCardModule,
+    FiltersComponent
   ],
   templateUrl: './gallery-screen.component.html',
   standalone: true,

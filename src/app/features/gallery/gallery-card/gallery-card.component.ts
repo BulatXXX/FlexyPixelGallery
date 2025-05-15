@@ -1,20 +1,14 @@
 import {Component, inject, Input} from '@angular/core';
-import {GalleryItem} from '../../configurations/gallery-configuration.repository';
-import {RouterLink} from '@angular/router';
-import {
-  MatCard,
-  MatCardActions,
-  MatCardContent,
-  MatCardHeader,
-  MatCardImage,
-  MatCardModule
-} from '@angular/material/card';
-import {DatePipe, DecimalPipe, NgForOf} from '@angular/common';
+import {GalleryItem} from '../gallery-configuration.repository';
+import {Router} from '@angular/router';
+import {MatCardModule} from '@angular/material/card';
+import {DatePipe, DecimalPipe} from '@angular/common';
 import {MatIconButton} from '@angular/material/button';
 import {MatIcon} from '@angular/material/icon';
 import {MatMenu, MatMenuItem, MatMenuTrigger} from '@angular/material/menu';
-import {config} from 'rxjs';
 import {GalleryService} from '../gallery.service';
+import {SettingsService} from '../../editor/service/SettingsService';
+import {Mode} from '../../editor/models/Mode';
 
 @Component({
   selector: 'app-gallery-card',
@@ -37,7 +31,11 @@ export class GalleryCardComponent {
 
   private service: GalleryService = inject(GalleryService);
 
-  subscribe(publicId: string){
+  constructor(private router: Router, private settingsService: SettingsService) {
+  }
+
+
+  subscribe(publicId: string) {
     this.service.subscribe(publicId).subscribe({
       next: res => {
         // например, показать уведомление об успехе
@@ -47,5 +45,10 @@ export class GalleryCardComponent {
 
       }
     })
+  }
+
+  openConfiguration() {
+    // this.router.navigate(['/editor', this.item.publicId]).then(r => {
+    // });
   }
 }

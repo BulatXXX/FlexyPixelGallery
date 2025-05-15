@@ -1,0 +1,61 @@
+<mat-card class="container">
+  <div class="heading">
+    <span class="title">Filters</span>
+  </div>
+  <div class="sort-by-container">
+    <mat-form-field appearance="outline" class="sort-field">
+      <mat-label class="label">Sort by:</mat-label>
+      <mat-select [value]="galleryService.sortBy()" (valueChange)="setSortBy($event)">
+        <mat-option [value]="Sorts.AVERAGE_RATING">Rating</mat-option>
+        <mat-option [value]="Sorts.ADDED_COUNT">Added count</mat-option>
+        <mat-option [value]="Sorts.PUBLISHED_AT">Publish date</mat-option>
+      </mat-select>
+    </mat-form-field>
+    <div class="sort-icon">
+      <mat-icon>sort</mat-icon>
+    </div>
+  </div>
+
+  <div >
+
+    <div >
+      <mat-label class="label">Rating</mat-label>
+
+      <mat-slider  min="0" max="5" step="1"  discrete >
+        <input matSliderStartThumb  (valueChange)="setRatingFrom($event)" [value]="galleryService.ratingRange().from ?? 1">
+        <input matSliderEndThumb  (valueChange)="setRatingTo($event)" [value]="galleryService.ratingRange().to   ?? 5">
+      </mat-slider>
+    </div>
+
+    <!-- Added Count -->
+    <div>
+      <mat-label class="label" >Added count</mat-label>
+      <mat-slider min="0" max="500000" step="100">
+        <input value="50" (valueChange)="setAddedFrom($event)" [value]="galleryService.addedCountRange().from ?? 0" matSliderStartThumb>
+        <input value="6000" (valueChange)="setAddedTo($event)" [value]="galleryService.addedCountRange().from ?? 500000" matSliderEndThumb>
+      </mat-slider>
+    </div>
+
+    <!-- Published Range -->
+
+
+  </div>
+
+  <mat-form-field>
+    <mat-label>Enter a date range</mat-label>
+    <mat-date-range-input [rangePicker]="picker">
+      <input matStartDate
+             [value]="galleryService.publishedAtRange().from"
+             (dateChange)="setPublishedFrom($event.value)"
+             formControlName="start" placeholder="Start date">
+      <input matEndDate
+             [value]="galleryService.publishedAtRange().to"
+             (dateChange)="setPublishedTo($event.value)"
+             formControlName="end" placeholder="End date">
+    </mat-date-range-input>
+    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+    <mat-date-range-picker #picker></mat-date-range-picker>
+
+  </mat-form-field>
+
+</mat-card>

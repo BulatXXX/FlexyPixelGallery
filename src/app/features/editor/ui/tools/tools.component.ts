@@ -1,5 +1,5 @@
 import {Component, Input} from '@angular/core';
-import {AsyncPipe, NgClass, NgStyle} from '@angular/common';
+import {AsyncPipe, NgClass, NgIf, NgStyle} from '@angular/common';
 import {SettingsService} from '../../service/SettingsService';
 import {Mode} from '../../models/Mode';
 import {MatIcon} from '@angular/material/icon';
@@ -26,6 +26,9 @@ export class ToolsComponent {
 
   switchMode(mode:Mode){
     this.settingsService.setMode(mode)
+  }
+  isInGalleryMode(){
+   return  this.settingsService.setting.mode === Mode.GalleryMode
   }
   protected readonly Mode = Mode;
 }

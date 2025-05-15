@@ -5,7 +5,7 @@ import {finalize, Observable} from 'rxjs';
 import {tap} from 'rxjs/operators';
 import {LoadingService} from '../../core/services/LoadingService';
 import {LibraryConfigurationRepository} from '../../features/configurations/library-configuration.repository';
-import {GalleryConfigurationRepository} from '../../features/configurations/gallery-configuration.repository';
+import {GalleryConfigurationRepository} from '../../features/gallery/gallery-configuration.repository';
 
 
 @Injectable({providedIn: 'root'})

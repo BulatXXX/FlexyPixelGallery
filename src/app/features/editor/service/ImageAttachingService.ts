@@ -8,7 +8,6 @@ import {AnimationService} from './AnimationService';
 import {LoadingService} from '../../../core/services/LoadingService';
 
 /** Варианты вписывания картинки в выделенную область */
-// ДОБАВЬ gx, gy и допусти 'hole'
 export interface PixelAddress {
   gx: number;
   gy: number;                // глобальные координаты на сетке
@@ -30,9 +29,9 @@ export interface ImageAttachingOptions {
 }
 
 export interface SelectionRect {
-  startX: number; // панель‑грид X
+  startX: number;
   startY: number;
-  endX: number;   // включительно
+  endX: number;
   endY: number;
 }
 
@@ -211,7 +210,7 @@ export class ImageAttachingService {
       const ctx = off.getContext('2d')!;
 
       const bitmaps: ImageBitmap[] = [];
-      // буфер для «restore to previous» (disposalType 3)
+
       let prevCanvasData: ImageData | null = null;
 
       for (let i = 0; i < frames.length; i++) {
@@ -235,7 +234,7 @@ export class ImageAttachingService {
                 ctx.putImageData(prevCanvasData, 0, 0);
               }
               break;
-            // case 0,1: не трогаем (draw over)
+            // case 0,1: не трогаем
           }
         }
 

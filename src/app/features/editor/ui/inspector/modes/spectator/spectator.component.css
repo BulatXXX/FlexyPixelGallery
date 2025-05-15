@@ -18,6 +18,7 @@
   display: flex;
   flex-direction: column;
   min-height: 2rem;
+
   margin-bottom: 1rem;
   width: 100%;
   box-sizing: border-box;
@@ -39,6 +40,8 @@
 
 
 .title-editable {
+  overflow-y: hidden;
+  scrollbar-width: none;
   color: white;
   font-size: 2rem;
   font-weight: 500;

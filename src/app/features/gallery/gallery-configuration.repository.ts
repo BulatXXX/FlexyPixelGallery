@@ -1,4 +1,3 @@
-// src/app/configuration/data/gallery-configuration.repository.ts
 import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../core/environment';
@@ -63,6 +62,7 @@ export class GalleryConfigurationRepository {
   }
 
   search(req: SearchRequest): Observable<GalleryItem[]> {
+    console.log(req)
     return this.http.post<GalleryItem[]>(`${this.base}/search`, req);
   }
 }

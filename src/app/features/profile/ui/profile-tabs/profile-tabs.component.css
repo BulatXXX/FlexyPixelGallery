@@ -1,24 +1,46 @@
+/*.profile-tabs-container {*/
+/*  display: flex;*/
+/*  flex-direction: column;   !* занять всю высоту родительского flex-контейнера *!*/
+/*  box-sizing: border-box;*/
+/*  !* позволить расширяться *!*/
+/*}*/
+
+/*!* Поисковая строка и табы не растягиваются *!*/
+/*.search-field,*/
+/*mat-tab-group {*/
+/*  flex: 0 0 auto;      !* занимают только свой контент *!*/
+/*}*/
+
+/*!* Список карточек — главный flex-элемент, растягивается и скроллится *!*/
+/*.config-list {*/
+/*  padding-top: 20px;*/
+/*  flex: 1 1 auto;      !* занимает всё оставшееся пространство *!*/
+/*  display: grid;*/
+/*  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));*/
+/*  gap: 16px;*/
+/*  overflow-y: auto;    !* скролл, если карточек много *!*/
+/*  box-sizing: border-box;*/
+/*}*/
 .profile-tabs-container {
   display: flex;
   flex-direction: column;
-  height: 100%;        /* занять всю высоту родительского flex-контейнера */
-  box-sizing: border-box;
-  flex: 1 1 auto;      /* позволить расширяться */
+  overflow: auto;
+  /* можно height:100vh, если нужно на весь экран */
 }
 
-/* Поисковая строка и табы не растягиваются */
 .search-field,
 mat-tab-group {
-  flex: 0 0 auto;      /* занимают только свой контент */
+  flex: 0 0 auto;
 }
 
-/* Список карточек — главный flex-элемент, растягивается и скроллится */
 .config-list {
-  padding-top: 20px;
-  flex: 1 1 auto;      /* занимает всё оставшееся пространство */
+  flex: 1 1;
+  min-height: 0;
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
   gap: 16px;
-  overflow-y: auto;    /* скролл, если карточек много */
+  padding-top: 20px;
   box-sizing: border-box;
+  overflow-y: auto;
+  align-content: start;
 }

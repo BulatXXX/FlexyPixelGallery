@@ -11,10 +11,8 @@
   flex: 0 0 auto;
 }
 
-/** Правая часть – табы и список – растягивается и прокручивается */
 .profile-container app-profile-tabs {
-  flex: 1 1 auto; /* занять всё оставшееся место */
+  flex: 1 1 auto;
   display: flex;
   flex-direction: column;
-  /* скролл будет внутри табов */
 }

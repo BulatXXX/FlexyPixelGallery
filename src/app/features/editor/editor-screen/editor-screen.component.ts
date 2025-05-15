@@ -29,8 +29,7 @@ export class EditorScreenComponent implements OnInit {
 
   constructor(protected dimensionService: DimensionService,
               private configurationService: ConfigurationService,
-              private route: ActivatedRoute,
-              private loadingService: LoadingService) {
+              private route: ActivatedRoute,) {
   }
 
   dimensions: EditorComponentsDimensions = {

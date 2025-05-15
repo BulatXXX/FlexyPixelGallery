@@ -1,5 +1,6 @@
 <div class = "tools" [ngStyle]="{'width.px': width, 'height.px': height}">
   <!-- Режимы: с подсветкой активного режима -->
+
   <mat-icon
     matTooltip="Spectator mode"
     matTooltipPosition="right"
@@ -8,6 +9,7 @@
     [ngClass]="{'active-icon': (settingsService.setting$ | async)?.mode === Mode.SpectatorMode}">
     remove_red_eye
   </mat-icon>
+
   <mat-icon
     matTooltip="Editor mode"
     matTooltipPosition="right"

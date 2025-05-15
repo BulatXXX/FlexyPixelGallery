@@ -19,7 +19,7 @@ import {PasswordResetComponent} from './features/password-recovery/password-rese
 
 export const routes: Routes = [
   {path: '', component: HomeScreenComponent},  // Главная страница
-  {path: 'gallery', component: GalleryScreenComponent},
+  {path: 'gallery', component: GalleryScreenComponent, canActivate: [AuthGuard]},
   {path: 'editor', component: EditorScreenComponent, canActivate: [AuthGuard]},
   {path: 'editor/:publicId', component: EditorScreenComponent, canActivate: [AuthGuard]},
   {path: 'configurations/:publicId', component: ConfigurationDetailScreenComponent, canActivate: [AuthGuard]},

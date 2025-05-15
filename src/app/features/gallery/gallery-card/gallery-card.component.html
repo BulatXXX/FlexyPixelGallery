@@ -35,6 +35,10 @@
       </button>
       <mat-menu #menu="matMenu">
         <!-- пример пунктов меню -->
+        <button mat-menu-item (click)="openConfiguration()">
+          <mat-icon>view</mat-icon>
+          View in editor
+        </button>
         <button mat-menu-item (click)="subscribe(item.publicId)">
           <mat-icon>add</mat-icon>
           Add to account

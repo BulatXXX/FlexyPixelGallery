@@ -5,8 +5,8 @@ import {MatButtonModule} from '@angular/material/button';
 import {MatIconModule} from '@angular/material/icon';
 import {Router, RouterLink} from '@angular/router';
 import {MatMenu, MatMenuItem, MatMenuTrigger} from '@angular/material/menu';
-import {ConfigurationService} from '../../features/editor/service/ConfigurationService';
-import {ConfigurationCardService} from './configuration-card.service';
+import {ConfigurationService} from '../../../features/editor/service/ConfigurationService';
+import {ConfigurationCardService} from '../configuration-card.service';
 import {config} from 'rxjs';
 
 @Component({

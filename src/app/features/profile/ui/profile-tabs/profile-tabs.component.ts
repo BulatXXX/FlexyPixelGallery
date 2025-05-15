@@ -5,7 +5,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatIconModule } from '@angular/material/icon';
 
-import {ConfigurationCardComponent} from '../../../../shared/configuration-card/configuration-card.component';
+import {ConfigurationCardComponent} from '../../../../shared/configuration-card/ui/configuration-card.component';
 import {FormsModule} from '@angular/forms';
 
 

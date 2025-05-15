@@ -12,16 +12,16 @@
 .content {
   display: flex;
   flex: 1;
+  height: 80%;
   gap: 16px;
 }
 .filters {
-  width: 250px;
-  border-left: 1px solid rgba(0,0,0,.12);
-  padding: 8px;
+  max-width: 350px;
+  flex: 1;
   box-sizing: border-box;
 }
 .grid {
-  flex: 1;
+  flex: 3;
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
   gap: 16px;

@@ -159,6 +159,4 @@ export class PanelStateService {
     this.panelsSubject.next(panels);
   }
 
-
-
 }

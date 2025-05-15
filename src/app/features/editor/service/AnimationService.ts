@@ -190,10 +190,6 @@ export class AnimationService {
     }
   }
 
-
-  // ── ВНУТРИ класса AnimationService ────────────────────────────
-// (добавь после любого существующего метода)
-
   /** Кол-во кадров в анимации */
   get framesCount(): number {
     return this.frames.length;
