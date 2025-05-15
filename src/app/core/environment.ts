@@ -1,4 +1,4 @@
 export const environment = {
-  apiUrl: 'http://91.200.13.57:8080'
+  apiUrl: 'https://flexypixelapi.fun'
   // apiUrl: 'http://localhost:8080'
 };
