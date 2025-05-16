@@ -1,6 +1,8 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { ConfigurationDetailScreenComponent } from './configuration-detail-screen.component';
+import {provideRouter} from '@angular/router';
+import {provideHttpClient} from '@angular/common/http';
 
 describe('ConfigurationDetailScreenComponent', () => {
   let component: ConfigurationDetailScreenComponent;
@@ -8,7 +10,11 @@ describe('ConfigurationDetailScreenComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [ConfigurationDetailScreenComponent]
+      imports: [ConfigurationDetailScreenComponent],
+      providers: [
+        provideHttpClient(),
+        provideRouter([])
+      ]
     })
     .compileComponents();
 

@@ -1,6 +1,9 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { SignUpScreenComponent } from './sign-up-screen.component';
+import {provideHttpClient} from '@angular/common/http';
+import {provideRouter} from '@angular/router';
+import {AuthRepository} from '../../AuthRepository';
 
 describe('SignUpScreenComponent', () => {
   let component: SignUpScreenComponent;
@@ -8,7 +11,12 @@ describe('SignUpScreenComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [SignUpScreenComponent]
+      imports: [SignUpScreenComponent],
+      providers: [
+        provideHttpClient(),
+        provideRouter([]),
+        { provide: AuthRepository, useValue: {} },
+      ]
     })
     .compileComponents();
 

@@ -1,6 +1,8 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { PasswordRecoveryScreenComponent } from './password-recovery-screen.component';
+import {provideRouter} from '@angular/router';
+import {provideHttpClient} from '@angular/common/http';
 
 describe('PasswordRecoveryScreenComponent', () => {
   let component: PasswordRecoveryScreenComponent;
@@ -8,7 +10,11 @@ describe('PasswordRecoveryScreenComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [PasswordRecoveryScreenComponent]
+      imports: [PasswordRecoveryScreenComponent],
+      providers: [
+        provideRouter([]),
+        provideHttpClient()
+      ]
     })
     .compileComponents();
 

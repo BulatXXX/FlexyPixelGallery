@@ -1,23 +1,25 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import {TestBed } from '@angular/core/testing';
 
 import { SignInScreenComponent } from './sign-in-screen.component';
+import {provideHttpClient} from '@angular/common/http';
+import {provideRouter} from '@angular/router';
+import {AuthRepository} from '../../AuthRepository';
 
 describe('SignInScreenComponent', () => {
-  let component: SignInScreenComponent;
-  let fixture: ComponentFixture<SignInScreenComponent>;
-
-  beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      imports: [SignInScreenComponent]
-    })
-    .compileComponents();
-
-    fixture = TestBed.createComponent(SignInScreenComponent);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
+  beforeEach(() => {
+    TestBed.configureTestingModule({
+      imports: [],
+      providers: [
+        provideHttpClient(),
+        provideRouter([]),
+        { provide: AuthRepository, useValue: {} },
+      ]
+    }).compileComponents();
   });
 
   it('should create', () => {
+    const fixture = TestBed.createComponent(SignInScreenComponent);
+    const component = fixture.componentInstance;
     expect(component).toBeTruthy();
   });
 });
