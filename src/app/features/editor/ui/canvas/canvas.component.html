@@ -7,6 +7,7 @@
   (mousemove)="onMouseMove($event)"
   (mousedown)="onMouseDown($event)"
   (mouseup)="onMouseUp($event)"
+  (contextmenu)="$event.preventDefault()"
 >
 
   <g [attr.transform]="'translate(' + panOffsetX + ',' + panOffsetY + ') scale(' + scale + ')'">

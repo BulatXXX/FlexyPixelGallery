@@ -18,7 +18,7 @@ const PANEL_SIZE = 8;
 
 const EDGE_TOL = 0.1;
 
-type HandleId = 'tl'|'tr'|'bl'|'br'|'t'|'b'|'l'|'r'|'inside';
+type HandleId = 'tl' | 'tr' | 'bl' | 'br' | 't' | 'b' | 'l' | 'r' | 'inside';
 
 @Component({
   selector: 'app-canvas',
@@ -98,7 +98,7 @@ export class CanvasComponent implements OnInit, OnDestroy {
               private commandManager: CommandManager,
               protected drawingService: DrawingService,
               protected settingsService: SettingsService,
-              private imageAttaching: ImageAttachingService,
+              private imageAttachingService: ImageAttachingService,
               private elRef: ElementRef<SVGSVGElement>
   ) {
   }
@@ -115,107 +115,118 @@ export class CanvasComponent implements OnInit, OnDestroy {
 
     this.subscribeEditorState();
 
-    this.selSub = this.imageAttaching.selection$.subscribe(sel => this.selection = sel);
+    this.selSub = this.imageAttachingService.selection$.subscribe(sel => this.selection = sel);
 
   }
-///
 
-  // в private‑секции класса
-  private detectHandle(gx:number, gy:number): HandleId|null {
-    if (!this.selection) { return null; }
-    const {startX,startY,endX,endY} = this.selection;
-    const minX=Math.min(startX,endX), maxX=Math.max(startX,endX);
-    const minY=Math.min(startY,endY), maxY=Math.max(startY,endY);
-    const near=(v:number,r:number)=>Math.abs(v-r)<=EDGE_TOL;
-    if (near(gx,minX)&&near(gy,minY)) return 'tl';
-    if (near(gx,maxX)&&near(gy,minY)) return 'tr';
-    if (near(gx,minX)&&near(gy,maxY)) return 'bl';
-    if (near(gx,maxX)&&near(gy,maxY)) return 'br';
-    if (near(gy,minY)&&gx>=minX&&gx<=maxX) return 't';
-    if (near(gy,maxY)&&gx>=minX&&gx<=maxX) return 'b';
-    if (near(gx,minX)&&gy>=minY&&gy<=maxY) return 'l';
-    if (near(gx,maxX)&&gy>=minY&&gy<=maxY) return 'r';
-    if (gx>minX&&gx<maxX&&gy>minY&&gy<maxY) return 'inside';
+  private detectHandle(gx: number, gy: number): HandleId | null {
+    if (!this.selection) {
+      return null;
+    }
+    const {startX, startY, endX, endY} = this.selection;
+    const minX = Math.min(startX, endX), maxX = Math.max(startX, endX);
+    const minY = Math.min(startY, endY), maxY = Math.max(startY, endY);
+    const near = (v: number, r: number) => Math.abs(v - r) <= EDGE_TOL;
+    if (near(gx, minX) && near(gy, minY)) return 'tl';
+    if (near(gx, maxX) && near(gy, minY)) return 'tr';
+    if (near(gx, minX) && near(gy, maxY)) return 'bl';
+    if (near(gx, maxX) && near(gy, maxY)) return 'br';
+    if (near(gy, minY) && gx >= minX && gx <= maxX) return 't';
+    if (near(gy, maxY) && gx >= minX && gx <= maxX) return 'b';
+    if (near(gx, minX) && gy >= minY && gy <= maxY) return 'l';
+    if (near(gx, maxX) && gy >= minY && gy <= maxY) return 'r';
+    if (gx > minX && gx < maxX && gy > minY && gy < maxY) return 'inside';
     return null;
   }
 
-  private cursorFor(h: HandleId|null): string {
+  private cursorFor(h: HandleId | null): string {
     return ({
-      tl:'nw-resize', tr:'ne-resize', bl:'sw-resize', br:'se-resize',
-      t:'n-resize',  b:'s-resize',   l:'w-resize',   r:'e-resize',
-      inside:'move'
-    } as Record<HandleId,string>)[h as HandleId] ?? 'default';
-  }
-
-  private isPointInRect(px:number,py:number,rect:SelectionRect):boolean {
-    return px>=rect.startX && px<=rect.endX && py>=rect.startY && py<=rect.endY;
+      tl: 'nw-resize', tr: 'ne-resize', bl: 'sw-resize', br: 'se-resize',
+      t: 'n-resize', b: 's-resize', l: 'w-resize', r: 'e-resize',
+      inside: 'move'
+    } as Record<HandleId, string>)[h as HandleId] ?? 'default';
   }
 
   private clientToGrid(evt: MouseEvent): { gx: number; gy: number } {
     const svgRect = this.elRef.nativeElement.getBoundingClientRect();
     const x = (evt.clientX - svgRect.left - this.panOffsetX) / (this.cellSize * this.scale);
-    const y = (evt.clientY - svgRect.top - this.panOffsetY)  / (this.cellSize * this.scale);
-    return { gx: Math.floor(x), gy: Math.floor(y) };
+    const y = (evt.clientY - svgRect.top - this.panOffsetY) / (this.cellSize * this.scale);
+    return {gx: Math.floor(x), gy: Math.floor(y)};
   }
 
-  onMouseDown(evt: MouseEvent): void {
-    if (this.settingsService.setting?.mode !== Mode.ImageAttaching) { return; }
-    const { gx, gy } = this.clientToGrid(evt);
-    const handle = this.detectHandle(gx, gy);
+  private isMousePanning = false;
+  private lastMousePos = { x: 0, y: 0 };
 
-    if (this.selection && handle) {          // уже есть выделение
-      this.startRect = { ...this.selection };
-      if (handle === 'inside') {
-        this.imageAttaching.startDrag(gx, gy);
-      } else {
-        this.imageAttaching.startHandleResize(handle as Exclude<HandleId,'inside'>);
-      }
-      this.activeHandle = handle;
-      this.dragStartPoint = { gx, gy };
-      this.resizing = true;
-    } else if (!this.selection) {            // нет выделения — создаём
-      this.imageAttaching.beginSelection(gx, gy);
-      this.activeHandle = 'br';
-      this.resizing = true;
+  onMouseDown(evt: MouseEvent): void {
+    if (evt.button === 1) {
+      this.startPan(evt);
+      evt.preventDefault();
+      return;
     }
 
-    evt.stopPropagation();
+    if (this.settingsService.setting?.mode === Mode.ImageAttaching && evt.button === 0) {
+      this.startAreaSelection(evt);
+      evt.stopPropagation();
+    }
   }
 
   onMouseMove(evt: MouseEvent): void {
-    if (this.settingsService.setting?.mode !== Mode.ImageAttaching) { return; }
-    const { gx, gy } = this.clientToGrid(evt);
+    if (this.isMousePanning) {
+      this.movePan(evt);
+      return;
+    }
 
-    /* смена курсора */
-    (this.elRef.nativeElement as SVGSVGElement).style.cursor = this.cursorFor(this.detectHandle(gx, gy));
-
-    /* тащим, если идёт drag */
-    if (!this.resizing) { return; }
-
-    if (this.activeHandle === 'inside') {
-      this.imageAttaching.updateDrag(gx, gy);
-    } else {
-      this.imageAttaching.updateHandleResize(gx, gy);
+    if (this.settingsService.setting?.mode === Mode.ImageAttaching) {
+      this.handleAreaSelection(evt);
     }
   }
-
 
   onMouseUp(evt: MouseEvent): void {
-    if (this.resizing && this.settingsService.setting?.mode === Mode.ImageAttaching) {
-      this.imageAttaching.endInteraction();
-      this.resizing = false;
-      this.activeHandle = null;
-      (this.elRef.nativeElement as SVGSVGElement).style.cursor = 'default';
+    if (evt.button === 1 && this.isMousePanning) {
+      this.endPan();
+      return;
     }
-    console.log(this.imageAttaching.getSelectedPixelMap())
+    if (this.resizing && this.settingsService.setting?.mode === Mode.ImageAttaching) {
+      this.stopAreaSelection();
+    }
   }
+  private isMouseWheelEvent(event: WheelEvent): boolean {
+    // 1) Строковый режим — точно мышь
+    if (event.deltaMode === WheelEvent.DOM_DELTA_LINE) {
+      return true;
+    }
+    // 2) Пиксельный режим, но крупная дельта — скорее мышь
+    if (
+      event.deltaMode === WheelEvent.DOM_DELTA_PIXEL &&
+      Math.abs(event.deltaY) > 20
+    ) {
+      return true;
+    }
+    // Иначе — тачпад
+    return false;
+  }
+  private startPan(evt: MouseEvent) {
+    this.isMousePanning = true;
+    this.lastMousePos = { x: evt.clientX, y: evt.clientY };
+  }
+  private movePan(evt: MouseEvent) {
+    const dx = evt.clientX - this.lastMousePos.x;
+    const dy = evt.clientY - this.lastMousePos.y;
+    this.lastMousePos = { x: evt.clientX, y: evt.clientY };
 
+    this.panOffsetX += dx;
+    this.panOffsetY += dy;
+    this.constrainVisibleCanvas(this.panOffsetX, this.panOffsetY);
+  }
+  private endPan() {
+    this.isMousePanning = false;
+  }
 
   onWheel(event: WheelEvent) {
     event.preventDefault();
     const svgElement = event.currentTarget as SVGSVGElement;
     const rect = svgElement.getBoundingClientRect();
-    if (event.ctrlKey) {
+    if (this.isMouseWheelEvent(event)|| event.ctrlKey) {
       this.applyZoom(event, rect);
     } else {
       this.applyOffset(event);
@@ -244,6 +255,48 @@ export class CanvasComponent implements OnInit, OnDestroy {
 
     this.scale = newScale;
     this.constrainVisibleCanvas();
+  }
+
+  private startAreaSelection(evt: MouseEvent) {
+    const {gx, gy} = this.clientToGrid(evt);
+    const handle = this.detectHandle(gx, gy);
+
+    if (this.selection && handle) {          // уже есть выделение
+      this.startRect = {...this.selection};
+      if (handle === 'inside') {
+        this.imageAttachingService.startDrag(gx, gy);
+      } else {
+        this.imageAttachingService.startHandleResize(handle as Exclude<HandleId, 'inside'>);
+      }
+      this.activeHandle = handle;
+      this.dragStartPoint = {gx, gy};
+      this.resizing = true;
+    } else if (!this.selection) {
+      this.imageAttachingService.beginSelection(gx, gy);
+      this.activeHandle = 'br';
+      this.resizing = true;
+    }
+  }
+  private handleAreaSelection(evt: MouseEvent) {
+    const {gx, gy} = this.clientToGrid(evt);
+
+    (this.elRef.nativeElement as SVGSVGElement).style.cursor = this.cursorFor(this.detectHandle(gx, gy));
+
+    if (!this.resizing) {
+      return;
+    }
+
+    if (this.activeHandle === 'inside') {
+      this.imageAttachingService.updateDrag(gx, gy);
+    } else {
+      this.imageAttachingService.updateHandleResize(gx, gy);
+    }
+  }
+  private stopAreaSelection() {
+    this.imageAttachingService.endInteraction();
+    this.resizing = false;
+    this.activeHandle = null;
+    (this.elRef.nativeElement as SVGSVGElement).style.cursor = 'default';
   }
 
   private constrainVisibleCanvas(newPanOffsetX: number = this.panOffsetX, newPanOffsetY: number = this.panOffsetY) {
@@ -295,8 +348,6 @@ export class CanvasComponent implements OnInit, OnDestroy {
     this.hintVisibleMap[direction] = hintVisible;
   }
 
-//   Метод, который вычисляет область для подсказки для заданного направления.
-// Если валидация проходит, возвращает объект с координатами, иначе – null.
   getHintArea(direction: Direction): { gridX: number; gridY: number } | null {
     if (this.panels.length === 0) return null;
     const lastPanel = this.panels[this.panels.length - 1];
@@ -388,6 +439,7 @@ export class CanvasComponent implements OnInit, OnDestroy {
       lastPanel
     ));
   }
+
   @HostListener('window:keydown', ['$event'])
   onKeyDown(evt: KeyboardEvent) {
     // при нажатии Alt или Option
@@ -402,6 +454,7 @@ export class CanvasComponent implements OnInit, OnDestroy {
       this.settingsService.setting.pipetteActive = false;
     }
   }
+
   protected readonly Mode = Mode;
   protected readonly PANEL_SIZE = PANEL_SIZE;
   protected readonly Direction = Direction;
