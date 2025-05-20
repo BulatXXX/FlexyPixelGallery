@@ -25,7 +25,8 @@ export class DrawingService {
     document.addEventListener('mouseup', this.handleStopDrawing.bind(this));
   }
 
-  handleStartDrawing(panel: Panel, x: number, y: number): void {
+  handleStartDrawing(panel: Panel, x: number, y: number, event: MouseEvent): void {
+    if(event.button !== 0) return;
     if (this.settingsService.setting.mode === Mode.DrawingMode) {
       if (this.settingsService.setting.pipetteActive) {
         const colorSample = panel.pixels[y][x]
@@ -41,7 +42,7 @@ export class DrawingService {
     }
   }
 
-  handleMouseMoveDrawing(panel: Panel, x: number, y: number): void {
+  handleMouseMoveDrawing(panel: Panel, x: number, y: number, $event: MouseEvent): void {
     if (this.isDrawing) {
       if (!this.isPixelAlreadyAdded(x, y, panel)) {
         // Добавляем пиксель в массив

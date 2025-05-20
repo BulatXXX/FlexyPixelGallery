@@ -49,8 +49,8 @@
                 [attr.fill]="color"
                 stroke="#000"
                 stroke-width="0.5"
-                (mousedown)="drawingService.handleStartDrawing(panel, j, i)"
-                (mousemove)="drawingService.handleMouseMoveDrawing(panel, j, i)"
+                (mousedown)="drawingService.handleStartDrawing(panel, j, i,$event)"
+                (mousemove)="drawingService.handleMouseMoveDrawing(panel, j, i,$event)"
               />
             </ng-container>
           </ng-container>
