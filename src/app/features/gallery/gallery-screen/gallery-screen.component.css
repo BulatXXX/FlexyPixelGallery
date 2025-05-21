@@ -16,7 +16,8 @@
   gap: 16px;
 }
 .filters {
-  max-width: 350px;
+  max-width: 400px;
+  min-width: 380px;
   flex: 1;
   box-sizing: border-box;
 }

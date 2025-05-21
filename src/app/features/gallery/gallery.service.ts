@@ -1,5 +1,4 @@
-// src/app/gallery/services/gallery.service.ts
-import {Injectable, signal, computed, effect, inject} from '@angular/core';
+import {Injectable, signal, effect, inject} from '@angular/core';
 import {catchError, debounceTime, switchMap, tap} from 'rxjs/operators';
 
 import {from, of, throwError} from 'rxjs';
@@ -23,13 +22,14 @@ export class GalleryService {
   addedCountRange = signal<{ from: number | null; to: number | null }>({ from: null, to: null });
   publishedAtRange = signal<{ from: Date | null; to: Date | null }>({ from: null, to: null });
 
-  sortBy = signal<{ [k: string]: { order: 'ASC' | 'DESC' } }>({'AddedCount': {order: 'DESC'}});
+  sortBy = signal<{ type: SortType; order: 'ASC' | 'DESC' }>({
+    type:  'AddedCount',
+    order: 'DESC'
+  });
 
-  // страница
   offset = signal(0);
   size = signal(20);
 
-  // результаты
   results = signal<GalleryItem[]>([]);
   loading = signal(false);
 
@@ -47,7 +47,7 @@ export class GalleryService {
   }
 
   constructor() {
-    // следим за изменениями и перезапрашиваем
+
     effect(() => {
       const publishedRange = this.publishedAtRange();
       const publishedAtRangeFormatted = (publishedRange.from && publishedRange.to)
@@ -77,6 +77,12 @@ export class GalleryService {
           }),
           switchMap(r => this.repo.search(r)),
           tap(data => {
+            console.log(
+              'Received items publishedAt:',
+              data.map(item => item.publishedAt)
+            );
+          }),
+          tap(data => {
             this.results.set(data);
             this.loading.set(false);
             this.loadingService.hide();
@@ -87,3 +93,4 @@ export class GalleryService {
   }
 }
 
+export type SortType = 'PublishedAt' | 'AverageRating' | 'AddedCount';

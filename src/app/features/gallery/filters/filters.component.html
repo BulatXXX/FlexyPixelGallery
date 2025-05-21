@@ -1,61 +1,148 @@
-<mat-card class="container">
+<div class="container">
+
   <div class="heading">
-    <span class="title">Filters</span>
+    <span class="title" (click)="changeLocale()">Filters</span>
   </div>
   <div class="sort-by-container">
-    <mat-form-field appearance="outline" class="sort-field">
+    <mat-form-field appearance="outline" class="sort-field" subscriptSizing="dynamic">
       <mat-label class="label">Sort by:</mat-label>
       <mat-select [value]="galleryService.sortBy()" (valueChange)="setSortBy($event)">
-        <mat-option [value]="Sorts.AVERAGE_RATING">Rating</mat-option>
-        <mat-option [value]="Sorts.ADDED_COUNT">Added count</mat-option>
-        <mat-option [value]="Sorts.PUBLISHED_AT">Publish date</mat-option>
+        <mat-option [value]="{ type: 'AverageRating', order: 'ASC' }">
+          Lower rating
+        </mat-option>
+        <mat-option [value]="{ type: 'AverageRating', order: 'DESC' }">
+          Higher rating
+        </mat-option>
+        <mat-option [value]="{ type: 'AddedCount', order: 'ASC' }">
+          Less popular
+        </mat-option>
+        <mat-option [value]="{ type: 'AddedCount', order: 'DESC' }">
+          More popular
+        </mat-option>
+        <mat-option [value]="{ type: 'PublishedAt', order: 'ASC' }">
+          Older
+        </mat-option>
+        <mat-option [value]="{ type: 'PublishedAt', order: 'DESC' }">
+          Newer
+        </mat-option>
       </mat-select>
     </mat-form-field>
-    <div class="sort-icon">
-      <mat-icon>sort</mat-icon>
-    </div>
   </div>
+<div class="expansion-fields">
+  <mat-expansion-panel class="expansion-panel" [expanded]="true">
+    <mat-expansion-panel-header>
+      <mat-panel-title>Рейтинг</mat-panel-title>
+    </mat-expansion-panel-header>
 
-  <div >
+    <div class="range-wrapper">
+      <!-- строка с инпутами -->
+      <div class="range-row">
+        <mat-form-field appearance="outline" class="range-input" subscriptSizing="dynamic">
+          <input
+            matInput
+            type="number"
+            [(ngModel)]="galleryService.ratingRange().from"
+            (ngModelChange)="setRatingFrom($event)"
+            placeholder="0"
+          />
+        </mat-form-field>
 
-    <div >
-      <mat-label class="label">Rating</mat-label>
+        <span class="dash">—</span>
 
-      <mat-slider  min="0" max="5" step="1"  discrete >
-        <input matSliderStartThumb  (valueChange)="setRatingFrom($event)" [value]="galleryService.ratingRange().from ?? 1">
-        <input matSliderEndThumb  (valueChange)="setRatingTo($event)" [value]="galleryService.ratingRange().to   ?? 5">
+        <mat-form-field appearance="outline" class="range-input" subscriptSizing="dynamic">
+          <input
+            matInput
+            type="number"
+            [(ngModel)]="galleryService.ratingRange().to"
+            (ngModelChange)="setRatingTo($event)"
+            placeholder="5"
+          />
+        </mat-form-field>
+      </div>
+      <mat-slider min="0" max="5" step="1" class="range-slider">
+        <input matSliderStartThumb (valueChange)="setRatingFrom($event)"
+               [value]="galleryService.ratingRange().from ?? 0">
+        <input matSliderEndThumb (valueChange)="setRatingTo($event)" [value]="galleryService.ratingRange().to   ?? 5">
+      </mat-slider>
+
+
+    </div>
+  </mat-expansion-panel>
+
+  <mat-expansion-panel class="expansion-panel">
+    <mat-expansion-panel-header>
+      <mat-panel-title>Добавления</mat-panel-title>
+    </mat-expansion-panel-header>
+
+    <div class="range-wrapper">
+      <!-- строка с инпутами -->
+      <div class="range-row">
+        <mat-form-field appearance="outline" class="range-input" subscriptSizing="dynamic">
+          <input
+            matInput
+            type="number"
+            min="0"
+            max="5"
+            [(ngModel)]="galleryService.addedCountRange().from"
+            (ngModelChange)="setAddedFrom($event)"
+            placeholder="1000"
+          />
+        </mat-form-field>
+
+        <span class="dash">—</span>
+
+        <mat-form-field appearance="outline" class="range-input" subscriptSizing="dynamic">
+          <input
+            matInput
+            min="0"
+            max="5"
+            type="number"
+            [(ngModel)]="galleryService.addedCountRange().to"
+            (ngModelChange)="setAddedTo($event)"
+            placeholder="100000"
+          />
+        </mat-form-field>
+      </div>
+
+      <mat-slider min="0" max="100000" step="10" class="range-slider">
+        <input matSliderStartThumb (valueChange)="setAddedFrom($event)"
+               [value]="galleryService.ratingRange().from ?? 1000">
+        <input matSliderEndThumb (valueChange)="setAddedTo($event)" [value]="galleryService.ratingRange().to ?? 100000">
       </mat-slider>
     </div>
 
-    <!-- Added Count -->
-    <div>
-      <mat-label class="label" >Added count</mat-label>
-      <mat-slider min="0" max="500000" step="100">
-        <input value="50" (valueChange)="setAddedFrom($event)" [value]="galleryService.addedCountRange().from ?? 0" matSliderStartThumb>
-        <input value="6000" (valueChange)="setAddedTo($event)" [value]="galleryService.addedCountRange().from ?? 500000" matSliderEndThumb>
-      </mat-slider>
-    </div>
+  </mat-expansion-panel>
 
-    <!-- Published Range -->
+  <mat-expansion-panel class="expansion-panel">
+    <mat-expansion-panel-header>
+      <mat-panel-title>Publishing date</mat-panel-title>
+    </mat-expansion-panel-header>
+    <mat-form-field appearance="outline" class="date-range-field">
+      <mat-label>Published date</mat-label>
+      <mat-date-range-input [rangePicker]="picker">
+        <input matStartDate
+               [value]="galleryService.publishedAtRange().from"
+               (dateChange)="setPublishedFrom($event.value)"
+               placeholder="From">
+        <input matEndDate
+               [value]="galleryService.publishedAtRange().to"
+               (dateChange)="setPublishedTo($event.value)"
+               placeholder="To">
+      </mat-date-range-input>
+      <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+      <mat-date-range-picker #picker></mat-date-range-picker>
 
+    </mat-form-field>
+  </mat-expansion-panel>
 
+  <mat-expansion-panel class="expansion-panel">
+    <mat-expansion-panel-header>
+      <mat-panel-title>Tags</mat-panel-title>
+    </mat-expansion-panel-header>
+    <span>NOT SUPPORTED YET</span>
+  </mat-expansion-panel>
   </div>
-
-  <mat-form-field>
-    <mat-label>Enter a date range</mat-label>
-    <mat-date-range-input [rangePicker]="picker">
-      <input matStartDate
-             [value]="galleryService.publishedAtRange().from"
-             (dateChange)="setPublishedFrom($event.value)"
-             formControlName="start" placeholder="Start date">
-      <input matEndDate
-             [value]="galleryService.publishedAtRange().to"
-             (dateChange)="setPublishedTo($event.value)"
-             formControlName="end" placeholder="End date">
-    </mat-date-range-input>
-    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-    <mat-date-range-picker #picker></mat-date-range-picker>
-
-  </mat-form-field>
-
-</mat-card>
+  <button mat-flat-button class="reset-btn" (click)="reset()">
+    <mat-label class="reset-btn-label">Reset</mat-label>
+  </button>
+</div>

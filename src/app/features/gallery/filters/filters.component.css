@@ -1,69 +1,110 @@
-.container{
+.container {
   display: flex;
   flex-direction: column;
   height: 100%;
   width: 100%;
-  padding: 20px;
   box-sizing: border-box;
+  padding: 20px;
+  gap: 20px;
 }
-.label{
+
+.label {
   font-size: var(--text-size-medium);
   font-weight: 300;
 }
 
-.heading{
+.heading {
   padding-bottom: 10px;
   display: flex;
   flex-direction: row;
   justify-content: space-between;
 }
-.title{
+
+.title {
   font-size: var(--text-size-large);
   font-weight: 400;
 }
-.sort-icon{
-  /*flex: 0 0 auto;*/
+
+.sort-icon {
   display: flex;
   align-items: center;
   justify-content: center;
 }
-.sort-field{
+
+.sort-field {
   /*flex: 1 1 auto;*/
   width: 100%;
   display: flex;
   flex-direction: row;
   justify-content: center;
 }
-.sort-by-container{
+
+.sort-by-container {
   width: 100%;
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
   align-items: center;
   justify-content: stretch;
 }
 
-.filters-grid {
+
+
+
+/* общий контейнер для каждого диапазонного фильтра */
+.range-wrapper {
   display: flex;
-  gap: 20px;
-  width: 100%;
-  padding-top: 10px;
-  box-sizing: border-box;
+  flex-direction: column;
+  /* отступы внутри панели */
 }
-
-.filter-cell {
-  display: grid;
-  grid-template-columns: auto auto minmax(60px, 1fr) auto minmax(60px, 1fr);
-  align-items: center;
-  column-gap: 8px;
+.date-range-field {
+  width: 100%;      // займёт весь доступный горизонтальный контейнер
+  min-width: 0;
 }
-
-
-.input-field {
+  /* -------------------------------------------------
+     1) Инпуты в одну строку
+  --------------------------------------------------- */
+.range-row {
   display: flex;
+  flex-direction: row;
   align-items: center;
   justify-content: center;
+  margin-bottom: 12px;
+}
+
+.range-input {
+  flex: 1;
+}
+
+.dash {
+  display: inline-flex;       /* превращаем span в флекс-контейнер */
+  align-items: center;
+  justify-content: center;
+  padding: 0 8px;             /* немножко пространства по бокам */
+  height: 56px;               /* или сколько у вас по высоте mat-form-field */
+  font-size: 1.25rem;         /* подгоните под свой дизайн */
+}
+.range-slider {
   width: 100%;
+  margin: 0;
+  padding: 0 4px;
+}
+
+.expansion-fields{
+  overflow-y: scroll;
+}
+
+.expansion-panel {
+  background: none;
+  margin-top: 5px;
+  min-height: 50px;
+  margin-bottom: 5px;
 }
 
 
-
+.reset-btn{
+  min-height: 40px;
+  width: 100%;
+}
+.reset-btn-label{
+  font-size: var(--text-size-medium);
+}

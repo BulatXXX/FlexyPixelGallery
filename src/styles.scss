@@ -12,6 +12,16 @@ html {
   ));
 }
 
+.mat-mdc-form-field-subscript-wrapper.mat-mdc-form-field-bottom-align.mat-mdc-form-field-subscript-dynamic-size {
+  display: none !important;
+  height: 0       !important;
+  margin: 0       !important;
+  padding: 0      !important;
+  overflow: hidden!important;
+  line-height: 0  !important;
+  min-height: 0   !important;
+}
+
 :root {
   --primary-color: #708D81;
   --secondary-color: #F4D58D;
