@@ -226,7 +226,7 @@ export class CanvasComponent implements OnInit, OnDestroy {
     event.preventDefault();
     const svgElement = event.currentTarget as SVGSVGElement;
     const rect = svgElement.getBoundingClientRect();
-    if (this.isMouseWheelEvent(event)|| event.ctrlKey) {
+    if (event.ctrlKey) {
       this.applyZoom(event, rect);
     } else {
       this.applyOffset(event);
