@@ -36,13 +36,17 @@
       <mat-menu #menu="matMenu">
         <!-- пример пунктов меню -->
         <button mat-menu-item (click)="openConfiguration()">
-          <mat-icon>view</mat-icon>
+          <mat-icon>visibility</mat-icon>
           View in editor
         </button>
         <button mat-menu-item (click)="subscribe(item.publicId)">
           <mat-icon>add</mat-icon>
           Add to account
         </button>
+<!--        <button mat-menu-item (click)="{}">-->
+<!--          <mat-icon>block</mat-icon>-->
+<!--          Ban configuration-->
+<!--        </button>-->
       </mat-menu>
     </div>
 

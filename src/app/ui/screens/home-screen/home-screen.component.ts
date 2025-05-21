@@ -1,12 +1,14 @@
 import {Component} from '@angular/core';
 import {NgForOf, NgStyle} from '@angular/common';
 import {LoadingService} from '../../../core/services/LoadingService';
+import {TranslatePipe} from '@ngx-translate/core';
 
 @Component({
   selector: 'app-home-screen',
   imports: [
     NgStyle,
-    NgForOf
+    NgForOf,
+    TranslatePipe
   ],
   templateUrl: './home-screen.component.html',
   standalone: true,

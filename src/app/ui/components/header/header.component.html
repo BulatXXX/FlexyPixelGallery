@@ -14,10 +14,10 @@
 
   <!-- Навигация -->
   <nav class="nav-links" [ngClass]="{'open': menuOpen}">
-    <a routerLink="/gallery" routerLinkActive="active">Gallery</a>
-    <a routerLink="/editor" routerLinkActive="active">Editor</a>
-    <a routerLink="/firmware" routerLinkActive="active">Firmware</a>
-    <a routerLink="/faq" routerLinkActive="active">FAQ</a>
+    <a routerLink="/gallery" routerLinkActive="active">{{ 'GALLERY'|translate }}</a>
+    <a routerLink="/editor" routerLinkActive="active">{{ 'EDITOR'|translate }}</a>
+    <a routerLink="/firmware" routerLinkActive="active">{{ 'FIRMWARE'|translate }}</a>
+    <a routerLink="/faq" routerLinkActive="active">{{ 'FAQ'|translate }}</a>
   </nav>
 
   <!-- Профиль -->
