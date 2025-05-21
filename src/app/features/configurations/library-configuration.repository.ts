@@ -2,7 +2,6 @@ import {Injectable, inject} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {environment} from '../../core/environment';
 import {Observable} from 'rxjs';
-import {PublishResponse} from '../gallery/gallery-configuration.repository';
 import {ConfigurationData, ConfigurationResponse} from '../editor/service/ConfigurationService';
 
 @Injectable({providedIn: 'root'})

@@ -1,4 +1,4 @@
-import {Component, inject, Input, signal} from '@angular/core';
+import {Component, Input} from '@angular/core';
 import {MatButton,} from '@angular/material/button';
 import {MatCard} from '@angular/material/card';
 
@@ -22,7 +22,6 @@ import {CdkTextareaAutosize} from '@angular/cdk/text-field';
     MatFormField,
     MatInput,
     MatLabel,
-    MatSuffix,
     CdkTextareaAutosize,
   ],
   templateUrl: './profile-info.component.html',

@@ -88,7 +88,7 @@
 .info-section > .verified,
 .info-section > .role,
 .info-section > .created-at,
-.info-section > .edit-btn
+.info-section > .edit-btn,
 .info-section > .edit-inputs{
   flex: 0 0 auto;
 }
