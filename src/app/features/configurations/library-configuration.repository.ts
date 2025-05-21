@@ -43,7 +43,7 @@ export class LibraryConfigurationRepository {
   }
 
   getAllConfigurations(): Observable<ConfigurationResponse[]> {
-    return this.http.get<any[]>(`${environment.apiUrl}/configurations/my/all`);
+    return this.http.get<any[]>(`${environment.apiUrl}/configurations/my/all?isPublic=false`);
   }
 
   getOriginalConfigurations(): Observable<ConfigurationResponse[]> {
