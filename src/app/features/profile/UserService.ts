@@ -1,7 +1,7 @@
 import {Injectable, inject, signal} from '@angular/core';
 import {UserRepository} from './UserRepository';
 import {LoadingService} from '../../core/services/LoadingService';
-import {finalize, map, tap} from 'rxjs';
+import {finalize, map, Observable, tap} from 'rxjs';
 import {LibraryConfigurationRepository} from '../configurations/library-configuration.repository';
 
 @Injectable({providedIn: 'root'})
@@ -58,4 +58,25 @@ export class UserService {
       })
     );
   }
+
+  updateProfileInfo(displayName: string, bio: string): Observable<{ displayName: string; bio: string }> {
+    return this.repo.updateUserInfo(displayName, bio).pipe(
+      map(resp => ({
+        displayName: resp.displayName,
+        bio: resp.bio
+      })),
+
+      tap(newData => {
+        const u = this.user();
+        if (u) {
+          this.user.set({
+            ...u,
+            displayName: newData.displayName,
+            bio: newData.bio
+          });
+        }
+      })
+    );
+  }
+
 }

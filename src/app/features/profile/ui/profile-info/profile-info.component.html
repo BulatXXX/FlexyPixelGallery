@@ -4,7 +4,7 @@
     (mouseenter)="hover = true"
     (mouseleave)="hover = false"
   >
-    <img [src]="user.avatarUrl" alt="Avatar" class="avatar" />
+    <img [src]="user.avatarUrl" alt="Avatar" class="avatar"/>
 
     <!-- Прямоугольный оверлей теперь внутри wrapper -->
     <div
@@ -24,12 +24,46 @@
       (change)="onAvatarSelected($event)"
     />
   </div>
-
-
-
-
-  <div class="info-section">
+  <div class="info-section" *ngIf="isEditing">
+    <mat-form-field *ngIf="isEditing" appearance="outline" class="edit-inputs">
+      <mat-label>Name</mat-label>
+      <input
+        matInput
+        [(ngModel)]="editedName"
+        placeholder="{{user.displayName}}"
+      />
+    </mat-form-field>
+    <mat-form-field appearance="outline" *ngIf="isEditing">
+      <mat-label>Bio</mat-label>
+      <textarea
+        matInput
+        [(ngModel)]="editedBio"
+        cdkTextareaAutosize
+        cdkAutosizeMinRows="10"
+        cdkAutosizeMaxRows="10"
+        placeholder="{{user.bio ? user.bio : &quot;Put your bio here&quot;}}">
+  </textarea>
+    </mat-form-field>
+    <div class="btn-container">
+      <button
+        class="editing-btn"
+        mat-raised-button
+        (click)="isEditing = false;"
+      >
+        <mat-label>Cancel</mat-label>
+      </button>
+      <button
+        class="editing-btn"
+        mat-flat-button
+        (click)="onUpdate()"
+      >
+        <mat-label>Save</mat-label>
+      </button>
+    </div>
+  </div>
+  <div class="info-section" *ngIf="!isEditing">
     <h2>{{ user.displayName }}</h2>
+
 
     <div class="username">
       #{{ user.username }}
@@ -53,11 +87,11 @@
       </div>
 
 
-      <button mat-raised-button color="primary" class="edit-btn">
+      <button (click)="isEditing = true;" mat-raised-button color="primary" class="edit-btn">
         <mat-icon>edit</mat-icon>
         Edit Profile
       </button>
-      <div class="bio">
+      <div class="bio ">
         <mat-icon>book</mat-icon>
 
         <p class="bio-text">
@@ -72,6 +106,8 @@
 
 
       </div>
+
     </ng-container>
   </div>
+
 </mat-card>

@@ -1,15 +1,17 @@
-import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import {Injectable} from '@angular/core';
+import {HttpClient} from '@angular/common/http';
 import {map, Observable} from 'rxjs';
-import { environment } from '../../core/environment';
+import {environment} from '../../core/environment';
 
-@Injectable({ providedIn: 'root' })
+@Injectable({providedIn: 'root'})
 export class UserRepository {
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) {
+  }
 
   getCurrentUser(): Observable<any> {
     return this.http.get(`${environment.apiUrl}/users/me`);
   }
+
   getUserById(publicId: string): Observable<any> {
     return this.http.get(`${environment.apiUrl}/users/${publicId}`);
   }
@@ -29,4 +31,10 @@ export class UserRepository {
       );
   }
 
+  updateUserInfo(displayName: string, bio: string) {
+    return this.http.patch<{ displayName: string, bio: string }>(
+      `${environment.apiUrl}/users/me`,
+      {displayName: displayName, bio: bio}
+    )
+  }
 }

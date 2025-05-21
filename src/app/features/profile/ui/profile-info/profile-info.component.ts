@@ -5,6 +5,10 @@ import {MatCard} from '@angular/material/card';
 import {DatePipe, NgIf} from '@angular/common';
 import {MatIcon} from '@angular/material/icon';
 import {UserService} from '../../UserService';
+import {FormsModule} from '@angular/forms';
+import {MatFormField, MatSuffix} from '@angular/material/form-field';
+import {MatInput, MatLabel} from '@angular/material/input';
+import {CdkTextareaAutosize} from '@angular/cdk/text-field';
 
 @Component({
   selector: 'app-profile-info',
@@ -14,6 +18,12 @@ import {UserService} from '../../UserService';
     MatIcon,
     NgIf,
     DatePipe,
+    FormsModule,
+    MatFormField,
+    MatInput,
+    MatLabel,
+    MatSuffix,
+    CdkTextareaAutosize,
   ],
   templateUrl: './profile-info.component.html',
   standalone: true,
@@ -21,13 +31,14 @@ import {UserService} from '../../UserService';
 })
 export class ProfileInfoComponent {
   @Input() user : any;
-
-
   @Input() isOwnProfile: boolean = false;
+
+  isEditing: boolean = false;
+  editedName: string = "";
+  editedBio: string = "";
 
   hover = false;
   constructor(private userService: UserService) {
-
   }
 
   onAvatarSelected(evt: Event) {
@@ -36,12 +47,20 @@ export class ProfileInfoComponent {
 
     this.userService.updateAvatar(file).subscribe({
       next: () => {
-        // ничего не нужно делать здесь — сигнал уже обновился
-        // и <img [src]="user.avatarUrl"> автоматически перерисуется
         this.userService.loadUserProfile();
       },
       error: (err) => console.error('Upload failed', err)
     });
+  }
+
+  onUpdate(){
+    this.userService.updateProfileInfo(this.editedName, this.editedBio).subscribe({
+      next: () => {
+        this.userService.loadUserProfile();
+        this.isEditing = false;
+      },
+      error: (err) => console.error('Upload failed', err)
+    })
   }
 
 }

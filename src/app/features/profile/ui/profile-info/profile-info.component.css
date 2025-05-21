@@ -2,6 +2,7 @@
 .profile-info-card {
   width: 100%;
   max-width: 300px;
+  min-width: 285px;
   height: 100%;                /* растягиваем на всю доступную высоту */
   padding: 16px;
   box-sizing: border-box;
@@ -21,15 +22,18 @@
 .avatar-wrapper {
   position: relative;
   width: 250px;
-  height: 250px;
+
+  aspect-ratio: 1 / 1;
   border-radius: 50%;  /* маска круга */
   overflow: hidden;    /* обрезает всё, что выходит за круг */
-  margin: 0 auto;      /* по центру, если нужно */
+  margin: 0 auto;
+
 }
 
 .avatar {
   width: 100%;
   height: 100%;
+  aspect-ratio: 1 / 1;
   object-fit: cover;
 }
 
@@ -61,6 +65,7 @@
 
 /* Секция с текстом (сразмерена под flex-контейнер) */
 .info-section {
+  padding-top: 10px;
   width: 100%;
   display: flex;
   flex-direction: column;
@@ -83,7 +88,8 @@
 .info-section > .verified,
 .info-section > .role,
 .info-section > .created-at,
-.info-section > .edit-btn {
+.info-section > .edit-btn
+.info-section > .edit-inputs{
   flex: 0 0 auto;
 }
 
@@ -101,7 +107,10 @@
   width: 100%;
   margin: 16px 0;
 }
-
+.edit-inputs{
+  width: 100%;
+  overflow: visible;
+}
 /* Роль пользователя */
 .role {
   display: flex;
@@ -125,6 +134,7 @@
   align-items: flex-start;
   flex: 1 1 auto;    /* занимает всё свободное пространство внизу */
   width: 100%;
+  padding-top: 10px;
   gap: 8px;
   box-sizing: border-box;
   overflow-y: auto;  /* прокрутка только здесь */
@@ -150,4 +160,14 @@
   font-size: 14px;
   line-height: 1.5;
   color: #ccc;
+}
+.btn-container{
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+}
+.editing-btn{
+  flex: 1 1 auto;
+  width: 100px;
+  margin: 5px;
 }
