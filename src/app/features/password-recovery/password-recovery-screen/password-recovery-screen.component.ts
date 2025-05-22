@@ -6,6 +6,7 @@ import {MatButton} from '@angular/material/button';
 import {MatFormField, MatInput, MatInputModule} from '@angular/material/input';
 import {NgIf} from '@angular/common';
 import {PasswordResetService} from '../password-reset.service';
+import {MatIconModule} from '@angular/material/icon';
 
 @Component({
   selector: 'app-password-recovery-screen',
@@ -16,6 +17,7 @@ import {PasswordResetService} from '../password-reset.service';
     FormsModule,
     MatButton,
     MatInput,
+    MatIconModule,
     NgIf
   ],
   templateUrl: './password-recovery-screen.component.html',

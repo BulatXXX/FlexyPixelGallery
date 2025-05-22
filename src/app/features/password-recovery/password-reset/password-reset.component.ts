@@ -1,11 +1,12 @@
 import {Component, OnInit, signal} from '@angular/core';
 import {FormsModule} from '@angular/forms';
 import {MatCard} from '@angular/material/card';
-import {MatFormField, MatInput} from '@angular/material/input';
+import {MatFormField, MatInput, MatInputModule} from '@angular/material/input';
 import {NgIf} from '@angular/common';
 import {MatButton} from '@angular/material/button';
 import {ActivatedRoute, Router} from '@angular/router';
 import {PasswordResetService} from '../password-reset.service';
+import {MatIconModule} from '@angular/material/icon';
 
 @Component({
   selector: 'app-password-reset',
@@ -13,9 +14,10 @@ import {PasswordResetService} from '../password-reset.service';
     FormsModule,
     MatFormField,
     MatCard,
-    MatInput,
+    MatInputModule,
     NgIf,
-    MatButton
+    MatButton,
+    MatIconModule,
   ],
   templateUrl: './password-reset.component.html',
   standalone: true,
