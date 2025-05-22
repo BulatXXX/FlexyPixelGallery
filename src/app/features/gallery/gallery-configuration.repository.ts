@@ -38,6 +38,11 @@ export interface GalleryItem {
   addedCount:      number;
 }
 
+export interface BanResponse {
+  message?: string;
+  error?: string;
+}
+
 @Injectable({ providedIn: 'root' })
 export class GalleryConfigurationRepository {
   private http = inject(HttpClient);
@@ -64,5 +69,9 @@ export class GalleryConfigurationRepository {
 
   search(req: SearchRequest): Observable<GalleryItem[]> {
     return this.http.post<GalleryItem[]>(`${this.base}/search`, req);
+  }
+
+  banConfig(publicId:string){
+    return this.http.patch<BanResponse>(`${this.base}/${publicId}/ban`,{});
   }
 }

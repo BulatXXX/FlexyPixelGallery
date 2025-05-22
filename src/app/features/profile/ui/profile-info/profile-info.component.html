@@ -4,7 +4,8 @@
     (mouseenter)="hover = true"
     (mouseleave)="hover = false"
   >
-    <img [src]="user.avatarUrl" alt="Avatar" class="avatar"/>
+    <img *ngIf="user.avatarUrl !== null" [src]="user.avatarUrl" alt="Avatar" class="avatar"/>
+    <img class="placeholder_avatar" *ngIf="user.avatarUrl === null" src="assets/images/FP.png" alt="Avatar">
 
     <!-- Прямоугольный оверлей теперь внутри wrapper -->
     <div
@@ -47,7 +48,7 @@
     <div class="btn-container">
       <button
         class="editing-btn"
-        mat-raised-button
+        mat-flat-button
         (click)="isEditing = false;"
       >
         <mat-label>Cancel</mat-label>
@@ -87,7 +88,7 @@
       </div>
 
 
-      <button (click)="isEditing = true;" mat-raised-button color="primary" class="edit-btn">
+      <button (click)="isEditing = true;"  mat-fab extended class="edit-btn">
         <mat-icon>edit</mat-icon>
         Edit Profile
       </button>

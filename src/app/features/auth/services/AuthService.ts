@@ -1,10 +1,21 @@
 import {Injectable} from '@angular/core';
 import {Router} from '@angular/router';
-import {firstValueFrom, BehaviorSubject, Observable, throwError} from 'rxjs';
+import {BehaviorSubject, firstValueFrom} from 'rxjs';
 
 import {SignUpData} from '../models/SignUpData';
 import {AuthRepository} from '../AuthRepository';
 import {TokenStorageService} from './TokenStorageService';
+
+
+
+interface JwtPayload {
+  publicId:   string;
+  userId:     number;
+  userRole:   'USER' | 'ADMIN';
+  exp:        number;
+  iat:        number;
+  iss:        string;
+}
 
 @Injectable({
   providedIn: 'root'
@@ -16,11 +27,33 @@ export class AuthService {
   private errorSubject = new BehaviorSubject<string | null>(null);
   error$ = this.errorSubject.asObservable();
 
+  private roleSubject = new BehaviorSubject<'USER'|'ADMIN'|null>(null);
+  role$ = this.roleSubject.asObservable();
+
   constructor(
     private authRepo: AuthRepository,
     private tokenStorage: TokenStorageService,
     private router: Router
   ) {
+    this.hydrateFromToken();
+  }
+  private decodeJwt<T>(token: string): T {
+    const payload = token.split('.')[1];
+    return JSON.parse(window.atob(payload));
+  }
+
+  private hydrateFromToken() {
+    const token = this.tokenStorage.getAccessToken();
+    if (!token) {
+      this.roleSubject.next(null);
+      return;
+    }
+    try {
+      const { userRole } = this.decodeJwt<JwtPayload>(token);
+      this.roleSubject.next(userRole);
+    } catch {
+      this.roleSubject.next(null);
+    }
   }
 
   /** Логин: сохраняем access + refresh + username, затем редирект */
@@ -38,6 +71,7 @@ export class AuthService {
       this.tokenStorage.saveRefreshToken(res.refreshToken);
       this.tokenStorage.savePublicId(res.publicId);
 
+      this.hydrateFromToken()
       await this.router.navigate(['/profile']);
     } catch (err) {
       this.errorSubject.next('Неверный логин или пароль');

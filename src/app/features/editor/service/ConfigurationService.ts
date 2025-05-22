@@ -198,4 +198,21 @@ export class ConfigurationService {
       }
     )
   }
+
+  clearConfiguration(): void {
+    // 1) publicId
+    this.setCurrentPublicId(null);
+
+    // 2) метаданные
+    this.configurationData.set({
+      name: 'ConfigName',
+      description: 'Your config description',
+      useMiniPreview: false,
+    });
+
+    // 3) панельки/фреймы
+    this.panelStateService.clearPanels();
+    this.animationService.clearFrames();
+    // если у вас нет таких методов — добавьте их в соответствующие сервисы
+  }
 }

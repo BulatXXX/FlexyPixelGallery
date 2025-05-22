@@ -8,6 +8,7 @@ import {EditorActions} from '../../models/EditorActions';
 import {MatTooltip} from '@angular/material/tooltip';
 import {SettingsService} from '../../service/SettingsService';
 import {FormsModule} from '@angular/forms';
+import { Location } from '@angular/common';
 import {AnimationService} from '../../service/AnimationService';
 import {ConfigurationService} from '../../service/ConfigurationService';
 import {DialogService} from '../../../../core/services/dialog.service';
@@ -94,6 +95,7 @@ export class MenuComponent implements OnInit {
               protected editorStateService: PanelStateService,
               private commandManager: CommandManager,
               protected settingsService: SettingsService,
+              private location: Location,
               protected animationService: AnimationService) {
   }
 
@@ -133,8 +135,9 @@ export class MenuComponent implements OnInit {
     this.configurationService.saveConfiguration().subscribe({
       next: (res: CreateResponse | void) => {
         if (res) {
-          // ветка CREATE
-          console.log('Новая конфигурация, publicId =', (res as CreateResponse).publicId);
+          const newId = res.publicId;
+          console.log('Новая конфигурация, publicId =', newId);
+          this.location.replaceState(`/editor/${newId}`);
         } else {
           // ветка UPDATE
           console.log('Конфигурация успешно обновлена');

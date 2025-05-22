@@ -46,11 +46,11 @@ export class LibraryConfigurationRepository {
   }
 
   getOriginalConfigurations(): Observable<ConfigurationResponse[]> {
-    return this.http.get<any[]>(`${environment.apiUrl}/configurations/my/all?forkStatus=ORIGINAL`);
+    return this.http.get<any[]>(`${environment.apiUrl}/configurations/my/all?forkStatus=ORIGINAL&isPublic=false`);
   }
 
   getForkedConfigurations(): Observable<ConfigurationResponse[]> {
-    return this.http.get<any[]>(`${environment.apiUrl}/configurations/my/all?forkStatus=FORKED`);
+    return this.http.get<any[]>(`${environment.apiUrl}/configurations/my/all?forkStatus=FORKED&isPublic=false`);
   }
 
   getPublicConfigurations(): Observable<ConfigurationResponse[]> {

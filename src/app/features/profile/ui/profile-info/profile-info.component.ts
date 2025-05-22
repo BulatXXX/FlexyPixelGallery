@@ -1,5 +1,5 @@
 import {Component, Input} from '@angular/core';
-import {MatButton,} from '@angular/material/button';
+import {MatButton, MatFabButton,} from '@angular/material/button';
 import {MatCard} from '@angular/material/card';
 
 import {DatePipe, NgIf} from '@angular/common';
@@ -23,6 +23,7 @@ import {CdkTextareaAutosize} from '@angular/cdk/text-field';
     MatInput,
     MatLabel,
     CdkTextareaAutosize,
+    MatFabButton,
   ],
   templateUrl: './profile-info.component.html',
   standalone: true,

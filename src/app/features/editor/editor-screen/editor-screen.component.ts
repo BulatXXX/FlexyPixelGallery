@@ -57,6 +57,8 @@ export class EditorScreenComponent implements OnInit {
     const publicId = this.route.snapshot.paramMap.get('publicId');
     if (publicId) {
       void this.loadById(publicId);
+    }else {
+      this.configurationService.clearConfiguration();
     }
     this.dimensionService.dimensions$.subscribe(dims => {
       this.dimensions = dims;

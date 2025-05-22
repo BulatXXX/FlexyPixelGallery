@@ -3,16 +3,17 @@ import {CommonModule} from '@angular/common';
 import {MatCardModule} from '@angular/material/card';
 import {MatButtonModule} from '@angular/material/button';
 import {MatIconModule} from '@angular/material/icon';
-import {Router, RouterLink} from '@angular/router';
+import {Router} from '@angular/router';
 import {MatMenu, MatMenuItem, MatMenuTrigger} from '@angular/material/menu';
-import {ConfigurationService} from '../../../features/editor/service/ConfigurationService';
 import {ConfigurationCardService} from '../configuration-card.service';
-import {config} from 'rxjs';
+import {UserService} from '../../../features/profile/UserService';
+import {MatSlideToggle} from '@angular/material/slide-toggle';
+import {FormsModule} from '@angular/forms';
 
 @Component({
   selector: 'app-configuration-card',
   standalone: true,
-  imports: [CommonModule, MatCardModule, MatButtonModule, MatIconModule, MatMenu, MatMenuItem, MatMenuTrigger],
+  imports: [CommonModule, MatCardModule, MatButtonModule, MatIconModule, MatMenu, MatMenuItem, MatMenuTrigger, MatSlideToggle, FormsModule],
   templateUrl: './configuration-card.component.html',
   styleUrls: ['./configuration-card.component.css']
 })
@@ -36,6 +37,7 @@ export class ConfigurationCardComponent {
 
   constructor(private router: Router,
               private configurationCardService: ConfigurationCardService,
+              private userService: UserService,
   ) {
   }
 
@@ -79,6 +81,16 @@ export class ConfigurationCardComponent {
       });
   }
 
+  updateUseMiniPreview(useMini: boolean) {
+    this.config.useMiniPreview = useMini;
+    this.configurationCardService.updateUseMiniPreview(
+      this.config.publicId,
+      this.config.name,
+      this.config.description,
+      this.config.useMiniPreview,
+    )
+  }
+
   unpublish(publicId: string) {
 
   }
@@ -101,7 +113,7 @@ export class ConfigurationCardComponent {
       .deleteConfiguration(publicId)
       .subscribe({
         next: () => {
-          // например, эмитнуть событие или удалить карточку из списка
+          this.userService.loadUserProfile();
           console.log('Удалено');
         },
         error: err => {
@@ -109,4 +121,6 @@ export class ConfigurationCardComponent {
         }
       });
   }
+
+  protected readonly console = console;
 }

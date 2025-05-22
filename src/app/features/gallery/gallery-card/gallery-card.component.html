@@ -43,10 +43,15 @@
           <mat-icon>add</mat-icon>
           Add to account
         </button>
-<!--        <button mat-menu-item (click)="{}">-->
-<!--          <mat-icon>block</mat-icon>-->
-<!--          Ban configuration-->
-<!--        </button>-->
+        <button
+          mat-menu-item
+          *ngIf="(authService.role$ | async) === 'ADMIN'"
+          (click)="banConfig()"
+        >
+          <mat-icon>block</mat-icon>
+          Ban configuration
+        </button>
+
       </mat-menu>
     </div>
 

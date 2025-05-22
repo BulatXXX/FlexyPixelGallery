@@ -1,7 +1,4 @@
-.container {
-  height: 300px;           /* Фиксированная высота контейнера */
-  overflow-y: auto;        /* Вертикальная прокрутка */
-  border: 1px solid #ccc;  /* Для наглядности */
+.container { /* Для наглядности */
 }
 
 .rectangle {

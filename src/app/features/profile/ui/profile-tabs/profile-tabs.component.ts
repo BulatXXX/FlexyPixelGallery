@@ -7,6 +7,8 @@ import { MatIconModule } from '@angular/material/icon';
 
 import {ConfigurationCardComponent} from '../../../../shared/configuration-card/ui/configuration-card.component';
 import {FormsModule} from '@angular/forms';
+import {MatButton, MatFabButton} from '@angular/material/button';
+import {RouterLink} from '@angular/router';
 
 
 @Component({
@@ -20,7 +22,10 @@ import {FormsModule} from '@angular/forms';
     MatIconModule,
     ConfigurationCardComponent,
     ConfigurationCardComponent,
-    FormsModule
+    FormsModule,
+    MatButton,
+    MatFabButton,
+    RouterLink
   ],
   templateUrl: './profile-tabs.component.html',
   styleUrls: ['./profile-tabs.component.css']

@@ -1,36 +1,18 @@
-/*.profile-tabs-container {*/
-/*  display: flex;*/
-/*  flex-direction: column;   !* занять всю высоту родительского flex-контейнера *!*/
-/*  box-sizing: border-box;*/
-/*  !* позволить расширяться *!*/
-/*}*/
-
-/*!* Поисковая строка и табы не растягиваются *!*/
-/*.search-field,*/
-/*mat-tab-group {*/
-/*  flex: 0 0 auto;      !* занимают только свой контент *!*/
-/*}*/
-
-/*!* Список карточек — главный flex-элемент, растягивается и скроллится *!*/
-/*.config-list {*/
-/*  padding-top: 20px;*/
-/*  flex: 1 1 auto;      !* занимает всё оставшееся пространство *!*/
-/*  display: grid;*/
-/*  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));*/
-/*  gap: 16px;*/
-/*  overflow-y: auto;    !* скролл, если карточек много *!*/
-/*  box-sizing: border-box;*/
-/*}*/
 .profile-tabs-container {
   display: flex;
   flex-direction: column;
   overflow: auto;
-  /* можно height:100vh, если нужно на весь экран */
 }
 
 .search-field,
 mat-tab-group {
   flex: 0 0 auto;
+}
+
+.search-field {
+  overflow-y: visible;
+  padding: 8px;
+  box-sizing: border-box;
 }
 
 .config-list {
@@ -43,4 +25,30 @@ mat-tab-group {
   box-sizing: border-box;
   overflow-y: auto;
   align-content: start;
+}
+.empty-configs-container{
+  padding-top: 22%;
+  padding-bottom: 40px;
+  flex: 1 1;
+  width: 100%;
+  min-height: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.create-button{
+  background: none;
+}
+.menu-with-toggle {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.small-toggle {
+  transform: scale(0.2);
+}
+.mat-slide-toggle-bar,
+.mat-slide-toggle-thumb {
+  pointer-events: all;
 }

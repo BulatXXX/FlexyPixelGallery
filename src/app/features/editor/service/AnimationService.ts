@@ -223,4 +223,7 @@ export class AnimationService {
   }
 
 
+  clearFrames() {
+    this.framesSubject.next([this.createDefaultFrame()]);
+  }
 }

@@ -75,7 +75,7 @@ export class PanelStateService {
   ): Panel {
     const newId = `${this.panels.length + 1}`;
 
-    const newDirection = this.panels.length > 0 ? this.panels[this.panels.length - 1].direction : Direction.Bottom;
+    const newDirection = this.panels.length > 0 ? this.panels[this.panels.length - 1].direction : Direction.Left;
     return {
       id: newId,
       x: gridX,
@@ -159,4 +159,7 @@ export class PanelStateService {
     this.panelsSubject.next(panels);
   }
 
+  clearPanels() {
+    this.panelsSubject.next([]);
+  }
 }

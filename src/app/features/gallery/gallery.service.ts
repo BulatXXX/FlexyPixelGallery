@@ -1,7 +1,7 @@
 import {Injectable, signal, effect, inject} from '@angular/core';
 import {catchError, debounceTime, switchMap, tap} from 'rxjs/operators';
 
-import {from, of, throwError} from 'rxjs';
+import {finalize, from, of, throwError} from 'rxjs';
 import {
   GalleryConfigurationRepository,
   GalleryItem,
@@ -19,11 +19,11 @@ export class GalleryService {
   tagFilterIds = signal<string[]>([]);
 
   ratingRange = signal<{ from: null | number; to: null | number }>({from: null, to: null});
-  addedCountRange = signal<{ from: number | null; to: number | null }>({ from: null, to: null });
-  publishedAtRange = signal<{ from: Date | null; to: Date | null }>({ from: null, to: null });
+  addedCountRange = signal<{ from: number | null; to: number | null }>({from: null, to: null});
+  publishedAtRange = signal<{ from: Date | null; to: Date | null }>({from: null, to: null});
 
   sortBy = signal<{ type: SortType; order: 'ASC' | 'DESC' }>({
-    type:  'AddedCount',
+    type: 'AddedCount',
     order: 'DESC'
   });
 
@@ -42,7 +42,8 @@ export class GalleryService {
       })
     )
   }
-  public updateFilters(){
+
+  public updateFilters() {
 
   }
 
@@ -90,6 +91,25 @@ export class GalleryService {
         )
         .subscribe();
     });
+  }
+
+  banConfig(publicId: string) {
+    this.loadingService.show();
+    return this.repo.banConfig(publicId)
+      .pipe(
+        finalize(() => {
+          this.loadingService.hide();
+        })
+      )
+      .subscribe({
+        next: (res) => {
+          if (res.message && res.message.length > 0) {
+            this.results.update(items =>
+              items.filter(item => item.publicId !== publicId)
+            );
+          }
+        }
+      })
   }
 }
 
