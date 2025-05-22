@@ -39,6 +39,8 @@
   max-height: 2.4em;       /* 2 строки × line-height */
   overflow: hidden;
   display: -webkit-box;
+  white-space: nowrap;
+  text-overflow: ellipsis;
   -webkit-box-orient: vertical;
   -webkit-line-clamp: 2;
 }

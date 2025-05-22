@@ -57,12 +57,10 @@
   /* отступы внутри панели */
 }
 .date-range-field {
-  width: 100%;      // займёт весь доступный горизонтальный контейнер
+  width: 100%;
   min-width: 0;
 }
-  /* -------------------------------------------------
-     1) Инпуты в одну строку
-  --------------------------------------------------- */
+
 .range-row {
   display: flex;
   flex-direction: row;
@@ -76,12 +74,12 @@
 }
 
 .dash {
-  display: inline-flex;       /* превращаем span в флекс-контейнер */
+  display: inline-flex;
   align-items: center;
   justify-content: center;
-  padding: 0 8px;             /* немножко пространства по бокам */
-  height: 56px;               /* или сколько у вас по высоте mat-form-field */
-  font-size: 1.25rem;         /* подгоните под свой дизайн */
+  padding: 0 8px;
+  height: 56px;
+  font-size: 1.25rem;
 }
 .range-slider {
   width: 100%;

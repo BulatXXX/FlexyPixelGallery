@@ -16,10 +16,10 @@ export class AppComponent {
     translate.addLangs(['en', 'ru']);
     translate.setDefaultLang('en');
     const browserLang = navigator.language.split('-')[0];
-    translate.use(
-      translate.getLangs().includes(browserLang)
-        ? browserLang
-        : 'en'
+    translate.use('en'
+      // translate.getLangs().includes(browserLang)
+        // ? browserLang
+        // : 'en'
     );
   }
 

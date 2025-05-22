@@ -25,8 +25,6 @@ export interface SortByOption {
   order: 'ASC' | 'DESC';
 }
 
-
-
 @Component({
   selector: 'app-filters',
   imports: [
