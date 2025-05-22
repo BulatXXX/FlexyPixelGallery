@@ -27,7 +27,7 @@ html {
   --secondary-color: #F4D58D;
   --text-color: #FFFFFF;
   --surface-color: #181818;
-  //--surface-color: #d8ad64;
+  //--surface-color: #53361a;
   --accent-1: #001427;
   --accent-2: #BF0603;
   --accent-3: #8D0801;
@@ -58,7 +58,8 @@ html, body {
   padding: 0;
   overflow-x: hidden;
 
-  background: linear-gradient(90deg, #4b3126, #a6755b, #e8be89);
+  //background: linear-gradient(90deg, #4b3126, #a6755b, #e8be89);
+  background: linear-gradient(90deg, #4b3126, #a6755b, rgba(75, 49, 38, 0.65));
   color: var(--text-color);
   font-family: Unbounded, sans-serif;
   font-weight: 200;
@@ -67,6 +68,12 @@ html, body {
 
 
 }
+/* styles.scss */
+.mat-mdc-menu-panel {
+  background: #a6755b !important;
+}
+
+
 
 a, h1, h2, h3, h4, h5, h6, p {
   text-decoration: none;

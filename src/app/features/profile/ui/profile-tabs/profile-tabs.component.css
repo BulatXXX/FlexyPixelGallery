@@ -39,11 +39,6 @@ mat-tab-group {
 .create-button{
   background: none;
 }
-.menu-with-toggle {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-}
 
 .small-toggle {
   transform: scale(0.2);

@@ -40,7 +40,7 @@
       <mat-icon>chevron_right</mat-icon>
     </button>
 
-    <mat-menu #configMenu="matMenu">
+    <mat-menu #configMenu="matMenu" class="menu" yPosition="above">
       <!-- 1) Всегда: перейти в detail/view -->
       <button mat-menu-item (click)="view(config.publicId)">
         <mat-icon>visibility</mat-icon>
@@ -62,20 +62,20 @@
         Publish
       </button>
 
-<!--      <button-->
-<!--        *ngIf="config.forkStatus==='ORIGINAL' && config.isPublic"-->
-<!--        mat-menu-item (click)="unpublish(config.publicId)"-->
-<!--      >-->
-<!--        <mat-icon>lock</mat-icon>-->
-<!--        Unpublish-->
-<!--      </button>-->
-<!--      <button-->
-<!--        *ngIf="config.forkStatus==='ORIGINAL' && config.isPublic"-->
-<!--        mat-menu-item (click)="viewOnGallery(config.publicId)"-->
-<!--      >-->
-<!--        <mat-icon>link</mat-icon>-->
-<!--        View on Gallery-->
-<!--      </button>-->
+      <!--      <button-->
+      <!--        *ngIf="config.forkStatus==='ORIGINAL' && config.isPublic"-->
+      <!--        mat-menu-item (click)="unpublish(config.publicId)"-->
+      <!--      >-->
+      <!--        <mat-icon>lock</mat-icon>-->
+      <!--        Unpublish-->
+      <!--      </button>-->
+      <!--      <button-->
+      <!--        *ngIf="config.forkStatus==='ORIGINAL' && config.isPublic"-->
+      <!--        mat-menu-item (click)="viewOnGallery(config.publicId)"-->
+      <!--      >-->
+      <!--        <mat-icon>link</mat-icon>-->
+      <!--        View on Gallery-->
+      <!--      </button>-->
 
       <!-- 4) Forked: редактировать и перейти к original -->
       <button
@@ -87,13 +87,13 @@
       </button>
 
       <!-- 5) Fork any public config -->
-<!--      <button-->
-<!--        *ngIf="config.isPublic && isOwnProfile"-->
-<!--        mat-menu-item (click)="fork(config.publicId)"-->
-<!--      >-->
-<!--        <mat-icon>content_copy</mat-icon>-->
-<!--        Fork-->
-<!--      </button>-->
+      <!--      <button-->
+      <!--        *ngIf="config.isPublic && isOwnProfile"-->
+      <!--        mat-menu-item (click)="fork(config.publicId)"-->
+      <!--      >-->
+      <!--        <mat-icon>content_copy</mat-icon>-->
+      <!--        Fork-->
+      <!--      </button>-->
 
       <!-- 7) Delete (только свой контент) -->
       <button *ngIf="isOwnProfile" mat-menu-item (click)="delete(config.publicId)">
@@ -101,12 +101,13 @@
         Delete
       </button>
 
-<!--      <div mat-menu-item class="menu-with-toggle">-->
-<!--        <span>Use mini</span>-->
-<!--        <mat-slide-toggle class="small-toggle" [(ngModel)]="config.useMiniPreview"-->
-<!--        (change)="updateUseMiniPreview($event.checked)"-->
-<!--        ></mat-slide-toggle>-->
-<!--      </div>-->
+      <div mat-menu-item disableRipple tabindex="-1" class="menu-with-toggle">
+        <span>Use mini</span>
+        <mat-slide-toggle class="small-toggle" [(ngModel)]="config.useMiniPreview"
+                          (change)="updateUseMiniPreview($event.checked)"
+                          (click)="$event.stopPropagation()"
+        ></mat-slide-toggle>
+      </div>
 
     </mat-menu>
 

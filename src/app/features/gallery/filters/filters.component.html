@@ -31,7 +31,7 @@
 <div class="expansion-fields">
   <mat-expansion-panel class="expansion-panel" [expanded]="true">
     <mat-expansion-panel-header>
-      <mat-panel-title>Рейтинг</mat-panel-title>
+      <mat-panel-title>Rating</mat-panel-title>
     </mat-expansion-panel-header>
 
     <div class="range-wrapper">
@@ -71,7 +71,7 @@
 
   <mat-expansion-panel class="expansion-panel">
     <mat-expansion-panel-header>
-      <mat-panel-title>Добавления</mat-panel-title>
+      <mat-panel-title>Added count</mat-panel-title>
     </mat-expansion-panel-header>
 
     <div class="range-wrapper">
@@ -85,7 +85,7 @@
             max="5"
             [(ngModel)]="galleryService.addedCountRange().from"
             (ngModelChange)="setAddedFrom($event)"
-            placeholder="1000"
+            placeholder="0"
           />
         </mat-form-field>
 
@@ -106,7 +106,7 @@
 
       <mat-slider min="0" max="100000" step="10" class="range-slider">
         <input matSliderStartThumb (valueChange)="setAddedFrom($event)"
-               [value]="galleryService.ratingRange().from ?? 1000">
+               [value]="galleryService.ratingRange().from ?? 0">
         <input matSliderEndThumb (valueChange)="setAddedTo($event)" [value]="galleryService.ratingRange().to ?? 100000">
       </mat-slider>
     </div>

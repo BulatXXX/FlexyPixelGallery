@@ -1,8 +1,13 @@
 .gallery-card {
   display: flex;
+  background: none;
   flex-direction: column;
   height: 500px;
   box-sizing: border-box;
+}
+.gallery-card:hover{
+  transition: ease-in-out 0.3s;
+  scale: 1.01;
 }
 
 /* 1. Превью-изображение */

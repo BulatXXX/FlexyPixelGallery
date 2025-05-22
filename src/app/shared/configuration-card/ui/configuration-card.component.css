@@ -1,19 +1,24 @@
 .cfg-card {
   display: flex;
+  background: none;
   flex-direction: column;
   height: 100%;
   max-height: 320px;
   box-sizing: border-box;
   overflow: hidden;
-
+}
+:host{
+  padding: 10px;
 }
 
+
 .preview {
+  background: none;
   width: 100%;
   padding-top: 46.25%; /* 16:9 aspect */
   position: relative;
   flex: 0 0 auto;
-  background-color: #222;
+
 }
 
 .preview img {
@@ -62,7 +67,8 @@
   flex: 1 1 auto;
   margin: 0;
   font-size: 14px;
-  color: #ccc;
+  /*color: #ccc;*/
+  color: white;
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
@@ -84,9 +90,27 @@
   align-items: center;
   gap: 4px;
   font-size: 12px;
-  color: #999;
+  color: white;
+  /*color: #999;*/
 }
 
 .actions button {
-  color: #999;
+  color: white;
+  /*color: #999;*/
+}
+
+
+.menu-with-toggle {
+  width: 100%;
+  display: flex !important;         /* flex-контейнер */
+  justify-content: space-between;   /* «Use mini» слева, тумблер — справа */
+  align-items: center;
+  padding: 0 16px;                  /* такой же padding, как у других mat-menu-item */
+  height: 48px;                     /* чтобы совпадало по высоте с остальными пунктами */
+}
+
+/* если нужно чуть уменьшить сам toggle */
+.menu-with-toggle mat-slide-toggle {
+  transform: scale(0.8);
+  margin: 0;                        /* убираем лишние отступы */
 }
