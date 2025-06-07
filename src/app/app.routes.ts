@@ -1,9 +1,9 @@
 import {Routes} from '@angular/router';
-import {HomeScreenComponent} from './ui/screens/home-screen/home-screen.component';
+import {HomeScreenComponent} from './shared/ui/screens/home-screen/home-screen.component';
 
 import {EditorScreenComponent} from './features/editor/editor-screen/editor-screen.component';
-import {FaqScreenComponent} from './ui/screens/faq-screen/faq-screen.component';
-import {FirmwareScreenComponent} from './ui/screens/firmware-screen/firmware-screen.component';
+import {FaqScreenComponent} from './shared/ui/screens/faq-screen/faq-screen.component';
+import {FirmwareScreenComponent} from './shared/ui/screens/firmware-screen/firmware-screen.component';
 import {ProfileScreenComponent} from './features/profile/ui/profile-screen/profile-screen.component';
 import {SignInScreenComponent} from './features/auth/ui/sign-in-screen/sign-in-screen.component';
 import {SignUpScreenComponent} from './features/auth/ui/sign-up-screen/sign-up-screen.component';

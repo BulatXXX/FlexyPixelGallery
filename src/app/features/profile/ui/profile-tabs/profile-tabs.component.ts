@@ -7,7 +7,7 @@ import { MatIconModule } from '@angular/material/icon';
 
 import {ConfigurationCardComponent} from '../../../../shared/configuration-card/ui/configuration-card.component';
 import {FormsModule} from '@angular/forms';
-import {MatButton, MatFabButton} from '@angular/material/button';
+import {MatFabButton} from '@angular/material/button';
 import {RouterLink} from '@angular/router';
 
 
@@ -23,7 +23,6 @@ import {RouterLink} from '@angular/router';
     ConfigurationCardComponent,
     ConfigurationCardComponent,
     FormsModule,
-    MatButton,
     MatFabButton,
     RouterLink
   ],

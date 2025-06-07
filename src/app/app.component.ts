@@ -1,6 +1,6 @@
 import {Component} from '@angular/core';
 import {RouterOutlet} from '@angular/router';
-import {HeaderComponent} from './ui/components/header/header.component';
+import {HeaderComponent} from './shared/ui/components/header/header.component';
 import {LoadingOverlayComponent} from './core/components/loading-overlay/loading-overlay.component';
 import {TranslateService} from '@ngx-translate/core';
 
