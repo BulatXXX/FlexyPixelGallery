@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { Observable } from 'rxjs';
-import {ConfigurationInputDialogComponent} from '../../ui/components/dialog/dialog/dialog.component';
+import {ConfigurationInputDialogComponent} from '../../shared/ui/components/dialog/dialog/dialog.component';
 
 
 @Injectable({

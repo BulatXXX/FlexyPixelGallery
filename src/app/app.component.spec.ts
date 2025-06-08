@@ -1,13 +1,15 @@
 import { TestBed } from '@angular/core/testing';
 import { AppComponent } from './app.component';
 import {provideRouter} from '@angular/router';
+import {provideTranslateService} from '@ngx-translate/core';
 
 describe('AppComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [AppComponent],
       providers:[
-        provideRouter([])
+        provideRouter([]),
+        provideTranslateService()
       ]
     }).compileComponents();
   });
